@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Projekt2.Models.Produktownia>
+
+@{
+    ViewData["Title"] = "Produktownia";
+}
+
+<h1>Produktownia</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ilosc_towaru_wejscowego)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ilosc_towaru_wyjscowego)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_kierownika_zmiany)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data_zmiany)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ilosc_towaru_wejscowego)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ilosc_towaru_wyjscowego)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_kierownika_zmiany)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data_zmiany)
+            </td>
+            <td>
+                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_partii">Edit</a> |
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_partii">Details</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_partii">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

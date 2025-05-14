@@ -1,0 +1,52 @@
+﻿@model Projekt2.Models.Dzialy
+
+@{
+    ViewData["Title"] = "Dzialy - Details";
+}
+
+<h1> Dzialy - Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nazwa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nazwa)
+        </dd>
+    </dl>
+    <dt class="col-sm-2">
+        Pracownicy
+    </dt>
+    <dd class="col-sm-10">
+        @if (Model.Pracownicy != null && Model.Pracownicy.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Imię i Nazwisko</th>
+                        <th>Numer telefonu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pracownik in Model.Pracownicy)
+                    {
+                        <tr>
+                            <td>@pracownik.Name</td>
+                            <td>@pracownik.Nr_tel</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Ten dostawca nie ma jeszcze żadnych dostaw.</p>
+        }
+    </dd>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id_dzialu">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

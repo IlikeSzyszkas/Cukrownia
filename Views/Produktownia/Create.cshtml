@@ -1,0 +1,47 @@
+﻿@model Projekt2.Models.Produktownia
+
+@{
+    ViewData["Title"] = "Produktownia - Create";
+}
+
+<h1>Produktownia - Create</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Ilosc_towaru_wejscowego" class="control-label"></label>
+                <input asp-for="Ilosc_towaru_wejscowego" class="form-control" />
+                <span asp-validation-for="Ilosc_towaru_wejscowego" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ilosc_towaru_wyjscowego" class="control-label"></label>
+                <input asp-for="Ilosc_towaru_wyjscowego" class="form-control" />
+                <span asp-validation-for="Ilosc_towaru_wyjscowego" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Id_kierownika_zmiany" class="control-label"></label>
+                <input asp-for="Id_kierownika_zmiany" class="form-control" />
+                <span asp-validation-for="Id_kierownika_zmiany" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Data_zmiany" class="control-label"></label>
+                <input asp-for="Data_zmiany" class="form-control" />
+                <span asp-validation-for="Data_zmiany" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,59 @@
+﻿@model Projekt2.Models.Pracownicy
+
+@{
+    ViewData["Title"] = "Pracownicy - Create";
+}
+
+<h1>Pracownicy - Create</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Addres" class="control-label"></label>
+                <input asp-for="Addres" class="form-control" />
+                <span asp-validation-for="Addres" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nr_tel" class="control-label"></label>
+                <input asp-for="Nr_tel" class="form-control" />
+                <span asp-validation-for="Nr_tel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Id_stanowiska" class="control-label"></label>
+                <select asp-for="Id_stanowiska" class="form-control" asp-items="@ViewBag.Id_stanowiska">
+                </select>
+                <span asp-validation-for="Id_stanowiska" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Id_dzialu" class="control-label"></label>
+                <select asp-for="Id_dzialu" class="form-control" asp-items="@ViewBag.Id_dzialu">
+                </select>
+                <span asp-validation-for="Id_dzialu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

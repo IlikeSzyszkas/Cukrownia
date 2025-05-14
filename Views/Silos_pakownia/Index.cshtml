@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Projekt2.Models.Silos_pakownia>
+
+@{
+    ViewData["Title"] = "Silos -> Pakownia";
+}
+
+<h1>Silos -&gt Pakownia</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_operacji)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_partii)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ilosc_cukru_pobrana)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data_pobrania)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_operacji)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_partii)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ilosc_cukru_pobrana)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data_pobrania)
+            </td>
+            <td>
+                <a class="btn btn-info"  asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

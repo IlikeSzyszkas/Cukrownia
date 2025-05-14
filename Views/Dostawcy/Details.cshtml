@@ -1,0 +1,77 @@
+﻿@model Projekt2.Models.Dostawcy
+
+@{
+    ViewData["Title"] = "Dostawcy - Details";
+}
+
+<h1>Dostawcy - Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Surname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Surname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Addres)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Addres)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nr_tel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nr_tel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ilosc_ha_pola)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ilosc_ha_pola)
+        </dd>
+        <dt class="col-sm-2">
+            Dostawy
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Dostawy != null && Model.Dostawy.Any())
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Data dostawy</th>
+                            <th>Ilość towaru</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var dostawa in Model.Dostawy)
+                        {
+                            <tr>
+                                <td>@dostawa.Data_dostawy.ToShortDateString()</td>
+                                <td>@dostawa.Ilosc_towaru</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Ten dostawca nie ma jeszcze żadnych dostaw.</p>
+            }
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

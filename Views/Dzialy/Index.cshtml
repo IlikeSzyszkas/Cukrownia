@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Projekt2.Models.Dzialy>
+
+@{
+    ViewData["Title"] = "Działy";
+}
+
+<h1>Działy</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nazwa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model =>Model.LiczbaPracownikow)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LiczbaPracownikow)
+            </td>
+            <td>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_dzialu">Edit</a> |
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_dzialu">Details</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_dzialu">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
