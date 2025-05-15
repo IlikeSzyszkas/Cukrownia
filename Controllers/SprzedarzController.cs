@@ -22,7 +22,10 @@ namespace Projekt2.Controllers
         // GET: Sprzedarz
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sprzedarz.ToListAsync());
+            return View(await _context.Sprzedarz
+                .Include(k => k.Kupiec)
+                .ToListAsync()
+                );
         }
 
         // GET: Sprzedarz/Details/5
@@ -34,6 +37,7 @@ namespace Projekt2.Controllers
             }
 
             var sprzedarz = await _context.Sprzedarz
+                .Include(k => k.Kupiec)
                 .FirstOrDefaultAsync(m => m.Id_transakcji == id);
             if (sprzedarz == null)
             {
@@ -71,6 +75,7 @@ namespace Projekt2.Controllers
         // GET: Sprzedarz/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.Id_kupca = new SelectList(await _context.Kupcy.ToListAsync(), "Id_kupca", "Nazwa");
             if (id == null)
             {
                 return NotFound();
@@ -100,6 +105,8 @@ namespace Projekt2.Controllers
             {
                 try
                 {
+                    var kupiec = await _context.Kupcy.FindAsync(sprzedarz.Id_kupca);
+                    sprzedarz.Kupiec = kupiec;
                     _context.Update(sprzedarz);
                     await _context.SaveChangesAsync();
                 }
@@ -128,6 +135,7 @@ namespace Projekt2.Controllers
             }
 
             var sprzedarz = await _context.Sprzedarz
+                .Include(k => k.Kupiec)
                 .FirstOrDefaultAsync(m => m.Id_transakcji == id);
             if (sprzedarz == null)
             {

@@ -1,10 +1,10 @@
 ﻿@model Projekt2.Models.Silos
 
 @{
-    ViewData["Title"] = "Silos - Edit";
+    ViewData["Title"] = "Silos - Zmiana informacji";
 }
 
-<h1>Silos - Edit</h1>
+<h1>Silos - Zmiana informacji</h1>
 
 <hr />
 <div class="row">
@@ -28,14 +28,15 @@
                 <span asp-validation-for="Data_skladowania" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>
 
 @section Scripts {

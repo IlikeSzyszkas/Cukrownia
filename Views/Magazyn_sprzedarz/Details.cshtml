@@ -4,7 +4,7 @@
     ViewData["Title"] = "Magazyn -> Sprzedarz - Details";
 }
 
-<h1>Magazyn -&gt Sprzedarz - Details</h1>
+<h1>Magazyn -&gt Sprzedarz - Operacja @Html.DisplayFor(model => model.Id) - Details</h1>
 
 <div>
     <hr />
@@ -31,5 +31,7 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Delete" asp-route-id="@Model?.Id">Usuń</a> |
+    <a asp-action="Index">Back to List</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Kupcy - Szczegółowe informacje";
 }
 
-<h1>Kupcy - Szczegółowe informacje</h1>
+<h1>Nabywca - @Html.DisplayFor(model => model.Nazwa) - Szczegółowe informacje</h1>
 
 <div>
     <hr />
@@ -33,9 +33,42 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Nr_tel)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Transakcje)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Transakcje != null && Model.Transakcje.Any())
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Data odbioru</th>
+                            <th>Ilość opakowań kupionych</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var zamowienie in Model.Transakcje)
+                        {
+                            <tr onclick="location.href='@Url.Action("Details", "Sprzedarz", new { id = zamowienie.Id_transakcji })'" style="cursor:pointer;">
+                                <td>@zamowienie.Id_transakcji</td>
+                                <td>@zamowienie.Data_odbioru</td>
+                                <td>@zamowienie.Ilosc_opakowan</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Ten klient nie ma jeszcze żadnych zamówień.</p>
+            }
+        </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id_kupca">Edytuj</a> |
-    <a asp-action="Index">Wróć do listy</a>
+    <a asp-action="Delete" asp-route-id="@Model?.Id_kupca">Usuń</a> |
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

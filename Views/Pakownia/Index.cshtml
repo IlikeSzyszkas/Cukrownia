@@ -7,11 +7,14 @@
 <h1>Pakownia</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Dodaj dane o partii</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_partii)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Ilosc_towaru_wejscowego)
             </th>
@@ -19,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Ilosc_towaru_wyjscowego)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Id_kierownika_zmiany)
+                @Html.DisplayNameFor(model => model.Kierownik_zmiany)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Data_zmiany)
@@ -29,7 +32,10 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr onclick="location.href='@Url.Action("Details", "Pakownia", new { id = item.Id_partii })'" style="cursor:pointer;">
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_partii)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ilosc_towaru_wejscowego)
             </td>
@@ -37,15 +43,14 @@
                 @Html.DisplayFor(modelItem => item.Ilosc_towaru_wyjscowego)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Id_kierownika_zmiany)
+                @Html.DisplayFor(modelItem => item.Kierownik_zmiany.Name) @Html.DisplayFor(modelItem => item.Kierownik_zmiany.Surname)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Data_zmiany)
             </td>
             <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_partii">Edit</a> |
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_partii">Details</a> |
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_partii">Delete</a>
+                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_partii">Edytuj</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_partii">Usuń</a>
             </td>
         </tr>
 }

@@ -1,15 +1,21 @@
 ﻿@model Projekt2.Models.Produktownia
 
 @{
-    ViewData["Title"] = "Produktownia - Delete";
+    ViewData["Title"] = "Produktownia - Usuwanie danych";
 }
 
-<h1>Produktownia - Delete</h1>
+<h1>Produktownia - Usuwanie danych</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Czy na pewno chcesz usunąć te dane?</h3>
 <div>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id_partii)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id_partii)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Ilosc_towaru_wejscowego)
         </dt>
@@ -23,10 +29,10 @@
             @Html.DisplayFor(model => model.Ilosc_towaru_wyjscowego)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id_kierownika_zmiany)
+            @Html.DisplayNameFor(model => model.Kierownik_zmiany)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id_kierownika_zmiany)
+            @Html.DisplayFor(model => model.Kierownik_zmiany.Name) @Html.DisplayFor(model => model.Kierownik_zmiany.Surname)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Data_zmiany)
@@ -38,7 +44,8 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id_partii" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="Index">Wróć do listy</a> |
+        <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
     </form>
 </div>

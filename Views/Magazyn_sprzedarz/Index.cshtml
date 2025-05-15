@@ -23,7 +23,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr onclick="location.href='@Url.Action("Details", "Magazyn_sprzedarz", new { id = item.Id })'" style="cursor:pointer;">
             <td>
                 @Html.DisplayFor(modelItem => item.Id_operacji)
             </td>
@@ -34,7 +34,6 @@
                 @Html.DisplayFor(modelItem => item.Ilosc_opakowan_sprzedanych)
             </td>
             <td>
-                <a class="btn btn-info"  asp-action="Details" asp-route-id="@item.Id">Details</a> |
             </td>
         </tr>
 }

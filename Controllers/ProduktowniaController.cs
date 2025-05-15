@@ -22,7 +22,7 @@ namespace Projekt2.Controllers
         // GET: Produktownia
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Produktownia.ToListAsync());
+            return View(await _context.Produktownia.Include(m => m.Kierownik_zmiany).ToListAsync());
         }
 
         // GET: Produktownia/Details/5
@@ -34,6 +34,7 @@ namespace Projekt2.Controllers
             }
 
             var produktownia = await _context.Produktownia
+                .Include(m => m.Kierownik_zmiany)
                 .FirstOrDefaultAsync(m => m.Id_partii == id);
             if (produktownia == null)
             {
@@ -44,8 +45,9 @@ namespace Projekt2.Controllers
         }
 
         // GET: Produktownia/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
+            ViewBag.Id_kierownika_zmiany = new SelectList(await _context.Pracownicy.ToListAsync(), "Id", "Name");
             return View();
         }
 
@@ -58,6 +60,8 @@ namespace Projekt2.Controllers
         {
             if (ModelState.IsValid)
             {
+                var kierownik = await _context.Pracownicy.FindAsync(produktownia.Id_kierownika_zmiany);
+                produktownia.Kierownik_zmiany = kierownik;
                 _context.Add(produktownia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -78,6 +82,7 @@ namespace Projekt2.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Id_kierownika_zmiany = new SelectList(await _context.Pracownicy.ToListAsync(), "Id", "Name");
             return View(produktownia);
         }
 
@@ -97,6 +102,8 @@ namespace Projekt2.Controllers
             {
                 try
                 {
+                    var kierownik = await _context.Pracownicy.FindAsync(produktownia.Id_kierownika_zmiany);
+                    produktownia.Kierownik_zmiany = kierownik;
                     _context.Update(produktownia);
                     await _context.SaveChangesAsync();
                 }
@@ -125,6 +132,7 @@ namespace Projekt2.Controllers
             }
 
             var produktownia = await _context.Produktownia
+                .Include(m => m.Kierownik_zmiany)
                 .FirstOrDefaultAsync(m => m.Id_partii == id);
             if (produktownia == null)
             {

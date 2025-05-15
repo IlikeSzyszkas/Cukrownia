@@ -22,7 +22,7 @@ namespace Projekt2.Controllers
         // GET: Pakownia
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Pakownia.ToListAsync());
+            return View(await _context.Pakownia.Include(m => m.Kierownik_zmiany).ToListAsync());
         }
 
         // GET: Pakownia/Details/5
@@ -34,6 +34,7 @@ namespace Projekt2.Controllers
             }
 
             var pakownia = await _context.Pakownia
+                .Include(m => m.Kierownik_zmiany)
                 .FirstOrDefaultAsync(m => m.Id_partii == id);
             if (pakownia == null)
             {
@@ -131,6 +132,7 @@ namespace Projekt2.Controllers
             }
 
             var pakownia = await _context.Pakownia
+                .Include(m => m.Kierownik_zmiany)
                 .FirstOrDefaultAsync(m => m.Id_partii == id);
             if (pakownia == null)
             {

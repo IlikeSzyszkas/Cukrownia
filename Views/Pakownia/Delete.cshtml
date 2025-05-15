@@ -1,12 +1,12 @@
 ﻿@model Projekt2.Models.Pakownia
 
 @{
-    ViewData["Title"] = "Pakownia - Delete";
+    ViewData["Title"] = "Pakownia - Usuwanie danych";
 }
 
-<h1>Pakownia - Delete</h1>
+<h1>Pakownia - Usuwanie danych</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Czy na pewno chcesz usunąć te dane?</h3>
 <div>
     <hr />
     <dl class="row">
@@ -38,7 +38,8 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id_partii" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="Index">Wróć do listy</a> |
+        <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
     </form>
 </div>

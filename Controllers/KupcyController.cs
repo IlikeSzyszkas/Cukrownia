@@ -41,6 +41,7 @@ namespace Projekt2.Controllers
             }
 
             var kupcy = await _context.Kupcy
+                .Include(s => s.Transakcje)
                 .FirstOrDefaultAsync(m => m.Id_kupca == id);
             if (kupcy == null)
             {

@@ -1,10 +1,10 @@
 ﻿@model Projekt2.Models.Plac_buraczany
 
 @{
-    ViewData["Title"] = "Plac buraczany - Create";
+    ViewData["Title"] = "Plac buraczany - Dodawanie danych";
 }
 
-<h1>Plac buraczany - Create</h1>
+<h1>Plac buraczany - Dodawanie danych</h1>
 
 <hr />
 <div class="row">
@@ -13,12 +13,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id_dostawy" class="control-label"></label>
-                <input asp-for="Id_dostawy" class="form-control" />
+                <input asp-for="Id_dostawy" type="number" class="form-control" />
                 <span asp-validation-for="Id_dostawy" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Ilosc_burakow" class="control-label"></label>
-                <input asp-for="Ilosc_burakow" class="form-control" />
+                <input asp-for="Ilosc_burakow" type="number" min="0" class="form-control" />
                 <span asp-validation-for="Ilosc_burakow" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -27,14 +27,14 @@
                 <span asp-validation-for="Data_operacji" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróć do listy</a>
 </div>
 
 @section Scripts {

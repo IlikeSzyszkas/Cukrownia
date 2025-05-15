@@ -4,7 +4,7 @@
     ViewData["Title"] = "Stanowiska - Szczegółowe informacje";
 }
 
-<h1>Stanowiska - Szczegółowe informacje</h1>
+<h1>Stanowisko - @Html.DisplayFor(model => model.Nazwa) - Szczegółowe informacje</h1>
 
 <div>
     <hr />
@@ -58,5 +58,7 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id_stanowiska">Edytuj</a> |
-    <a asp-action="Index">Wróć do listy</a>
+    <a asp-action="Delete" asp-route-id="@Model?.Id_stanowiska">Usuń</a> |
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij po poprzedniej strony</a>
 </div>

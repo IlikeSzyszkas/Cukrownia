@@ -16,9 +16,11 @@ namespace Projekt2.Models
         [Display(Name = "Numer tel.")]
         [Phone(ErrorMessage = "Wprowadź poprawny numer telefonu.")]
         public string Nr_tel { get; set; }
+        [Display(Name = "Stanowisko")]
         [ForeignKey("stanowiska")]
         public int Id_stanowiska { get; set; }
         public Stanowiska? Stanowisko { get; set; }
+        [Display(Name = "Dział")]
         [ForeignKey("dzialy")]
         public int Id_dzialu { get; set; }
         [Display(Name = "Dział")]

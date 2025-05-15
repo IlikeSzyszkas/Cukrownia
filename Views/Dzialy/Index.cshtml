@@ -26,7 +26,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr onclick="location.href='@Url.Action("Details", "Dzialy", new { id = item.Id_dzialu })'" style="cursor:pointer;">
             <td>
                 @Html.DisplayFor(modelItem => item.Id_dzialu)
             </td>
@@ -38,7 +38,6 @@
             </td>
             <td>
                     <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_dzialu">Edytuj</a> |
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_dzialu">Szczegóły</a> |
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_dzialu">Usuń</a>
             </td>
         </tr>

@@ -1,14 +1,20 @@
 ﻿@model Projekt2.Models.Pakownia
 
 @{
-    ViewData["Title"] = "Pakownia - Details";
+    ViewData["Title"] = "Pakownia - Szczegółowe informacje";
 }
 
-<h1>Pakownia - Details</h1>
+<h1>Pakownia - Partia @Html.DisplayFor(model => model.Id_partii) - Szczegółowe informacje</h1>
 
 <div>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id_partii)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id_partii)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Ilosc_towaru_wejscowego)
         </dt>
@@ -22,10 +28,10 @@
             @Html.DisplayFor(model => model.Ilosc_towaru_wyjscowego)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id_kierownika_zmiany)
+            @Html.DisplayNameFor(model => model.Kierownik_zmiany)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id_kierownika_zmiany)
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Pracownicy", new { id = Model.Id_kierownika_zmiany })'" style="cursor:pointer;">
+            @Html.DisplayFor(item => item.Kierownik_zmiany.Name) @Html.DisplayFor(item => item.Kierownik_zmiany.Surname)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Data_zmiany)
@@ -36,6 +42,8 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id_partii">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id_partii">Edytuj</a> |
+    <a asp-action="Delete" asp-route-id="@Model?.Id_partii">Usuń</a> |
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

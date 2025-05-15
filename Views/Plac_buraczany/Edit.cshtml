@@ -1,10 +1,10 @@
 ﻿@model Projekt2.Models.Plac_buraczany
 
 @{
-    ViewData["Title"] = "Plac buraczany - Edit";
+    ViewData["Title"] = "Plac buraczany - Zmiana informacji";
 }
 
-<h1>Plac buraczany - Edit</h1>
+<h1>Plac buraczany - Zmiana informacji</h1>
 
 <hr />
 <div class="row">
@@ -14,28 +14,29 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Id_dostawy" class="control-label"></label>
-                <input asp-for="Id_dostawy" class="form-control" />
+                <input asp-for="Id_dostawy" type="number" class="form-control" />
                 <span asp-validation-for="Id_dostawy" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Ilosc_burakow" class="control-label"></label>
-                <input asp-for="Ilosc_burakow" class="form-control" />
+                <input asp-for="Ilosc_burakow" type="number" class="form-control" />
                 <span asp-validation-for="Ilosc_burakow" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Data_operacji" class="control-label"></label>
-                <input asp-for="Data_operacji" class="form-control" />
+                <input asp-for="Data_operacji" type="date" class="form-control" />
                 <span asp-validation-for="Data_operacji" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>
 
 @section Scripts {

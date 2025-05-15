@@ -4,7 +4,7 @@
     ViewData["Title"] = "Pracownicy - Szczegółowe Informacje";
 }
 
-<h1>Pracownicy - Szczegółowe Informacje</h1>
+<h1>Pracownik - @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.Surname) - Szczegółowe Informacje</h1>
 
 <div>
     <hr />
@@ -42,13 +42,13 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Stanowisko)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Stanowiska", new { id = Model.Id_stanowiska })'" style="cursor:pointer;">
             @Html.DisplayFor(model => model.Stanowisko.Nazwa)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Dzial)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dzialy", new { id = Model.Id_dzialu })'" style="cursor:pointer;">
             @Html.DisplayFor(model => model.Dzial.Nazwa)
         </dd>
         <dt class="col-sm-2">
@@ -96,7 +96,7 @@
                             <tbody>
                                 @foreach (var zmiana in Model.Zmiany_prod)
                                 {
-                                    <tr onclick="location.href='@Url.Action("Details", "Pakownia", new { id = zmiana.Id_partii })'" style="cursor:pointer;">
+                                    <tr onclick="location.href='@Url.Action("Details", "Produktownia", new { id = zmiana.Id_partii })'" style="cursor:pointer;">
                                         <td>@zmiana.Id_partii</td>
                                         <td>@zmiana.Ilosc_towaru_wejscowego</td>
                                         <td>@zmiana.Ilosc_towaru_wyjscowego</td>
@@ -117,5 +117,7 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj</a> |
-    <a asp-action="Index">Wróć do listy</a>
+    <a asp-action="Delete" asp-route-id="@Model?.Id">Usuń</a> |
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

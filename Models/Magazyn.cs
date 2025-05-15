@@ -6,6 +6,7 @@ namespace Projekt2.Models
     public class Magazyn
     {
         public int Id { get; set; }
+        [Display(Name = "Id operacji")]
         [ForeignKey("pakownia")]
         public int Id_operacji { get; set; }
         [Display(Name = "Ilość opakowań")]

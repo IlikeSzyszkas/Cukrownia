@@ -1,10 +1,10 @@
 ﻿@model Projekt2.Models.Produktownia
 
 @{
-    ViewData["Title"] = "Produktownia - Edit";
+    ViewData["Title"] = "Produktownia - Zmiana informacji";
 }
 
-<h1>Produktownia - Edit</h1>
+<h1>Produktownia - Zmiana informacji</h1>
 
 <hr />
 <div class="row">
@@ -14,33 +14,35 @@
             <input type="hidden" asp-for="Id_partii" />
             <div class="form-group">
                 <label asp-for="Ilosc_towaru_wejscowego" class="control-label"></label>
-                <input asp-for="Ilosc_towaru_wejscowego" class="form-control" />
+                <input asp-for="Ilosc_towaru_wejscowego" class="form-control" type="number"/>
                 <span asp-validation-for="Ilosc_towaru_wejscowego" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Ilosc_towaru_wyjscowego" class="control-label"></label>
-                <input asp-for="Ilosc_towaru_wyjscowego" class="form-control" />
+                <input asp-for="Ilosc_towaru_wyjscowego" class="form-control" type="number"/>
                 <span asp-validation-for="Ilosc_towaru_wyjscowego" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Id_kierownika_zmiany" class="control-label"></label>
-                <input asp-for="Id_kierownika_zmiany" class="form-control" />
+                <select asp-for="Id_kierownika_zmiany" class="form-control" asp-items="@ViewBag.Id_kierownika_zmiany">
+                </select>
                 <span asp-validation-for="Id_kierownika_zmiany" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Data_zmiany" class="control-label"></label>
-                <input asp-for="Data_zmiany" class="form-control" />
+                <input asp-for="Data_zmiany" class="form-control" type="date"/>
                 <span asp-validation-for="Data_zmiany" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>
 
 @section Scripts {

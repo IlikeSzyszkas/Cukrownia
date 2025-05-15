@@ -15,8 +15,9 @@ namespace Projekt2.Models
         [Display(Name = "Numer tel.")]
         [Phone]
         public string Nr_tel {  get; set; }
+        [Display(Name = "Zamówienia")]
         public List<Sprzedarz>? Transakcje { get; set; } = new List<Sprzedarz>();
-        [Display(Name = "Liczba transakcji")]
+        [Display(Name = "Liczba zamówień")]
         public int? LiczbaTransakcji { get; set; }
 
     }

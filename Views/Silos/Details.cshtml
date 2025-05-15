@@ -1,10 +1,12 @@
 ﻿@model Projekt2.Models.Silos
 
 @{
-    ViewData["Title"] = "Silos - Details";
+    ViewData["Title"] = "Silos - Szczegółowe informacje";
 }
 
-<h1>Silos - Details</h1>
+<h1>
+    Silos - Opercja @Html.DisplayFor(model => model.Id) - Szczegółowe informacje
+</h1>
 
 <div>
     <hr />
@@ -30,6 +32,8 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj</a> |
+    <a asp-action="Delete" asp-route-id="@Model?.Id">Usuń</a> |
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

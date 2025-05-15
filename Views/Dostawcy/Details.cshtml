@@ -4,7 +4,7 @@
     ViewData["Title"] = "Dostawcy - Szczegółowe informacje";
 }
 
-<h1>Dostawcy - Szczegółowe informacje</h1>
+<h1>Dostawca - @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.Surname) - Szczegółowe informacje</h1>
 
 <div>
     <hr />
@@ -62,7 +62,7 @@
                     <tbody>
                         @foreach (var dostawa in Model.Dostawy)
                         {
-                            <tr>
+                            <tr onclick="location.href='@Url.Action("Details", "Dostawy", new { id = dostawa.Id_dostawy })'" style="cursor:pointer;">
                                 <td>@dostawa.Id_dostawy</td>
                                 <td>@dostawa.Data_dostawy</td>
                                 <td>@dostawa.Ilosc_towaru</td>
@@ -81,5 +81,7 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj</a> |
-    <a asp-action="Index">Wróć do listy</a>
+    <a asp-action="Delete" asp-route-id="@Model?.Id">Usuń</a> |
+    <a asp-action="Index">Wróć do listy</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

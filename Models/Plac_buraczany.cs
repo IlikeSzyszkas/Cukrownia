@@ -6,6 +6,7 @@ namespace Projekt2.Models
     public class Plac_buraczany
     {
         public int Id { get; set; }
+        [Display(Name = "Id dostawy")]
         [ForeignKey("dostawy")]
         public int Id_dostawy { get; set; }
         [Display(Name = "Ilość buraków")]

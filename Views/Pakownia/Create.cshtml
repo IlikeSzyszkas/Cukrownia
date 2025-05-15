@@ -1,10 +1,10 @@
 ﻿@model Projekt2.Models.Pakownia
 
 @{
-    ViewData["Title"] = "Pakownia - Create";
+    ViewData["Title"] = "Pakownia - Dodawanie danych";
 }
 
-<h1>Pakownia - Create</h1>
+<h1>Pakownia - Dodawanie danych</h1>
 
 <hr />
 <div class="row">
@@ -33,14 +33,14 @@
                 <span asp-validation-for="Data_zmiany" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróć do listy</a>
 </div>
 
 @section Scripts {
