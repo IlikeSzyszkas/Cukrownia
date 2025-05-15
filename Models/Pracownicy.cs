@@ -14,7 +14,7 @@ namespace Projekt2.Models
         [Display(Name = "Adres")]
         public string Addres { get; set; }
         [Display(Name = "Numer tel.")]
-        [Phone]
+        [Phone(ErrorMessage = "Wprowadź poprawny numer telefonu.")]
         public string Nr_tel { get; set; }
         [ForeignKey("stanowiska")]
         public int Id_stanowiska { get; set; }
@@ -23,9 +23,11 @@ namespace Projekt2.Models
         public int Id_dzialu { get; set; }
         [Display(Name = "Dział")]
         public Dzialy? Dzial { get; set; }
+        [Display(Name = "Zmiany")]
         public List<Produktownia>? Zmiany_prod { get; set; } = new List<Produktownia>();
         [Display(Name = "Liczba odbytych zmian")]
         public int? LiczbaZmian_prod { get; set; }
+        [Display(Name = "Zmiany")]
         public List<Pakownia>? Zmiany_pak { get; set; } = new List<Pakownia>();
         [Display(Name = "Liczba odbytych zmian")]
         public int? LiczbaZmian_pak { get; set; }

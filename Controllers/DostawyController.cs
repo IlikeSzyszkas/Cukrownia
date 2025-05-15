@@ -22,7 +22,10 @@ namespace Projekt2.Controllers
         // GET: Dostawy
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Dostawy.ToListAsync());
+            var dostawy = await _context.Dostawy
+                .Include(d => d.Dostawca)
+                .ToListAsync();
+            return View(dostawy);
         }
 
         // GET: Dostawy/Details/5

@@ -7,13 +7,19 @@
 <h1>Stanowiska</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Dodaj nowe stanowisko</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id_stanowiska)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Nazwa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LiczbaPracownikow)
             </th>
             <th></th>
         </tr>
@@ -22,12 +28,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Id_stanowiska)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Nazwa)
             </td>
             <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_stanowiska">Edit</a> |
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_stanowiska">Details</a> |
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_stanowiska">Delete</a>
+                @Html.DisplayFor(modelItem => item.LiczbaPracownikow)
+            </td>
+            <td>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_stanowiska">Edytuj</a> |
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_stanowiska">Szczegóły</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_stanowiska">Usuń</a>
             </td>
         </tr>
 }

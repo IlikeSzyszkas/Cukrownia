@@ -42,10 +42,19 @@ namespace Projekt2.Controllers
             }
 
             var dzialy = await _context.Dzialy
+                .Include(d => d.Pracownicy)
+                    .ThenInclude(s => s.Stanowisko)
                 .FirstOrDefaultAsync(m => m.Id_dzialu == id);
+            
             if (dzialy == null)
             {
                 return NotFound();
+            }
+
+            foreach (var d in dzialy.Pracownicy)
+            {
+                d.LiczbaZmian_pak = d.Zmiany_pak?.Count ?? 0;
+                d.LiczbaZmian_prod = d.Zmiany_prod?.Count ?? 0;
             }
 
             return View(dzialy);

@@ -44,8 +44,9 @@ namespace Projekt2.Controllers
         }
 
         // GET: Sprzedarz/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Id_kupca = new SelectList(await _context.Kupcy.ToListAsync(), "Id_kupca", "Nazwa");
             return View();
         }
 
@@ -58,6 +59,8 @@ namespace Projekt2.Controllers
         {
             if (ModelState.IsValid)
             {
+                var kupiec = await _context.Kupcy.FindAsync(sprzedarz.Id_kupca);
+                sprzedarz.Kupiec = kupiec;
                 _context.Add(sprzedarz);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -7,11 +7,14 @@
 <h1>Dostawy</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Dodaj nową dostawę</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_dostawy)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Ilosc_towaru)
             </th>
@@ -19,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Data_dostawy)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Id_dostawcy)
+                @Html.DisplayNameFor(model => model.Dostawca)
             </th>
             <th></th>
         </tr>
@@ -28,18 +31,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Id_dostawy)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Ilosc_towaru)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Data_dostawy)
+                @(Html.DisplayFor(modelItem => item.Data_dostawy))
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Id_dostawcy)
+                @Html.DisplayFor(modelItem => item.Dostawca.Name) @Html.DisplayFor(modelItem => item.Dostawca.Surname)
             </td>
             <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_dostawy">Edit</a> |
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_dostawy">Details</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_dostawy">Delete</a>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_dostawy">Edytuj</a> |
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_dostawy">Szczegóły</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_dostawy">Usuń</a>
             </td>
         </tr>
 }

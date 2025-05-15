@@ -14,6 +14,7 @@ namespace Projekt2.Models
         [ForeignKey("pracownicy")]
         public int Id_kierownika_zmiany { get; set; }
         public Pracownicy? Kierownik_zmiany { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         public DateTime Data_zmiany { get; set; }
 
     }

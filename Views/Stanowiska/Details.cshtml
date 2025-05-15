@@ -1,23 +1,62 @@
 ﻿@model Projekt2.Models.Stanowiska
 
 @{
-    ViewData["Title"] = "Stanowiska - Details";
+    ViewData["Title"] = "Stanowiska - Szczegółowe informacje";
 }
 
-<h1>Stanowiska - Details</h1>
+<h1>Stanowiska - Szczegółowe informacje</h1>
 
 <div>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id_stanowiska)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id_stanowiska)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Nazwa)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Nazwa)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Pracownicy)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Pracownicy != null && Model.Pracownicy.Any())
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Imię i nazwisko</th>
+                            <th>Numer telefonu</th>
+                            <th>Dział</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pracownik in Model.Pracownicy)
+                        {
+                            <tr onclick="location.href='@Url.Action("Details", "Pracownicy", new { id = pracownik.Id })'" style="cursor:pointer;">
+                                <td>@pracownik.Id</td>
+                                <td>@pracownik.Name @pracownik.Surname</td>
+                                <td>@pracownik.Nr_tel</td>
+                                <td>@pracownik.Dzial.Nazwa</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Żaden pracownik nie jest na tym stanowisku.</p>
+            }
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id_stanowiska">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id_stanowiska">Edytuj</a> |
+    <a asp-action="Index">Wróć do listy</a>
 </div>

@@ -7,11 +7,14 @@
 <h1>Działy</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Dodaj nowy dział</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Id_dzialu)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nazwa)
             </th>
@@ -25,15 +28,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Id_dzialu)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Nazwa)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LiczbaPracownikow)
             </td>
             <td>
-                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_dzialu">Edit</a> |
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_dzialu">Details</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_dzialu">Delete</a>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_dzialu">Edytuj</a> |
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_dzialu">Szczegóły</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_dzialu">Usuń</a>
             </td>
         </tr>
 }

@@ -1,10 +1,10 @@
 ﻿@model Projekt2.Models.Pracownicy
 
 @{
-    ViewData["Title"] = "Pracownicy - Create";
+    ViewData["Title"] = "Pracownicy - Dodawanie danych";
 }
 
-<h1>Pracownicy - Create</h1>
+<h1>Pracownicy - Dodawanie danych</h1>
 
 <hr />
 <div class="row">
@@ -13,22 +13,22 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" type="text"  class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Surname" class="control-label"></label>
-                <input asp-for="Surname" class="form-control" />
+                <input asp-for="Surname" type="text" class="form-control" />
                 <span asp-validation-for="Surname" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Addres" class="control-label"></label>
-                <input asp-for="Addres" class="form-control" />
+                <input asp-for="Addres" type="text" class="form-control" />
                 <span asp-validation-for="Addres" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nr_tel" class="control-label"></label>
-                <input asp-for="Nr_tel" class="form-control" />
+                <input asp-for="Nr_tel" type="tel" class="form-control" />
                 <span asp-validation-for="Nr_tel" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,14 +44,14 @@
                 <span asp-validation-for="Id_dzialu" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Zapisz" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróć do listy</a>
 </div>
 
 @section Scripts {

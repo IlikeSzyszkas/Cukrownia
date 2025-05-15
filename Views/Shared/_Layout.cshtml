@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Projekt2.styles.css" asp-append-version="true" />
     <style>
-        body, .nav-item, .navbar, .nav-link, .navbar-brand, .container, .form-group, .form-control, .dropdown-item, .dropdown, .dropdown-menu, table, tr, td, th, thead, tbody {
+        body, .nav-item, .navbar, .nav-link, .navbar-brand, .container, .form-group, .form-control, .dropdown-item, .dropdown, .dropdown-menu, table, tr, td, th, thead, tbody, .form-control, option{
             color: #76ABAE;
             font-weight: 700;
             background-image: url('/css/imgs/background.webp');
@@ -21,16 +21,23 @@
             margin: 5px;
         }
 
-        .table > :not(caption) > * > *{
+        .table > :not(caption) > * > *, .form-control:focus {
             color: #76ABAE;
         }
         .nav-link, .navbar-brand{
             transition: color 0.5s;
         }
 
-        .nav-link:hover, .navbar-brand:hover {
+            .nav-link:hover, .navbar-brand:hover {
             color: #6FA;
         }
+        .form-group{
+            padding: 5px;
+        }
+        option{
+            color: black;
+        }
+
 
 
     </style>

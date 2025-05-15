@@ -22,7 +22,14 @@ namespace Projekt2.Controllers
         // GET: Stanowiska
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Stanowiska.ToListAsync());
+            var stanowiska = await _context.Stanowiska
+                .Include(d => d.Pracownicy)
+                .ToListAsync();
+            foreach(var p in stanowiska)
+            {
+                p.LiczbaPracownikow = p.Pracownicy?.Count() ?? 0;
+            }
+            return View(stanowiska);
         }
 
         // GET: Stanowiska/Details/5
@@ -34,6 +41,8 @@ namespace Projekt2.Controllers
             }
 
             var stanowiska = await _context.Stanowiska
+                .Include(d => d.Pracownicy)
+                    .ThenInclude(s => s.Dzial)
                 .FirstOrDefaultAsync(m => m.Id_stanowiska == id);
             if (stanowiska == null)
             {

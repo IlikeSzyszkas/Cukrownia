@@ -1,10 +1,10 @@
 ﻿@model Projekt2.Models.Kupcy
 
 @{
-    ViewData["Title"] = "Kupcy - Edit";
+    ViewData["Title"] = "Kupcy - Zmiana informacji";
 }
 
-<h1>Kupcy - Edit</h1>
+<h1>Kupcy - Zmiana informacji</h1>
 
 <hr />
 <div class="row">
@@ -33,14 +33,14 @@
                 <span asp-validation-for="Nr_tel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Wróć do listy</a>
 </div>
 
 @section Scripts {

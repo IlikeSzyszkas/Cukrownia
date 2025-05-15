@@ -1,52 +1,63 @@
 ﻿@model Projekt2.Models.Dzialy
 
 @{
-    ViewData["Title"] = "Dzialy - Details";
+    ViewData["Title"] = "Działy - Szczegółowe informacje";
 }
 
-<h1> Dzialy - Details</h1>
+<h1> Działy - Szczegółowe informacje</h1>
 
 <div>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id_dzialu)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id_dzialu)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Nazwa)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Nazwa)
         </dd>
-    </dl>
-    <dt class="col-sm-2">
-        Pracownicy
-    </dt>
-    <dd class="col-sm-10">
-        @if (Model.Pracownicy != null && Model.Pracownicy.Any())
-        {
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Imię i Nazwisko</th>
-                        <th>Numer telefonu</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var pracownik in Model.Pracownicy)
-                    {
+        <dt class="col-sm-2">
+            Pracownicy
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Pracownicy != null && Model.Pracownicy.Any())
+            {
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>@pracownik.Name</td>
-                            <td>@pracownik.Nr_tel</td>
+                            <th>Id</th>
+                            <th>Imię i Nazwisko</th>
+                            <th>Numer telefonu</th>
+                            <th>Dział</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>Ten dostawca nie ma jeszcze żadnych dostaw.</p>
-        }
-    </dd>
+                    </thead>
+                    <tbody>
+                        @foreach (var pracownik in Model.Pracownicy)
+                        {
+                            <tr onclick="location.href='@Url.Action("Details", "Pracownicy", new { id = pracownik.Id })'" style="cursor:pointer;">
+                                <td>@pracownik.Id</td>
+                                <td>@pracownik.Name @pracownik.Surname</td>
+                                <td>@pracownik.Nr_tel</td>
+                                <td>@pracownik.Dzial.Nazwa</td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Ten dział nie ma jeszcze żadnych pracowników.</p>
+            }
+        </dd>
+    </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id_dzialu">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id_dzialu">Edytuj</a> |
+    <a asp-action="Index">Wróć do listy</a>
 </div>

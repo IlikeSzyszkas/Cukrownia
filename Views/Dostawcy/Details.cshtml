@@ -1,14 +1,20 @@
 ﻿@model Projekt2.Models.Dostawcy
 
 @{
-    ViewData["Title"] = "Dostawcy - Details";
+    ViewData["Title"] = "Dostawcy - Szczegółowe informacje";
 }
 
-<h1>Dostawcy - Details</h1>
+<h1>Dostawcy - Szczegółowe informacje</h1>
 
 <div>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -48,6 +54,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th>Id dostawy</th>
                             <th>Data dostawy</th>
                             <th>Ilość towaru</th>
                         </tr>
@@ -56,7 +63,8 @@
                         @foreach (var dostawa in Model.Dostawy)
                         {
                             <tr>
-                                <td>@dostawa.Data_dostawy.ToShortDateString()</td>
+                                <td>@dostawa.Id_dostawy</td>
+                                <td>@dostawa.Data_dostawy</td>
                                 <td>@dostawa.Ilosc_towaru</td>
                             </tr>
                         }
@@ -72,6 +80,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj</a> |
+    <a asp-action="Index">Wróć do listy</a>
 </div>

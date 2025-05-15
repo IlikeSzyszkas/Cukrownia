@@ -18,6 +18,7 @@ namespace Projekt2.Models
         public int Id_kierownika_zmiany { get; set; }
         [Display(Name = "Kierownik zmiany")]
         public Pracownicy? Kierownik_zmiany { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         [Display(Name = "Data zmiany")]
         public DateTime Data_zmiany { get; set; }
     }

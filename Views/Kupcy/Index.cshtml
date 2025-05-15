@@ -7,11 +7,14 @@
 <h1>Kupcy</h1>
 
 <p>
-    <a class="btn btn-primary"  asp-action="Create">Create New</a>
+    <a class="btn btn-primary"  asp-action="Create">Dodaj nowego kupca</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id_kupca)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nazwa)
             </th>
@@ -24,12 +27,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nr_tel)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LiczbaTransakcji)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_kupca)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nazwa)
             </td>
@@ -43,9 +52,12 @@
                 @Html.DisplayFor(modelItem => item.Nr_tel)
             </td>
             <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_kupca">Edit</a> |
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_kupca">Details</a> |
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_kupca">Delete</a>
+                @Html.DisplayFor(modelItem => item.LiczbaTransakcji)
+            </td>
+            <td>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id_kupca">Edytuj</a> |
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id_kupca">Szczegóły</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_kupca">Usuń</a>
             </td>
         </tr>
 }

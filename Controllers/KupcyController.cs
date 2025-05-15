@@ -22,7 +22,14 @@ namespace Projekt2.Controllers
         // GET: Kupcy
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Kupcy.ToListAsync());
+            var kupcy = await _context.Kupcy
+                .Include(d => d.Transakcje)
+                .ToListAsync();
+            foreach(var k in kupcy)
+            {
+                k.LiczbaTransakcji = k.Transakcje.Count();
+            }
+            return View(kupcy);
         }
 
         // GET: Kupcy/Details/5

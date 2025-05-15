@@ -44,8 +44,9 @@ namespace Projekt2.Controllers
         }
 
         // GET: Pakownia/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Id_kierownika_zmiany = new SelectList(await _context.Pracownicy.ToListAsync(), "Id", "Name");
             return View();
         }
 
@@ -58,6 +59,8 @@ namespace Projekt2.Controllers
         {
             if (ModelState.IsValid)
             {
+                var kierownik = await _context.Pracownicy.FindAsync(pakownia.Id_kierownika_zmiany);
+                pakownia.Kierownik_zmiany = kierownik;
                 _context.Add(pakownia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -78,6 +81,7 @@ namespace Projekt2.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Id_kierownika_zmiany = new SelectList(await _context.Pracownicy.ToListAsync(), "Id", "Name");
             return View(pakownia);
         }
 
@@ -97,6 +101,8 @@ namespace Projekt2.Controllers
             {
                 try
                 {
+                    var kierownik = await _context.Pracownicy.FindAsync(pakownia.Id_kierownika_zmiany);
+                    pakownia.Kierownik_zmiany = kierownik;
                     _context.Update(pakownia);
                     await _context.SaveChangesAsync();
                 }

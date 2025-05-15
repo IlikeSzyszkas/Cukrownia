@@ -22,7 +22,18 @@ namespace Projekt2.Controllers
         // GET: Pracownicy
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Pracownicy.ToListAsync());
+            var pracownicy = await _context.Pracownicy
+                .Include(p => p.Dzial)
+                .Include(g => g.Stanowisko)
+                .ToListAsync();
+
+            foreach (var d in pracownicy)
+            {
+                d.LiczbaZmian_pak = d.Zmiany_pak?.Count ?? 0;
+                d.LiczbaZmian_prod = d.Zmiany_prod?.Count ?? 0;
+            }
+
+            return View(pracownicy);
         }
 
         // GET: Pracownicy/Details/5
@@ -34,6 +45,10 @@ namespace Projekt2.Controllers
             }
 
             var pracownicy = await _context.Pracownicy
+                .Include(p => p.Dzial)
+                .Include(g => g.Stanowisko)
+                .Include(a => a.Zmiany_pak)
+                .Include(r => r.Zmiany_prod)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pracownicy == null)
             {
@@ -60,8 +75,10 @@ namespace Projekt2.Controllers
         {
             if (ModelState.IsValid)
             {
-                pracownicy.Dzial = await _context.Dzialy.FindAsync(pracownicy.Id_dzialu);
-                pracownicy.Stanowisko = await _context.Stanowiska.FindAsync(pracownicy.Id_stanowiska);
+                var stanowisko = await _context.Stanowiska.FindAsync(pracownicy.Id_stanowiska);
+                var dzial = await _context.Dzialy.FindAsync(pracownicy.Id_dzialu);
+                pracownicy.Stanowisko = stanowisko;
+                pracownicy.Dzial = dzial;
                 _context.Add(pracownicy);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -82,6 +99,8 @@ namespace Projekt2.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Id_dzialu = new SelectList(await _context.Dzialy.ToListAsync(), "Id_dzialu", "Nazwa");
+            ViewBag.Id_stanowiska = new SelectList(await _context.Stanowiska.ToListAsync(), "Id_stanowiska", "Nazwa");
             return View(pracownicy);
         }
 
@@ -101,6 +120,10 @@ namespace Projekt2.Controllers
             {
                 try
                 {
+                    var stanowisko = await _context.Stanowiska.FindAsync(pracownicy.Id_stanowiska);
+                    var dzial = await _context.Dzialy.FindAsync(pracownicy.Id_dzialu);
+                    pracownicy.Stanowisko = stanowisko;
+                    pracownicy.Dzial = dzial;
                     _context.Update(pracownicy);
                     await _context.SaveChangesAsync();
                 }
@@ -129,6 +152,8 @@ namespace Projekt2.Controllers
             }
 
             var pracownicy = await _context.Pracownicy
+                .Include(p => p.Dzial)
+                .Include(g => g.Stanowisko)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pracownicy == null)
             {

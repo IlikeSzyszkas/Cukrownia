@@ -7,7 +7,7 @@
 <h1>Dostawcy</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Dodaj nowego dostawcę</a>
 </p>
 <table class="table">
     <thead>
@@ -63,9 +63,9 @@
                 @Html.DisplayFor(modelItem => item.LiczbaDostaw)
             </td>
             <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
             </td>
         </tr>
 }

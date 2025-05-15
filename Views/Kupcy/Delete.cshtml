@@ -1,12 +1,12 @@
 ﻿@model Projekt2.Models.Kupcy
 
 @{
-    ViewData["Title"] = "Kupcy - Delete";
+    ViewData["Title"] = "Kupcy - Usuwanie danych";
 }
 
-<h1>Kupcy - Delete</h1>
+<h1>Kupcy - Usuwanie danych</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Czy na pewno chcesz usunąć te dane?</h3>
 <div>
     <hr />
     <dl class="row">
@@ -38,7 +38,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id_kupca" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="Index">Wróć do listy</a>
     </form>
 </div>
