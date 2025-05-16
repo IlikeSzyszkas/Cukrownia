@@ -175,7 +175,7 @@ namespace Projekt2.Migrations
                     b.Property<int>("Ilosc_opakowan_sprzedanych")
                         .HasColumnType("int");
 
-                    b.Property<int>("OperacjaId")
+                    b.Property<int?>("OperacjaId")
                         .HasColumnType("int");
 
                     b.Property<int?>("TransakcjaId_transakcji")
@@ -455,9 +455,7 @@ namespace Projekt2.Migrations
                 {
                     b.HasOne("Projekt2.Models.Magazyn", "Operacja")
                         .WithMany()
-                        .HasForeignKey("OperacjaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OperacjaId");
 
                     b.HasOne("Projekt2.Models.Sprzedarz", "Transakcja")
                         .WithMany()

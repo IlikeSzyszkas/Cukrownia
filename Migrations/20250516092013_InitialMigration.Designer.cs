@@ -12,8 +12,8 @@ using Projekt2.Data;
 namespace Projekt2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250513123025_CountDostawy")]
-    partial class CountDostawy
+    [Migration("20250516092013_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,9 @@ namespace Projekt2.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Ilosc_ha_pola")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LiczbaDostaw")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -92,6 +95,9 @@ namespace Projekt2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_dzialu"));
 
+                    b.Property<int?>("LiczbaPracownikow")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nazwa")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -112,6 +118,9 @@ namespace Projekt2.Migrations
                     b.Property<string>("Adres")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("LiczbaTransakcji")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
@@ -282,6 +291,12 @@ namespace Projekt2.Migrations
                     b.Property<int>("Id_stanowiska")
                         .HasColumnType("int");
 
+                    b.Property<int?>("LiczbaZmian_pak")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LiczbaZmian_prod")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -417,6 +432,9 @@ namespace Projekt2.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_stanowiska"));
+
+                    b.Property<int?>("LiczbaPracownikow")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nazwa")
                         .IsRequired()

@@ -77,6 +77,10 @@ namespace Projekt2.Controllers
             {
                 var stanowisko = await _context.Stanowiska.FindAsync(pracownicy.Id_stanowiska);
                 var dzial = await _context.Dzialy.FindAsync(pracownicy.Id_dzialu);
+                if(stanowisko.Nazwa == "Kierownik")
+                {
+                    dzial.Kierownicy.Add(pracownicy);
+                }
                 pracownicy.Stanowisko = stanowisko;
                 pracownicy.Dzial = dzial;
                 _context.Add(pracownicy);

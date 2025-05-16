@@ -37,6 +37,7 @@ namespace Projekt2.Controllers
             }
 
             var dostawy = await _context.Dostawy
+                .Include(d => d.Dostawca)
                 .FirstOrDefaultAsync(m => m.Id_dostawy == id);
             if (dostawy == null)
             {
@@ -49,7 +50,13 @@ namespace Projekt2.Controllers
         // GET: Dostawy/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.Id_dostawcy = new SelectList(await _context.Dostawcy.ToListAsync(), "Id", "Name");
+            var dostawcy = await _context.Dostawcy.ToListAsync();
+            var selectList = dostawcy.Select(k => new
+            {
+                Id = k.Id,
+                FullName = k.Name + " " + k.Surname
+            });
+            ViewBag.Id_dostawcy = new SelectList(selectList, "Id", "FullName");
             return View();
         }
 
@@ -66,9 +73,22 @@ namespace Projekt2.Controllers
                 dostawy.Dostawca = dostawca;
                 _context.Add(dostawy);
                 await _context.SaveChangesAsync();
+                AddPlacBuraczanyAsync(dostawy.Id_dostawy, dostawy.Ilosc_towaru, dostawy.Data_dostawy);
                 return RedirectToAction(nameof(Index));
             }
             return View(dostawy);
+        }
+        private async Task AddPlacBuraczanyAsync(int idDostawy, int ilosc, DateTime data)
+        {
+            var plac = new Plac_buraczany
+            {
+                Id_dostawy = idDostawy,
+                Ilosc_burakow = ilosc,
+                Data_operacji = data
+            };
+
+            _context.Plac_buraczany.Add(plac);
+            await _context.SaveChangesAsync();
         }
 
         // GET: Dostawy/Edit/5
@@ -84,7 +104,13 @@ namespace Projekt2.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Id_dostawcy = new SelectList(await _context.Dostawcy.ToListAsync(), "Id", "Name");
+            var dostawcy = await _context.Dostawcy.ToListAsync();
+            var selectList = dostawcy.Select(k => new
+            {
+                Id = k.Id,
+                FullName = k.Name + " " + k.Surname
+            });
+            ViewBag.Id_dostawcy = new SelectList(selectList, "Id", "FullName");
             return View(dostawy);
         }
 
@@ -107,6 +133,7 @@ namespace Projekt2.Controllers
                     dostawy.Dostawca = await _context.Dostawcy.FindAsync(dostawy.Id_dostawcy);
                     _context.Update(dostawy);
                     await _context.SaveChangesAsync();
+                    await UpdatePlacBuraczanyAsync(dostawy.Id_dostawy, dostawy.Ilosc_towaru, dostawy.Data_dostawy);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,6 +149,20 @@ namespace Projekt2.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(dostawy);
+        }
+
+        private async Task UpdatePlacBuraczanyAsync(int idDostawy, int ilosc, DateTime data)
+        {
+            var plac = await _context.Plac_buraczany
+                .FirstOrDefaultAsync(p => p.Id_dostawy == idDostawy);
+
+            if (plac != null)
+            {
+                plac.Ilosc_burakow = ilosc;
+                plac.Data_operacji = data;
+                _context.Plac_buraczany.Update(plac);
+                await _context.SaveChangesAsync();
+            }
         }
 
         // GET: Dostawy/Delete/5
@@ -152,7 +193,6 @@ namespace Projekt2.Controllers
             {
                 _context.Dostawy.Remove(dostawy);
             }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

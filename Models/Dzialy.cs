@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Projekt2.Models
 {
@@ -12,5 +13,7 @@ namespace Projekt2.Models
         public List<Pracownicy>? Pracownicy { get; set; } = new List<Pracownicy>();
         [Display(Name = "Liczba pracowników")]
         public int? LiczbaPracownikow { get; set; }
+        [NotMapped]
+        public List<Pracownicy>? Kierownicy { get; set; } = new List<Pracownicy>();
     }
 }

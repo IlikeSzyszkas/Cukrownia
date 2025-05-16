@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Projekt2.Controllers
 {
@@ -60,10 +61,12 @@ namespace Projekt2.Controllers
             {
                 _context.Add(silos);
                 await _context.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(silos);
         }
+       
 
         // GET: Silos/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -99,6 +102,7 @@ namespace Projekt2.Controllers
                 {
                     _context.Update(silos);
                     await _context.SaveChangesAsync();
+                    UpdateSilosAsync(silos.Id_operacji, silos.Ilosc_cukru, silos.Data_skladowania);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -115,7 +119,20 @@ namespace Projekt2.Controllers
             }
             return View(silos);
         }
+        private async Task UpdateSilosAsync(int id_operacji, int ilosc, DateTime data) 
+        {
+            var silos = await _context.Silos
+                .FirstOrDefaultAsync(p => p.Id_operacji == id_operacji);
 
+            if (silos != null)
+            {
+                silos.Id_operacji = id_operacji;
+                silos.Ilosc_cukru = ilosc;
+                silos.Data_skladowania = data;
+                _context.Silos.Update(silos);
+                await _context.SaveChangesAsync();
+            }
+        }
         // GET: Silos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

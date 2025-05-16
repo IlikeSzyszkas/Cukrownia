@@ -67,9 +67,31 @@ namespace Projekt2.Controllers
                 sprzedarz.Kupiec = kupiec;
                 _context.Add(sprzedarz);
                 await _context.SaveChangesAsync();
+                await AddMagazynSprzedarzAsync(sprzedarz.Id_transakcji, sprzedarz.Ilosc_opakowan);
                 return RedirectToAction(nameof(Index));
             }
             return View(sprzedarz);
+        }
+        private async Task AddMagazynSprzedarzAsync(int id_transakcji, int ilosc)
+        {
+            var magazyn = await _context.Magazyn
+                .OrderByDescending(m => m.Id)
+                .FirstOrDefaultAsync();
+
+            if (magazyn == null)
+            {
+                throw new Exception("Brak dostępnych operacji magazynowych.");
+            }
+
+            var magazynSprzedaz = new Magazyn_sprzedarz
+            {
+                Id_operacji = magazyn.Id,
+                Id_transakcji = id_transakcji,
+                Ilosc_opakowan_sprzedanych = ilosc
+            };
+
+            _context.Magazyn_sprzedarz.Add(magazynSprzedaz);
+            await _context.SaveChangesAsync();
         }
 
         // GET: Sprzedarz/Edit/5
@@ -124,6 +146,20 @@ namespace Projekt2.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(sprzedarz);
+        }
+        private async Task UpdateMagazynSprzedarzAsync(int id_operacji, int id_transakcji, int ilosc)
+        {
+            var magazyn = await _context.Magazyn_sprzedarz
+                .FirstOrDefaultAsync(p => p.Id_operacji == id_operacji);
+
+            if (magazyn != null)
+            {
+                magazyn.Id_operacji = id_operacji;
+                magazyn.Id_transakcji = id_transakcji;
+                magazyn.Ilosc_opakowan_sprzedanych = ilosc;
+                _context.Magazyn_sprzedarz.Update(magazyn);
+                await _context.SaveChangesAsync();
+            }
         }
 
         // GET: Sprzedarz/Delete/5

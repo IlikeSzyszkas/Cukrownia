@@ -12,8 +12,8 @@ using Projekt2.Data;
 namespace Projekt2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250514095119_dateFormats")]
-    partial class dateFormats
+    [Migration("20250516093110_managersList")]
+    partial class managersList
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

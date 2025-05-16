@@ -21,7 +21,8 @@ namespace Projekt2.Migrations
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Addres = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nr_tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ilosc_ha_pola = table.Column<int>(type: "int", nullable: false)
+                    Ilosc_ha_pola = table.Column<int>(type: "int", nullable: false),
+                    LiczbaDostaw = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,7 +35,8 @@ namespace Projekt2.Migrations
                 {
                     Id_dzialu = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nazwa = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nazwa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LiczbaPracownikow = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,7 +52,8 @@ namespace Projekt2.Migrations
                     Nazwa = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nip = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nr_tel = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nr_tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LiczbaTransakcji = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -140,7 +143,8 @@ namespace Projekt2.Migrations
                 {
                     Id_stanowiska = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nazwa = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nazwa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LiczbaPracownikow = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -202,7 +206,9 @@ namespace Projekt2.Migrations
                     Id_stanowiska = table.Column<int>(type: "int", nullable: false),
                     StanowiskoId_stanowiska = table.Column<int>(type: "int", nullable: true),
                     Id_dzialu = table.Column<int>(type: "int", nullable: false),
-                    DzialId_dzialu = table.Column<int>(type: "int", nullable: true)
+                    DzialId_dzialu = table.Column<int>(type: "int", nullable: true),
+                    LiczbaZmian_prod = table.Column<int>(type: "int", nullable: true),
+                    LiczbaZmian_pak = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -28,10 +28,10 @@
             @Html.DisplayFor(model => model.Data_dostawy)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id_dostawcy)
+            @Html.DisplayNameFor(model => model.Dostawca)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id_dostawcy)
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawcy", new { id = Model.Id_dostawcy })'" style="cursor:pointer;">
+            @Html.DisplayFor(model => model.Dostawca.Name) @Html.DisplayFor(model => model.Dostawca.Surname)
         </dd>
     </dl>
 </div>

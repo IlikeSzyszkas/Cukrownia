@@ -8,7 +8,7 @@ namespace Projekt2.Models
         public int Id { get; set; }
         [ForeignKey("magazyn")]
         public int Id_operacji { get; set; }
-        public Magazyn Operacja { get; set; }
+        public Magazyn? Operacja { get; set; }
         [ForeignKey("sprzedarz")]
         public int Id_transakcji { get; set; }
         public Sprzedarz? Transakcja { get; set; }

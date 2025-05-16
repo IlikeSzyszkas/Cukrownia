@@ -5,10 +5,11 @@
 }
 
 <h1>Plac buraczany</h1>
-
+<!--
 <p>
     <a class="btn btn-primary" asp-action="Create">Dodaj informacje o dostawie na plac</a>
 </p>
+-->
 <table class="table">
     <thead>
         <tr>
@@ -21,7 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Data_operacji)
             </th>
+            <!--
             <th></th>
+            -->
         </tr>
     </thead>
     <tbody>
@@ -36,10 +39,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Data_operacji)
             </td>
+            <!--
             <td>
-                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                <a class="btn btn-secondary" asp-action="Edit" asp-route-id=" item.Id">Edytuj</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id=" item.Id">Usuń</a>
             </td>
+                -->
         </tr>
 }
     </tbody>

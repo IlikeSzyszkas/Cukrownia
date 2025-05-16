@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Projekt2.Controllers
 {
@@ -47,7 +48,18 @@ namespace Projekt2.Controllers
         // GET: Produktownia/Create
         public async Task<IActionResult> CreateAsync()
         {
-            ViewBag.Id_kierownika_zmiany = new SelectList(await _context.Pracownicy.ToListAsync(), "Id", "Name");
+            var kierownicy = await _context.Pracownicy
+                .Include(p => p.Stanowisko)
+                .Where(p => p.Stanowisko.Nazwa == "Kierownik")
+                .Where(p => p.Dzial.Nazwa == "Produktownia")
+                .ToListAsync();
+
+            var selectList = kierownicy.Select(k => new
+            {
+                Id = k.Id,
+                FullName = k.Name + " " + k.Surname
+            });
+            ViewBag.Id_kierownika_zmiany = new SelectList(selectList, "Id", "FullName");
             return View();
         }
 
@@ -64,9 +76,44 @@ namespace Projekt2.Controllers
                 produktownia.Kierownik_zmiany = kierownik;
                 _context.Add(produktownia);
                 await _context.SaveChangesAsync();
+                await AddPlacProduktowniaAsync(produktownia.Id_partii,produktownia.Ilosc_towaru_wejscowego, produktownia.Data_zmiany);
+                await AddSilosAsync(produktownia.Id_partii, produktownia.Ilosc_towaru_wyjscowego, produktownia.Data_zmiany);
                 return RedirectToAction(nameof(Index));
             }
             return View(produktownia);
+        }
+        private async Task AddPlacProduktowniaAsync(int id_partii, int ilosc, DateTime data)
+        {
+            var dostawa = await _context.Plac_buraczany
+                .OrderByDescending(m => m.Id)
+                .FirstOrDefaultAsync();
+
+            if (dostawa == null)
+            {
+                throw new Exception("Brak dostępnych operacji magazynowych.");
+            }
+            var plac = new Plac_produktownia
+            {
+                Id_dostawy = dostawa.Id_dostawy,
+                Id_partii = id_partii,
+                Ilosc_burakow_pobrana = ilosc,
+                Data_pobrania = data
+            };
+
+            _context.Plac_produktownia.Add(plac);
+            await _context.SaveChangesAsync();
+        }
+        private async Task AddSilosAsync(int id_operacji, int ilosc, DateTime data)
+        {
+            var silos = new Silos
+            {
+                Id_operacji = id_operacji,
+                Ilosc_cukru = ilosc,
+                Data_skladowania = data
+            };
+
+            _context.Silos.Add(silos);
+            await _context.SaveChangesAsync();
         }
 
         // GET: Produktownia/Edit/5
@@ -82,7 +129,19 @@ namespace Projekt2.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Id_kierownika_zmiany = new SelectList(await _context.Pracownicy.ToListAsync(), "Id", "Name");
+
+            var kierownicy = await _context.Pracownicy
+                .Include(p => p.Stanowisko)
+                .Where(p => p.Stanowisko.Nazwa == "Kierownik")
+                .Where(p => p.Dzial.Nazwa == "Produktownia")
+                .ToListAsync();
+
+            var selectList = kierownicy.Select(k => new
+            {
+                Id = k.Id,
+                FullName = k.Name + " " + k.Surname
+            });
+            ViewBag.Id_kierownika_zmiany = new SelectList(selectList, "Id", "FullName");
             return View(produktownia);
         }
 
@@ -106,6 +165,8 @@ namespace Projekt2.Controllers
                     produktownia.Kierownik_zmiany = kierownik;
                     _context.Update(produktownia);
                     await _context.SaveChangesAsync();
+                    await  UpdateSilosAsync(produktownia.Id_partii, produktownia.Ilosc_towaru_wyjscowego, produktownia.Data_zmiany);
+                    await UpdatePlacProduktowniaAsync(produktownia.Id_partii, produktownia.Id_partii, produktownia.Ilosc_towaru_wejscowego, produktownia.Data_zmiany);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,6 +182,35 @@ namespace Projekt2.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(produktownia);
+        }
+        private async Task UpdatePlacProduktowniaAsync(int id_partii, int id_dostawy, int ilosc, DateTime data)
+        {
+            var plac = await _context.Plac_produktownia
+                .FirstOrDefaultAsync(p => p.Id_partii == id_partii);
+
+            if (plac != null)
+            {
+                plac.Id_dostawy = id_dostawy;
+                plac.Id_partii = id_partii;
+                plac.Ilosc_burakow_pobrana = ilosc;
+                plac.Data_pobrania = data;
+                _context.Plac_produktownia.Update(plac);
+                await _context.SaveChangesAsync();
+            }
+        }
+        private async Task UpdateSilosAsync(int id_operacji, int ilosc, DateTime data)
+        {
+            var silos = await _context.Silos
+                .FirstOrDefaultAsync(p => p.Id_operacji == id_operacji);
+
+            if (silos != null)
+            {
+                silos.Id_operacji = id_operacji;
+                silos.Ilosc_cukru = ilosc;
+                silos.Data_skladowania = data;
+                _context.Silos.Update(silos);
+                await _context.SaveChangesAsync();
+            }
         }
 
         // GET: Produktownia/Delete/5

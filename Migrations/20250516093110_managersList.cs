@@ -5,7 +5,7 @@
 namespace Projekt2.Migrations
 {
     /// <inheritdoc />
-    public partial class CountDostawy : Migration
+    public partial class managersList : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

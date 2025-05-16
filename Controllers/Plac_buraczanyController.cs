@@ -65,6 +65,7 @@ namespace Projekt2.Controllers
             return View(plac_buraczany);
         }
 
+
         // GET: Plac_buraczany/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

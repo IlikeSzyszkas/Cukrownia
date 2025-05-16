@@ -12,8 +12,8 @@ using Projekt2.Data;
 namespace Projekt2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250514062118_CountWorkers++")]
-    partial class CountWorkers
+    [Migration("20250516094126_managersList2")]
+    partial class managersList2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

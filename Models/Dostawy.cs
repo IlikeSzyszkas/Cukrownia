@@ -14,6 +14,7 @@ namespace Projekt2.Models
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         [Display(Name = "Data dostawy")]
         public DateTime Data_dostawy { get; set; }
+        [Display(Name = "Dostawca")]
         [ForeignKey("dostawcy")]
         public int Id_dostawcy { get; set; }
         [Display(Name = "Dostawca")]
