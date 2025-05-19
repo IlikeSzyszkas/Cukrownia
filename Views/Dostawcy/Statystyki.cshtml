@@ -1,0 +1,83 @@
+﻿@model Projekt2.ViewModels.DostawcyStatystykiViewModel
+
+@{
+    ViewData["Title"] = "Statystyki";
+}
+
+<h1>Statystyki</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+			<h3>Najlepszy dostawca: </h3>
+        </dt>
+        @if (Model.BestDostawca != null)
+        {
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawcy", new { id = Model.BestDostawca.Id })'" style="cursor:pointer;">
+            @{
+                var suma = Model.BestDostawca.Dostawy.Sum(d => (decimal?)d.Ilosc_towaru) ?? 0m;
+                var ha = Model.BestDostawca.Ilosc_ha_pola;
+                var wydajnosc = ha > 0 ? suma / ha : 0;
+                <p><strong>Imię i nazwisko:</strong> @Model.BestDostawca.Name @Model.BestDostawca.Surname</p>
+                <p><strong>Suma towaru:</strong> @suma kg</p>
+                <p><strong>Powierzchnia pola:</strong> @ha ha</p>
+                <p><strong>Wydajność:</strong> @wydajnosc.ToString("F2") kg/ha</p>
+                }
+            
+        </dd>
+        }
+        else
+        {
+            <p>Brak danych o dostawcy.</p>
+        }
+        <hr />
+        <dt class="col-sm-2">
+            <h3>Najgorszy dostawca: </h3>
+        </dt>
+        @if (Model.WorstDostawca != null)
+            {
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawcy", new { id = Model.WorstDostawca.Id })'" style="cursor:pointer;">
+             @{
+                var suma = Model.WorstDostawca.Dostawy.Sum(d => (decimal?)d.Ilosc_towaru) ?? 0m;
+                var ha = Model.WorstDostawca.Ilosc_ha_pola;
+                var wydajnosc = ha > 0 ? suma / ha : 0;
+                <p><strong>Imię i nazwisko:</strong> @Model.WorstDostawca.Name @Model.WorstDostawca.Surname</p>
+                <p><strong>Suma towaru:</strong> @suma kg</p>
+                <p><strong>Powierzchnia pola:</strong> @ha ha</p>
+                <p><strong>Wydajność:</strong> @wydajnosc.ToString("F2") kg/ha</p>
+                }
+
+        </dd>
+        }
+        else
+        {
+            <p>Brak danych o dostawcy.</p>
+        }
+        <hr />
+        <dt class="col-sm-2">
+            <h3>Najlepsze pole: </h3>
+        </dt>
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawcy", new { id = Model.BestPole.Id })'" style="cursor:pointer;">
+            @if (Model.BestPole != null)
+            {
+                var suma = Model.BestPole.Dostawy.Sum(d => (decimal?)d.Ilosc_towaru) ?? 0m;
+                var ha = Model.BestPole.Ilosc_ha_pola;
+                var wydajnosc = ha > 0 ? suma / ha : 0;
+
+                <p><strong>Właściciel:</strong> @Model.BestPole.Name @Model.BestPole.Surname</p>
+                <p><strong>Powierzchnia pola:</strong> @ha ha</p>
+                <p><strong>Suma towaru:</strong> @suma kg</p>
+                <p><strong>Wydajność:</strong> @wydajnosc.ToString("F2") kg/ha</p>
+            }
+            else
+            {
+                <p>Brak danych o dostawcy.</p>
+            }
+        </dd>
+            
+            
+
+    </dl>
+</div>
+

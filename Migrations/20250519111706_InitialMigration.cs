@@ -232,7 +232,7 @@ namespace Projekt2.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Id_operacji = table.Column<int>(type: "int", nullable: false),
-                    OperacjaId = table.Column<int>(type: "int", nullable: false),
+                    OperacjaId = table.Column<int>(type: "int", nullable: true),
                     Id_transakcji = table.Column<int>(type: "int", nullable: false),
                     TransakcjaId_transakcji = table.Column<int>(type: "int", nullable: true),
                     Ilosc_opakowan_sprzedanych = table.Column<int>(type: "int", nullable: false)
@@ -244,8 +244,7 @@ namespace Projekt2.Migrations
                         name: "FK_Magazyn_sprzedarz_Magazyn_OperacjaId",
                         column: x => x.OperacjaId,
                         principalTable: "Magazyn",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Magazyn_sprzedarz_Sprzedarz_TransakcjaId_transakcji",
                         column: x => x.TransakcjaId_transakcji,

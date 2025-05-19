@@ -12,8 +12,8 @@ using Projekt2.Data;
 namespace Projekt2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250516122740_willitwork")]
-    partial class willitwork
+    [Migration("20250519111706_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

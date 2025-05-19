@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 
@@ -12,6 +13,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 var app = builder.Build();
+/*
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    SeedHelper.UzupelnijReferencje(context);
+}
+*/
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

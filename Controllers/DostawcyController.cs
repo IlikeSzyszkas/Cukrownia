@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
+using Projekt2.ViewModels;
 
 namespace Projekt2.Controllers
 {
@@ -51,6 +52,41 @@ namespace Projekt2.Controllers
 
             return View(dostawcy);
         }
+        // GET: Dostawcy/Statystyki
+        public async Task<IActionResult> Statystyki()
+        {
+            var bestDostawca = await _context.Dostawcy
+                .Include(d => d.Dostawy)
+                .OrderByDescending(d => d.Dostawy.Sum(d => d.Ilosc_towaru))
+                .FirstOrDefaultAsync();
+            
+            var worstDostawca = await _context.Dostawcy
+                .Include(d => d.Dostawy)
+                .OrderBy(d => d.Dostawy.Sum(d => d.Ilosc_towaru))
+                .FirstOrDefaultAsync();
+
+            var bestPole = await _context.Dostawcy
+                .Include(d => d.Dostawy)
+                .Where(d => d.Ilosc_ha_pola > 0 && d.Dostawy.Any())
+                .Select(d => new
+                {
+                    Dostawca = d,
+                    Wydajnosc = d.Dostawy.Sum(x => x.Ilosc_towaru) / d.Ilosc_ha_pola
+                })
+                .OrderByDescending(x => x.Wydajnosc)
+                .Select(x => x.Dostawca)
+                .FirstOrDefaultAsync();
+
+            var model = new DostawcyStatystykiViewModel
+            {
+                BestDostawca = bestDostawca,
+                WorstDostawca = worstDostawca,
+                BestPole = bestPole
+            };
+
+            return View(model);
+        }
+
 
         // GET: Dostawcy/Create
         public IActionResult Create()
