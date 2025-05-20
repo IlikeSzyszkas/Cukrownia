@@ -17,6 +17,6 @@ namespace Projekt2.Models
         [Display(Name = "Kupiec")]
         [ForeignKey("kupcy")]
         public int Id_kupca { get; set; }
-        public Kupcy? Kupiec { get; set; }
+        public virtual Kupcy? Kupiec { get; set; }
     }
 }

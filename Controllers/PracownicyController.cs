@@ -20,11 +20,17 @@ namespace Projekt2.Controllers
         }
 
         // GET: Pracownicy
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            int pageSize = 25;
+
             var pracownicy = await _context.Pracownicy
                 .Include(p => p.Dzial)
                 .Include(g => g.Stanowisko)
+                .Include(p => p.Zmiany_pak)
+                .Include(p => p.Zmiany_prod)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
             foreach (var d in pracownicy)
@@ -32,6 +38,10 @@ namespace Projekt2.Controllers
                 d.LiczbaZmian_pak = d.Zmiany_pak?.Count ?? 0;
                 d.LiczbaZmian_prod = d.Zmiany_prod?.Count ?? 0;
             }
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Pracownicy.Count() / pageSize);
+
 
             return View(pracownicy);
         }

@@ -41,14 +41,23 @@ namespace Projekt2.Controllers
                 return NotFound();
             }
 
+            var customOrder = new List<string> { "Kierownik", "Operator", "Technik", "Automatyk"};
+
             var dzialy = await _context.Dzialy
                 .Include(d => d.Pracownicy)
                     .ThenInclude(s => s.Stanowisko)
                 .FirstOrDefaultAsync(m => m.Id_dzialu == id);
-            
+
             if (dzialy == null)
             {
                 return NotFound();
+            }
+
+            if (dzialy != null && dzialy.Pracownicy != null)
+            {
+                dzialy.Pracownicy = dzialy.Pracownicy
+                    .OrderBy(p => customOrder.IndexOf(p.Stanowisko.Nazwa))
+                    .ToList();
             }
 
             foreach (var d in dzialy.Pracownicy)

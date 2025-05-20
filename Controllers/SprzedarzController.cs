@@ -24,6 +24,7 @@ namespace Projekt2.Controllers
         {
             return View(await _context.Sprzedarz
                 .Include(k => k.Kupiec)
+                .OrderBy(m => m.Data_odbioru)
                 .ToListAsync()
                 );
         }

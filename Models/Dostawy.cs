@@ -18,6 +18,6 @@ namespace Projekt2.Models
         [ForeignKey("dostawcy")]
         public int Id_dostawcy { get; set; }
         [Display(Name = "Dostawca")]
-        public Dostawcy? Dostawca { get; set; }
+        public virtual Dostawcy? Dostawca { get; set; }
     }
 }

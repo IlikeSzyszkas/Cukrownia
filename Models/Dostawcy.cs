@@ -18,7 +18,7 @@ namespace Projekt2.Models
         [Range(1, int.MaxValue, ErrorMessage = "Wartość musi być większa lub równa 1.")]
         [Display(Name = "Ilość ha pola")]
         public int Ilosc_ha_pola { get; set; }
-        public List<Dostawy>? Dostawy { get; set; } = new List<Dostawy>();
+        public virtual List<Dostawy>? Dostawy { get; set; } = new List<Dostawy>();
         [Display(Name = "Liczba dostaw")]
         public int? LiczbaDostaw { get; set; }
 

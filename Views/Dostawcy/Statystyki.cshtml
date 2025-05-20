@@ -1,12 +1,68 @@
 ﻿@model Projekt2.ViewModels.DostawcyStatystykiViewModel
-
 @{
     ViewData["Title"] = "Statystyki";
+    var labels1 = ViewBag.ChartLabels1 as string[];
+    var values1 = ViewBag.ChartValues1 as int[];
+
+    var labels2 = ViewBag.ChartLabels2 as string[];
+    var values2 = ViewBag.ChartValues2 as double[];
 }
 
 <h1>Statystyki</h1>
 
+<canvas id="chart1" width="800" height="400"></canvas>
+<canvas id="chart2" width="800" height="400" style="margin-top: 50px;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chart1 = new Chart(document.getElementById('chart1').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels1)),
+            datasets: [{
+                label: 'Ilość towaru dostarczona',
+                data: @Html.Raw(Json.Serialize(values1)),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+        const chart2 = new Chart(document.getElementById('chart2').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels2)),
+            datasets: [{
+                label: 'Wydajność (ton/ha)',
+                data: @Html.Raw(Json.Serialize(values2)),
+                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                fill: false,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+</script>
+<!--
 <div>
+    Chart 2 Labels: string.Join(", ", labels2 ?? new string[0])
+</div>
+<div>
+    Chart 2 Values: string.Join(", ", values2?.Select(v => v.ToString("0.00")) ?? new string[0])
+</div>
+-->
+
+
+<div>
+
     <hr />
     <dl class="row">
         <dt class="col-sm-2">

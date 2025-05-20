@@ -23,7 +23,7 @@ namespace Projekt2.Controllers
         // GET: Produktownia
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Produktownia.Include(m => m.Kierownik_zmiany).ToListAsync());
+            return View(await _context.Produktownia.Include(m => m.Kierownik_zmiany).OrderBy(m => m.Data_zmiany).ToListAsync());
         }
 
         // GET: Produktownia/Details/5

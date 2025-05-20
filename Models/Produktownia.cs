@@ -18,7 +18,7 @@ namespace Projekt2.Models
         [ForeignKey("pracownicy")]
         public int Id_kierownika_zmiany { get; set; }
         [Display(Name = "Kierownik zmiany")]
-        public Pracownicy? Kierownik_zmiany { get; set; }
+        public virtual Pracownicy? Kierownik_zmiany { get; set; }
         [Display(Name = "Data zmiany")]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         public DateTime Data_zmiany { get; set; }

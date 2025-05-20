@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
 using Projekt2.ViewModels;
-
 namespace Projekt2.Controllers
 {
     public class DostawcyController : Controller
@@ -21,16 +20,19 @@ namespace Projekt2.Controllers
         }
 
         // GET: Dostawcy
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            int pageSize = 25;
+
             var dostawcy  = await _context.Dostawcy
-                .Include(d => d.Dostawy)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
                 .ToListAsync();
 
-            foreach (var d in dostawcy)
-            {
-                d.LiczbaDostaw = d.Dostawy?.Count ?? 0;
-            }
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Dostawcy.Count() / pageSize);
+
             return View(dostawcy);
         }
 
@@ -44,6 +46,7 @@ namespace Projekt2.Controllers
 
             var dostawcy = await _context.Dostawcy
                 .Include(d => d.Dostawy)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dostawcy == null)
             {
@@ -83,6 +86,30 @@ namespace Projekt2.Controllers
                 WorstDostawca = worstDostawca,
                 BestPole = bestPole
             };
+
+            var chartData1 = await _context.Dostawcy
+                .Include(d => d.Dostawy)
+                .Select(d => new
+                {
+                    Name = d.Name + " " + d.Surname,
+                    Total = d.Dostawy.Sum(x => x.Ilosc_towaru)
+                })
+                .ToListAsync();
+
+            var chartData2 = await _context.Dostawcy
+                .Include(d => d.Dostawy)
+                .Where(d => d.Ilosc_ha_pola > 0 && d.Dostawy.Any())
+                .Select(d => new
+                {
+                    Name = d.Name + " " + d.Surname,
+                    Efficiency = (double)d.Dostawy.Sum(x => x.Ilosc_towaru) / d.Ilosc_ha_pola
+                })
+                .ToListAsync();
+
+            ViewBag.ChartLabels1 = chartData1.Select(x => x.Name).ToArray();
+            ViewBag.ChartValues1 = chartData1.Select(x => x.Total).ToArray();
+            ViewBag.ChartLabels2 = chartData2.Select(x => x.Name).ToArray();
+            ViewBag.ChartValues2 = chartData2.Select(x => x.Efficiency).ToArray();
 
             return View(model);
         }

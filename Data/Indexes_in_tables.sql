@@ -1,0 +1,10 @@
+﻿SELECT 
+    c.TABLE_NAME, c.COLUMN_NAME, v.IndexName
+FROM 
+    INFORMATION_SCHEMA.COLUMNS c
+left JOIN View_IndexDetails v 
+    ON c.TABLE_NAME = v.TableName AND c.COLUMN_NAME = v.ColumnName
+ORDER BY 
+    TABLE_NAME, 
+    ORDINAL_POSITION;
+

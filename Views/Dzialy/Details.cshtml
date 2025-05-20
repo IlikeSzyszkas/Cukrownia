@@ -55,40 +55,6 @@
                 <p>Ten dział nie ma jeszcze żadnych pracowników.</p>
             }
         </dd>
-        <dt class="col-sm-2">
-            Kierownicy
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Kierownicy != null && Model.Kierownicy.Any())
-            {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Imię i Nazwisko</th>
-                            <th>Numer telefonu</th>
-                            <th>Stanowisko</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var pracownik in Model.Kierownicy)
-                        {
-                            <tr onclick="location.href='@Url.Action("Details", "Pracownicy", new { id = pracownik.Id })'" style="cursor:pointer;">
-                                <td>@pracownik.Id</td>
-                                <td>@pracownik.Name @pracownik.Surname</td>
-                                <td>@pracownik.Nr_tel</td>
-                                <td>@pracownik.Stanowisko.Nazwa</td>
-
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <p>Ten dział nie ma jeszcze żadnych pracowników.</p>
-            }
-        </dd>
     </dl>
 </div>
 <div>

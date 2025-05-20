@@ -10,10 +10,10 @@ namespace Projekt2.Models
         [Key]
         public int Id_dzialu { get; set; }
         public string Nazwa { get; set; }
-        public List<Pracownicy>? Pracownicy { get; set; } = new List<Pracownicy>();
+        public virtual List<Pracownicy>? Pracownicy { get; set; } = new List<Pracownicy>();
         [Display(Name = "Liczba pracowników")]
         public int? LiczbaPracownikow { get; set; }
         [NotMapped]
-        public List<Pracownicy>? Kierownicy { get; set; } = new List<Pracownicy>();
+        public virtual List<Pracownicy>? Kierownicy { get; set; } = new List<Pracownicy>();
     }
 }

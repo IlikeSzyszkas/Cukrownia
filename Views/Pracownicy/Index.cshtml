@@ -9,6 +9,14 @@
 <p>
     <a class="btn btn-primary" asp-action="Create">Dodaj nowego pracownika</a>
 </p>
+@{
+<div class=" text-end flex-column">
+@for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+{
+	<a class="link-info" href="@Url.Action("Index", new { page = i })">@i</a>
+}
+</div>
+}
 <table class="table">
     <thead>
         <tr>
@@ -68,3 +76,7 @@
 }
     </tbody>
 </table>
+
+
+
+

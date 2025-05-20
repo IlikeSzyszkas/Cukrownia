@@ -24,6 +24,7 @@ namespace Projekt2.Controllers
         {
             var dostawy = await _context.Dostawy
                 .Include(d => d.Dostawca)
+                .OrderBy(m => m.Data_dostawy)
                 .ToListAsync();
             return View(dostawy);
         }

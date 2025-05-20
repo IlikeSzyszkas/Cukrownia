@@ -19,18 +19,18 @@ namespace Projekt2.Models
         [Display(Name = "Stanowisko")]
         [ForeignKey("stanowiska")]
         public int Id_stanowiska { get; set; }
-        public Stanowiska? Stanowisko { get; set; }
+        public virtual Stanowiska? Stanowisko { get; set; }
         [Display(Name = "Dział")]
         [ForeignKey("dzialy")]
         public int Id_dzialu { get; set; }
         [Display(Name = "Dział")]
-        public Dzialy? Dzial { get; set; }
+        public virtual Dzialy? Dzial { get; set; }
         [Display(Name = "Zmiany")]
-        public List<Produktownia>? Zmiany_prod { get; set; } = new List<Produktownia>();
+        public virtual List<Produktownia>? Zmiany_prod { get; set; } = new List<Produktownia>();
         [Display(Name = "Liczba odbytych zmian")]
         public int? LiczbaZmian_prod { get; set; }
         [Display(Name = "Zmiany")]
-        public List<Pakownia>? Zmiany_pak { get; set; } = new List<Pakownia>();
+        public virtual List<Pakownia>? Zmiany_pak { get; set; } = new List<Pakownia>();
         [Display(Name = "Liczba odbytych zmian")]
         public int? LiczbaZmian_pak { get; set; }
     }
