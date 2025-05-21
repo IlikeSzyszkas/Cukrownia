@@ -14,13 +14,13 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id_operacji)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Silos", new { id = Model.Id_operacji })'" style="cursor:pointer;">
             @Html.DisplayFor(model => model.Id_operacji)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id_partii)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Pakownia", new { id = Model.Id_partii })'" style="cursor:pointer;">
             @Html.DisplayFor(model => model.Id_partii)
         </dd>
         <dt class = "col-sm-2">
@@ -38,8 +38,10 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Delete" asp-route-id="@Model?.Id">Usuń</a> |
+    <!--
+    <a asp-action="Edit" asp-route-id="Model?.Id">Edit</a> |
+    <a asp-action="Delete" asp-route-id="Model?.Id">Usuń</a> |
+    -->
     <a asp-action="Index">Back to List</a> |
     <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

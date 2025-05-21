@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
+using Projekt2.ViewModels;
 
 namespace Projekt2.Controllers
 {
@@ -20,13 +21,21 @@ namespace Projekt2.Controllers
         }
 
         // GET: Dostawy
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var dostawy = await _context.Dostawy
+            int pageSize = 50;
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Dostawy.Count() / pageSize);
+
+            return View(await _context.Dostawy
                 .Include(d => d.Dostawca)
                 .OrderBy(m => m.Data_dostawy)
-                .ToListAsync();
-            return View(dostawy);
+                .ThenBy(u => u.Id_dostawy)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Dostawy/Details/5
@@ -39,6 +48,7 @@ namespace Projekt2.Controllers
 
             var dostawy = await _context.Dostawy
                 .Include(d => d.Dostawca)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id_dostawy == id);
             if (dostawy == null)
             {
@@ -47,6 +57,83 @@ namespace Projekt2.Controllers
 
             return View(dostawy);
         }
+        // GET: Dostawy/Statystyki
+        public async Task<IActionResult> Statystyki()
+        {
+            var wszystkieDostawy = await _context.Dostawy
+                .Include(d => d.Dostawca)
+                .ToListAsync();
+
+            if (!wszystkieDostawy.Any())
+            {
+                return View(new DostawyStatystykiViewModel());
+            }
+
+            var model = new DostawyStatystykiViewModel
+            {
+                LiczbaDostaw = wszystkieDostawy.Count,
+                SumaTowaru = wszystkieDostawy.Sum(d => d.Ilosc_towaru),
+                SredniaIloscTowaru = wszystkieDostawy.Average(d => d.Ilosc_towaru),
+                NajwiekszaDostawa = _context.Dostawy.OrderByDescending(d => d.Ilosc_towaru).Take(1).FirstOrDefault(),
+                NajmniejszaDostawa = _context.Dostawy.OrderBy(d => d.Ilosc_towaru).Take(1).FirstOrDefault(),
+                PierwszaDostawa = _context.Dostawy.OrderByDescending(d => d.Data_dostawy).Take(1).FirstOrDefault(),
+                OstatniaDostawa = _context.Dostawy.OrderBy(d => d.Data_dostawy).Take(1).FirstOrDefault(),
+                TopDostawcy = wszystkieDostawy
+                    .GroupBy(d => d.Dostawca)
+                    .Select(g => new DostawcaSumaTowaru
+                    {
+                        Dostawca = g.Key!,
+                        SumaTowaru = g.Sum(x => x.Ilosc_towaru)
+                    })
+                    .OrderByDescending(x => x.SumaTowaru)
+                    .Take(5)
+                    .ToList()
+            };
+
+            var chartData1 = await _context.Dostawy
+                .GroupBy(d => new { d.Data_dostawy.Year, d.Data_dostawy.Month })
+                .Select(g => new
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Total = g.Sum(x => x.Ilosc_towaru)
+                })
+                .OrderBy(x => x.Year).ThenBy(x => x.Month)
+                .AsNoTracking()
+                .ToListAsync(); 
+
+            var formattedChartData1 = chartData1
+                .Select(x => new
+                {
+                    Label = $"{x.Year}-{x.Month:D2}",
+                    x.Total
+                })
+                .ToList();
+
+            ViewBag.ChartLabels1 = formattedChartData1.Select(x => x.Label).ToArray();
+            ViewBag.ChartValues1 = formattedChartData1.Select(x => x.Total).ToArray();
+
+
+
+            var chartData2 = await _context.Dostawcy
+                .Include(d => d.Dostawy)
+                .Where(d => d.Ilosc_ha_pola > 0 && d.Dostawy.Any())
+                .Select(d => new
+                {
+                    Name = d.Name + " " + d.Surname,
+                    Efficiency = (double)d.Dostawy.Sum(x => x.Ilosc_towaru) / d.Ilosc_ha_pola
+                })
+                .OrderByDescending(d => d.Efficiency)
+                .Take(10)
+                .AsNoTracking()
+                .ToListAsync();
+
+            ViewBag.ChartLabels2 = chartData2.Select(x => x.Name).ToArray();
+            ViewBag.ChartValues2 = chartData2.Select(x => x.Efficiency).ToArray();
+
+            return View(model);
+        }
+
 
         // GET: Dostawy/Create
         public async Task<IActionResult> Create()

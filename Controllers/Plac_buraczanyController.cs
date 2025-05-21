@@ -20,9 +20,20 @@ namespace Projekt2.Controllers
         }
 
         // GET: Plac_buraczany
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Plac_buraczany.ToListAsync());
+            int pageSize = 50;
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Plac_buraczany.Count() / pageSize);
+
+            return View(await _context.Plac_buraczany
+                .OrderBy(m => m.Data_operacji)
+                .ThenBy(m => m.Id_dostawy)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Plac_buraczany/Details/5
@@ -34,6 +45,7 @@ namespace Projekt2.Controllers
             }
 
             var plac_buraczany = await _context.Plac_buraczany
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (plac_buraczany == null)
             {

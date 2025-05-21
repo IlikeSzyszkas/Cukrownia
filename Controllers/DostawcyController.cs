@@ -22,18 +22,16 @@ namespace Projekt2.Controllers
         // GET: Dostawcy
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 25;
-
-            var dostawcy  = await _context.Dostawcy
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .AsNoTracking()
-                .ToListAsync();
+            int pageSize = 50;
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = Math.Ceiling((double)_context.Dostawcy.Count() / pageSize);
 
-            return View(dostawcy);
+            return View(await _context.Dostawcy
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Dostawcy/Details/5
@@ -61,11 +59,13 @@ namespace Projekt2.Controllers
             var bestDostawca = await _context.Dostawcy
                 .Include(d => d.Dostawy)
                 .OrderByDescending(d => d.Dostawy.Sum(d => d.Ilosc_towaru))
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
             
             var worstDostawca = await _context.Dostawcy
                 .Include(d => d.Dostawy)
                 .OrderBy(d => d.Dostawy.Sum(d => d.Ilosc_towaru))
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             var bestPole = await _context.Dostawcy
@@ -78,6 +78,7 @@ namespace Projekt2.Controllers
                 })
                 .OrderByDescending(x => x.Wydajnosc)
                 .Select(x => x.Dostawca)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             var model = new DostawcyStatystykiViewModel
@@ -94,6 +95,7 @@ namespace Projekt2.Controllers
                     Name = d.Name + " " + d.Surname,
                     Total = d.Dostawy.Sum(x => x.Ilosc_towaru)
                 })
+                .AsNoTracking()
                 .ToListAsync();
 
             var chartData2 = await _context.Dostawcy
@@ -104,6 +106,9 @@ namespace Projekt2.Controllers
                     Name = d.Name + " " + d.Surname,
                     Efficiency = (double)d.Dostawy.Sum(x => x.Ilosc_towaru) / d.Ilosc_ha_pola
                 })
+                .OrderByDescending(d => d.Efficiency)
+                .Take(10)
+                .AsNoTracking()
                 .ToListAsync();
 
             ViewBag.ChartLabels1 = chartData1.Select(x => x.Name).ToArray();

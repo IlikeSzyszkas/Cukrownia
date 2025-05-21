@@ -20,9 +20,21 @@ namespace Projekt2.Controllers
         }
 
         // GET: Pakownia
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Pakownia.Include(m => m.Kierownik_zmiany).OrderBy(m => m.Data_zmiany).ToListAsync());
+            int pageSize = 50;
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Pakownia.Count() / pageSize);
+
+            return View(await _context.Pakownia
+                .Include(m => m.Kierownik_zmiany)
+                .OrderBy(m => m.Data_zmiany)
+                .ThenBy(m => m.Id_partii)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Pakownia/Details/5
@@ -35,6 +47,7 @@ namespace Projekt2.Controllers
 
             var pakownia = await _context.Pakownia
                 .Include(m => m.Kierownik_zmiany)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id_partii == id);
             if (pakownia == null)
             {

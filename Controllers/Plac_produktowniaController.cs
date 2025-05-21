@@ -20,9 +20,20 @@ namespace Projekt2.Controllers
         }
 
         // GET: Plac_produktownia
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Plac_produktownia.ToListAsync());
+            int pageSize = 50;
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Plac_produktownia.Count() / pageSize);
+
+            return View(await _context.Plac_produktownia
+                .OrderBy(m => m.Data_pobrania)
+                .ThenBy(u => u.Id_dostawy)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Plac_produktownia/Details/5
@@ -34,6 +45,7 @@ namespace Projekt2.Controllers
             }
 
             var plac_produktownia = await _context.Plac_produktownia
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (plac_produktownia == null)
             {

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Plac buraczany -> Produktownia - Details";
 }
 
-<h1>Plac buraczany -&gt Produktownia - Operacja @Html.DisplayFor(model => model.Id) - Details</h1>
+<h1>Plac buraczany -&gt Produktownia - Operacja @Html.DisplayFor(model => model.Id_dostawy) - Details</h1>
 
 <div>
     <hr />
@@ -12,13 +12,13 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id_dostawy)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Plac_buraczany", new { id = Model.Id_dostawy })'" style="cursor:pointer;">
             @Html.DisplayFor(model => model.Id_dostawy)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id_partii)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Produktownia", new { id = Model.Id_partii })'" style="cursor:pointer;">
             @Html.DisplayFor(model => model.Id_partii)
         </dd>
         <dt class = "col-sm-2">
@@ -36,8 +36,10 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Delete" asp-route-id="@Model?.Id">Usuń</a> |
+    <!--
+    <a asp-action="Edit" asp-route-id="Model?.Id">Edit</a> |
+    <a asp-action="Delete" asp-route-id="Model?.Id">Usuń</a> |
+    -->
     <a asp-action="Index">Back to List</a> |
     <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

@@ -20,13 +20,21 @@ namespace Projekt2.Controllers
         }
 
         // GET: Sprzedarz
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            int pageSize = 50;
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Pakownia.Count() / pageSize);
+
             return View(await _context.Sprzedarz
                 .Include(k => k.Kupiec)
                 .OrderBy(m => m.Data_odbioru)
-                .ToListAsync()
-                );
+                .ThenBy(m => m.Id_transakcji)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Sprzedarz/Details/5
@@ -39,6 +47,7 @@ namespace Projekt2.Controllers
 
             var sprzedarz = await _context.Sprzedarz
                 .Include(k => k.Kupiec)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id_transakcji == id);
             if (sprzedarz == null)
             {

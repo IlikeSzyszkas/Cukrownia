@@ -5,7 +5,50 @@
 }
 
 <h1>Plac buraczany -&gt Produktownia</h1>
+@{
+    int totalPages = (int)ViewBag.TotalPages;
+    int currentPage = (int)ViewBag.CurrentPage;
+    int visiblePages = 5;
+    int startPage = Math.Max(1, currentPage - visiblePages / 2);
+    int endPage = Math.Min(totalPages, startPage + visiblePages - 1);
 
+    if (endPage - startPage + 1 < visiblePages && startPage > 1)
+    {
+        startPage = Math.Max(1, endPage - visiblePages + 1);
+    }
+}
+
+<nav class="text-end flex-column">
+    @if (startPage > 1)
+    {
+        <a class="link-info " href="@Url.Action("Index",  new { page = 1 })">1</a>
+    }
+    @if (currentPage > 1)
+    {
+        <a class="link-info text-decoration-none" href="@Url.Action("Index", new { page = currentPage - 1 })">&lt;</a>
+    }
+
+    @for (int i = startPage; i <= endPage; i++)
+    {
+        if (i == currentPage)
+        {
+            <a class="link-info cur_page" href="@Url.Action("Index", new { page = i })">@i</a>
+        }
+        else
+        {
+            <a class="link-info" href="@Url.Action("Index", new { page = i })">@i</a>
+        }
+    }
+
+    @if (currentPage < totalPages)
+    {
+        <a class="link-info text-decoration-none" href="@Url.Action("Index", new { page = currentPage + 1 })">&gt;</a>
+    }
+    @if (endPage <= totalPages - 1)
+    {
+        <a class="link-info" href="@Url.Action("Index", new { page = totalPages })">@totalPages</a>
+    }
+</nav>
 <table class="table">
     <thead>
         <tr>
@@ -21,7 +64,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Data_pobrania)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -39,9 +81,38 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Data_pobrania)
             </td>
-            <td>
-            </td>
         </tr>
 }
     </tbody>
 </table>
+<nav class="text-center flex-column">
+    @if (startPage > 1)
+    {
+        <a class="link-info " href="@Url.Action("Index",  new { page = 1 })">1</a>
+    }
+    @if (currentPage > 1)
+    {
+        <a class="link-info text-decoration-none" href="@Url.Action("Index", new { page = currentPage - 1 })">&lt;</a>
+    }
+
+    @for (int i = startPage; i <= endPage; i++)
+    {
+        if (i == currentPage)
+        {
+            <a class="link-info cur_page" href="@Url.Action("Index", new { page = i })">@i</a>
+        }
+        else
+        {
+            <a class="link-info" href="@Url.Action("Index", new { page = i })">@i</a>
+        }
+    }
+
+    @if (currentPage < totalPages)
+    {
+        <a class="link-info text-decoration-none" href="@Url.Action("Index", new { page = currentPage + 1 })">&gt;</a>
+    }
+    @if (endPage <= totalPages - 1)
+    {
+        <a class="link-info" href="@Url.Action("Index", new { page = totalPages })">@totalPages</a>
+    }
+</nav>

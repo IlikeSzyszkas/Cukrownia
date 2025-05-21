@@ -33,7 +33,7 @@
     });
 
         const chart2 = new Chart(document.getElementById('chart2').getContext('2d'), {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: @Html.Raw(Json.Serialize(labels2)),
             datasets: [{

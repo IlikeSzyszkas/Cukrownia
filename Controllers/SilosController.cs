@@ -21,9 +21,20 @@ namespace Projekt2.Controllers
         }
 
         // GET: Silos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Silos.ToListAsync());
+            int pageSize = 50;
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Pakownia.Count() / pageSize);
+
+            return View(await _context.Silos
+                .OrderBy(m => m.Data_skladowania)
+                .ThenBy(u => u.Id_operacji)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Silos/Details/5
@@ -35,6 +46,7 @@ namespace Projekt2.Controllers
             }
 
             var silos = await _context.Silos
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (silos == null)
             {

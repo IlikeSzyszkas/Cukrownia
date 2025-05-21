@@ -24,6 +24,7 @@ namespace Projekt2.Controllers
         {
             var stanowiska = await _context.Stanowiska
                 .Include(d => d.Pracownicy)
+                .AsNoTracking()
                 .ToListAsync();
             foreach(var p in stanowiska)
             {
@@ -43,6 +44,7 @@ namespace Projekt2.Controllers
             var stanowiska = await _context.Stanowiska
                 .Include(d => d.Pracownicy)
                     .ThenInclude(s => s.Dzial)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id_stanowiska == id);
             if (stanowiska == null)
             {

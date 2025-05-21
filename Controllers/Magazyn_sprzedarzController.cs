@@ -20,9 +20,19 @@ namespace Projekt2.Controllers
         }
 
         // GET: Magazyn_sprzedarz
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Magazyn_sprzedarz.ToListAsync());
+            int pageSize = 50;
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Magazyn_sprzedarz.Count() / pageSize);
+
+            return View(await _context.Magazyn_sprzedarz
+                .OrderBy(m => m.Id_operacji)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Magazyn_sprzedarz/Details/5
@@ -34,6 +44,7 @@ namespace Projekt2.Controllers
             }
 
             var magazyn_sprzedarz = await _context.Magazyn_sprzedarz
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (magazyn_sprzedarz == null)
             {

@@ -20,9 +20,18 @@ namespace Projekt2.Controllers
         }
 
         // GET: Silos_pakownia
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _context.Silos_pakownia.ToListAsync());
+            int pageSize = 50;
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Pakownia.Count() / pageSize);
+
+            return View(await _context.Silos_pakownia
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Silos_pakownia/Details/5
@@ -34,6 +43,7 @@ namespace Projekt2.Controllers
             }
 
             var silos_pakownia = await _context.Silos_pakownia
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (silos_pakownia == null)
             {

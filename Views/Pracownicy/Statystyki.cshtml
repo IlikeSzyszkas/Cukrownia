@@ -1,0 +1,91 @@
+﻿@model Projekt2.ViewModels.PracownicyStatystykiViewModel
+
+@{
+    ViewData["Title"] = "Statystyki pracowników";
+    var labels1 = ViewBag.ChartLabels1 as string[];
+    var values1 = ViewBag.ChartValues1 as int[];
+
+    var labels2 = ViewBag.ChartLabels2 as string[];
+    var values2 = ViewBag.ChartValues2 as int[];
+}
+
+<h1>Statystyki dostaw</h1>
+
+<canvas id="chart1" width="800" height="400"></canvas>
+<canvas id="chart2" width="400" height="200" style="margin-top: 50px;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chart1 = new Chart(document.getElementById('chart1').getContext('2d'), {
+        type: "bar",
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels1)),
+            datasets: [{
+                label: 'Miasto',
+                data: @Html.Raw(Json.Serialize(values1)),
+                    backgroundColor:    [
+      'rgba(255, 99, 132, 0.6)',   // Red
+      'rgba(54, 162, 235, 0.6)',   // Blue
+      'rgba(255, 206, 86, 0.6)',   // Yellow
+      'rgba(75, 192, 192, 0.6)',   // Teal
+      'rgba(153, 102, 255, 0.6)',  // Purple
+      'rgba(255, 159, 64, 0.6)',   // Orange
+      'rgba(199, 199, 199, 0.6)',  // Gray
+      'rgba(255, 99, 255, 0.6)',   // Pink
+      'rgba(99, 255, 132, 0.6)',   // Light Green
+      'rgba(0, 204, 255, 0.6)',    // Cyan
+      'rgba(255, 140, 0, 0.6)',    // Dark Orange
+      'rgba(100, 149, 237, 0.6)',  // Cornflower Blue
+      'rgba(255, 215, 0, 0.6)',    // Gold
+      'rgba(186, 85, 211, 0.6)',   // Medium Orchid
+      'rgba(34, 139, 34, 0.6)'     // Forest Green
+    ],
+                    borderColor: [
+      'rgba(255, 99, 132, 0.6)',   // Red
+      'rgba(54, 162, 235, 0.6)',   // Blue
+      'rgba(255, 206, 86, 0.6)',   // Yellow
+      'rgba(75, 192, 192, 0.6)',   // Teal
+      'rgba(153, 102, 255, 0.6)',  // Purple
+      'rgba(255, 159, 64, 0.6)',   // Orange
+      'rgba(199, 199, 199, 0.6)',  // Gray
+      'rgba(255, 99, 255, 0.6)',   // Pink
+      'rgba(99, 255, 132, 0.6)',   // Light Green
+      'rgba(0, 204, 255, 0.6)',    // Cyan
+      'rgba(255, 140, 0, 0.6)',    // Dark Orange
+      'rgba(100, 149, 237, 0.6)',  // Cornflower Blue
+      'rgba(255, 215, 0, 0.6)',    // Gold
+      'rgba(186, 85, 211, 0.6)',   // Medium Orchid
+      'rgba(34, 139, 34, 0.6)'     // Forest Green
+    ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+        const chart2 = new Chart(document.getElementById('chart2').getContext('2d'), {
+        type: "polarArea",
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels2)),
+            datasets: [{
+                label: 'Dział',
+                data: @Html.Raw(Json.Serialize(values2)),
+                backgroundColor: ['rgba(255, 99, 132, 1)',
+                                    'rgba(255, 0, 255, 1)'],
+                borderColor: ['rgba(255, 99, 132, 1)',
+                                    'rgba(255, 0, 255, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+</script>

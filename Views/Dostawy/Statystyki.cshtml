@@ -1,0 +1,126 @@
+﻿@model Projekt2.ViewModels.DostawyStatystykiViewModel
+
+@{
+    ViewData["Title"] = "Statystyki dostaw";
+    var labels1 = ViewBag.ChartLabels1 as string[];
+    var values1 = ViewBag.ChartValues1 as int[];
+
+    var labels2 = ViewBag.ChartLabels2 as string[];
+    var values2 = ViewBag.ChartValues2 as double[];
+}
+
+<h1>Statystyki dostaw</h1>
+
+<canvas id="chart1" width="800" height="400"></canvas>
+<canvas id="chart2" width="800" height="400" style="margin-top: 50px;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chart1 = new Chart(document.getElementById('chart1').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels1)),
+            datasets: [{
+                label: 'Suma towaru (kg)',
+                data: @Html.Raw(Json.Serialize(values1)),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    const chart2 = new Chart(document.getElementById('chart2').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels2)),
+            datasets: [{
+                label: 'Wydajność (ton/ha)',
+                data: @Html.Raw(Json.Serialize(values2)),
+                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                fill: false,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2"><h3>Podsumowanie dostaw:</h3></dt>
+        <dd class="col-sm-10">
+            <p><strong>Liczba dostaw:</strong> @Model.LiczbaDostaw</p>
+            <p><strong>Suma towaru (kg):</strong> @Model.SumaTowaru</p>
+            <p><strong>Średnia ilość towaru:</strong> @Model.SredniaIloscTowaru.ToString("F2")</p>
+        </dd>
+        <hr />
+        <dt class="col-sm-2"><h3>Największa dostawa:</h3></dt>
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.NajwiekszaDostawa.Id_dostawy })'" style="cursor:pointer;">
+            <p><strong>Ilość towaru:</strong> @Model.NajwiekszaDostawa.Ilosc_towaru</p>
+            <p><strong>Data:</strong> @Model.NajwiekszaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
+            <p><strong>Dostawca:</strong> @Model.NajwiekszaDostawa.Dostawca.Name @Model.NajwiekszaDostawa.Dostawca.Surname</p>
+        </dd>
+        <hr />
+        <dt class="col-sm-2"><h3>Najmniejsza dostawa:</h3></dt>
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.NajmniejszaDostawa.Id_dostawy })'" style="cursor:pointer;">
+            <p><strong>Ilość towaru:</strong> @Model.NajmniejszaDostawa.Ilosc_towaru</p>
+            <p><strong>Data:</strong> @Model.NajmniejszaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
+            <p><strong>Dostawca:</strong> @Model.NajmniejszaDostawa.Dostawca.Name @Model.NajmniejszaDostawa.Dostawca.Surname</p>
+        </dd>
+        <hr />
+        <dt class="col-sm-2"><h3>Pierwsza dostawa:</h3></dt>
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.PierwszaDostawa.Id_dostawy })'" style="cursor:pointer;">
+            <p><strong>Ilość towaru:</strong> @Model.PierwszaDostawa.Ilosc_towaru</p>
+            <p><strong>Data:</strong> @Model.PierwszaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
+            <p><strong>Dostawca:</strong> @Model.PierwszaDostawa.Dostawca.Name @Model.PierwszaDostawa.Dostawca.Surname</p>
+        </dd>
+        <hr/>
+        <dt class="col-sm-2"><h3>Ostatnia dostawa:</h3></dt>
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.OstatniaDostawa.Id_dostawy })'" style="cursor:pointer;">
+            <p><strong>Ilość towaru:</strong> @Model.OstatniaDostawa.Ilosc_towaru</p>
+            <p><strong>Data:</strong> @Model.OstatniaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
+            <p><strong>Dostawca:</strong> @Model.OstatniaDostawa.Dostawca.Name @Model.OstatniaDostawa.Dostawca.Surname</p>
+        </dd>
+    </dl>
+
+    <hr />
+    <dt class="col-sm-2"><h3>Top 5 dostawców:</h3></dt>
+    <dd class="col-sm-10">
+        @if (Model.TopDostawcy.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Dostawca</th>
+                        <th>Suma towaru (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.TopDostawcy)
+                    {
+                        <tr onclick="location.href='@Url.Action("Details", "Dostawcy", new { id = d.Dostawca.Id })'" style="cursor:pointer;">
+                            <td>@d.Dostawca.Name @d.Dostawca.Surname</td>
+                            <td>@d.SumaTowaru</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Brak danych o dostawcach.</p>
+        }
+    </dd>
+</div>

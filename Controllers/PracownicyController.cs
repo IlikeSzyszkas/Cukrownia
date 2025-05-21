@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
+using Projekt2.ViewModels;
 
 namespace Projekt2.Controllers
 {
@@ -22,15 +23,14 @@ namespace Projekt2.Controllers
         // GET: Pracownicy
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 25;
+            int pageSize = 50;
 
             var pracownicy = await _context.Pracownicy
                 .Include(p => p.Dzial)
                 .Include(g => g.Stanowisko)
-                .Include(p => p.Zmiany_pak)
-                .Include(p => p.Zmiany_prod)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .AsNoTracking()
                 .ToListAsync();
 
             foreach (var d in pracownicy)
@@ -59,6 +59,7 @@ namespace Projekt2.Controllers
                 .Include(g => g.Stanowisko)
                 .Include(a => a.Zmiany_pak)
                 .Include(r => r.Zmiany_prod)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pracownicy == null)
             {
@@ -67,7 +68,51 @@ namespace Projekt2.Controllers
 
             return View(pracownicy);
         }
+        // GET: Pracownicy/Statystyki
+        public async Task<IActionResult> Statystyki()
+        {
 
+
+            var model = new PracownicyStatystykiViewModel
+            {
+            };
+
+            var pracownicy_adres = await _context.Pracownicy
+                .Select(d => new { d.Name, d.Surname, d.Addres })
+                .AsNoTracking()
+                .ToListAsync();
+
+            var chartData1 = pracownicy_adres
+                .Where(d => d.Addres.Contains(","))
+                .GroupBy(d => d.Addres.Split(", ")[1])
+                .Select(g => new {
+                    City = g.Key,
+                    Count = g.Count()
+                })
+                .ToList();
+
+            var pracownicy_dzial = await _context.Pracownicy
+                .Select(d => new { d.Name, d.Surname, d.Dzial })
+                .AsNoTracking()
+                .ToListAsync();
+
+            var chartData2 = pracownicy_dzial
+                .Where(d => d.Dzial != null)
+                .GroupBy(m => m.Dzial.Nazwa)
+                .Select(d => new
+                {
+                    Dzial = d.Key,
+                    Count = d.Count()
+                })
+                .ToList();
+
+            ViewBag.ChartLabels1 = chartData1.Select(x => x.City).ToArray();
+            ViewBag.ChartValues1 = chartData1.Select(x => x.Count).ToArray();
+            ViewBag.ChartLabels2 = chartData2.Select(x => x.Dzial).ToArray();
+            ViewBag.ChartValues2 = chartData2.Select(x => x.Count).ToArray();
+
+            return View(model);
+        }
         // GET: Pracownicy/Create
         public async Task<IActionResult> CreateAsync()
         {
