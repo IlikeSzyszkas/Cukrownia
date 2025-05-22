@@ -54,6 +54,24 @@ namespace Projekt2.Controllers
             return View(stanowiska);
         }
 
+        // GET: Stanowiska/Statystyki
+        public async Task<IActionResult> Statystyki()
+        {
+            var stanowiskaData = await _context.Stanowiska
+                .Select(x => new
+                {
+                    x.Nazwa,
+                    x.Pracownicy.Count
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            ViewBag.ChartLabels3 = stanowiskaData.Select(x => x.Nazwa ?? string.Empty).ToList();
+            ViewBag.ChartValues3 = stanowiskaData.Select(x => x.Count).ToList();
+
+            return View();
+        }
+
         // GET: Stanowiska/Create
         public IActionResult Create()
         {

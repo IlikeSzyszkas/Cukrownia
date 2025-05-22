@@ -1,0 +1,52 @@
+﻿@model Projekt2.ViewModels.PracownicyStatystykiViewModel
+
+@{
+    ViewData["Title"] = "Statystyki stanowisk";
+
+    var labels3 = ((List<string>)ViewBag.ChartLabels3) ?? new List<string>();
+    var values3 = ((List<int>)ViewBag.ChartValues3) ?? new List<int>();
+}
+
+<h1>Statystyki stanowisk</h1>
+
+<canvas id="chart3" width="800" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<script>
+
+    const chart3 = new Chart(document.getElementById('chart3').getContext('2d'), {
+        type: "polarArea",
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels3)),
+            datasets: [{
+                label: 'Stanowisko',
+                data: @Html.Raw(Json.Serialize(values3)),
+                backgroundColor:
+                [
+                    'rgba(161, 173, 66, 0.9)',
+                    'rgba(66, 173, 172, 0.9)',
+                    'rgba(173, 105, 66, 0.9)',
+                    'rgba(129, 66, 173, 0.9)'
+                ],
+                borderColor:
+                [
+                    'rgba(161, 173, 66, 0.9)',
+                    'rgba(66, 173, 172, 0.9)',
+                    'rgba(173, 105, 66, 0.9)',
+                    'rgba(129, 66, 173, 0.9)'
+                ],
+                borderWidth: 1
+            }]
+        },
+            options: {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Liczba pracowników na stanowiskach'
+            }
+        }
+    }
+    });
+
+</script>

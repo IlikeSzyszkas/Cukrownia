@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
+using Projekt2.ViewModels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Projekt2.Controllers
@@ -56,6 +59,59 @@ namespace Projekt2.Controllers
             }
 
             return View(produktownia);
+        }
+        // GET: Produktownia/Statystyki
+        public async Task<IActionResult> Statystyki()
+        {
+            var model = new ProduktowniaStatystykiViewModel { };
+
+            var chartData = await _context.Produktownia
+                .GroupBy(d => new { d.Data_zmiany.Year, d.Data_zmiany.Month })
+                .Select(g => new
+                {
+                    g.Key.Year,
+                    g.Key.Month,
+                    Stat = g.Sum(x => x.Ilosc_towaru_wejscowego) == 0
+                        ? 0
+                        : (double)g.Sum(x => x.Ilosc_towaru_wyjscowego) / g.Sum(x => x.Ilosc_towaru_wejscowego) * 100
+                })
+                .OrderBy(x => x.Year).ThenBy(x => x.Month)
+                .AsNoTracking()
+                .ToListAsync();
+
+            // Prepare month labels in Polish
+            var culture = new CultureInfo("pl-PL");
+            var monthLabels = Enumerable.Range(9, 4)
+                .Select(m => new DateTime(2000, m, 1).ToString("MMMM", culture))
+                .ToArray();
+            
+
+            // Prepare datasets grouped by year
+            var datasets = chartData
+                .GroupBy(x => x.Year)
+                .Select(g => new ProduktowniaStatystykiViewModel
+                {
+                    Year = g.Key,
+                    Data = Enumerable.Range(9, 4)
+                        .Select(month =>
+                        {
+                            var match = g.FirstOrDefault(x => x.Month == month);
+                            return match != null ? (double?)match.Stat : null;
+                        })
+                        .ToArray()
+                })
+                .ToList();
+
+            var viewModel = new ProduktowniaStatystykiPageViewModel
+            {
+                MonthLabels = monthLabels,
+                Datasets = datasets
+            };
+
+            return View(viewModel);
+
+
+            return View(model);
         }
 
         // GET: Produktownia/Create

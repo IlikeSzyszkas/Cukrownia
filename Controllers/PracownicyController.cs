@@ -72,11 +72,6 @@ namespace Projekt2.Controllers
         public async Task<IActionResult> Statystyki()
         {
 
-
-            var model = new PracownicyStatystykiViewModel
-            {
-            };
-
             var pracownicy_adres = await _context.Pracownicy
                 .Select(d => new { d.Name, d.Surname, d.Addres })
                 .AsNoTracking()
@@ -91,27 +86,10 @@ namespace Projekt2.Controllers
                 })
                 .ToList();
 
-            var pracownicy_dzial = await _context.Pracownicy
-                .Select(d => new { d.Name, d.Surname, d.Dzial })
-                .AsNoTracking()
-                .ToListAsync();
-
-            var chartData2 = pracownicy_dzial
-                .Where(d => d.Dzial != null)
-                .GroupBy(m => m.Dzial.Nazwa)
-                .Select(d => new
-                {
-                    Dzial = d.Key,
-                    Count = d.Count()
-                })
-                .ToList();
-
             ViewBag.ChartLabels1 = chartData1.Select(x => x.City).ToArray();
             ViewBag.ChartValues1 = chartData1.Select(x => x.Count).ToArray();
-            ViewBag.ChartLabels2 = chartData2.Select(x => x.Dzial).ToArray();
-            ViewBag.ChartValues2 = chartData2.Select(x => x.Count).ToArray();
 
-            return View(model);
+            return View();
         }
         // GET: Pracownicy/Create
         public async Task<IActionResult> CreateAsync()

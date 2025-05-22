@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Statystyki działów";
+    Layout = ViewBag.DisableLayout == true ? null : "_Layout";
+    var labels2 = ((List<string>)ViewBag.ChartLabels2) ?? new List<string>();
+    var values2 = ((List<int>)ViewBag.ChartValues2) ?? new List<int>();
+}
+
+<h1>Statystyki działów</h1>
+
+<canvas id="chart2" width="400" height="200"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<script>
+
+    const chart2 = new Chart(document.getElementById('chart2').getContext('2d'), {
+        type: "polarArea",
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels2)),
+            datasets: [{
+                label: 'Dział',
+                data: @Html.Raw(Json.Serialize(values2)),
+                backgroundColor: [
+                    'rgba(161, 173, 66, 0.9)',
+                    'rgba(66, 173, 172, 0.9)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Liczba pracowników w działach'
+                },
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+</script>

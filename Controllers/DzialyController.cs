@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
+using Projekt2.ViewModels;
 
 namespace Projekt2.Controllers
 {
@@ -70,6 +71,25 @@ namespace Projekt2.Controllers
 
             return View(dzialy);
         }
+        // GET: Dzialy/Statystyki
+        public async Task<IActionResult> Statystyki(bool iframe = false)
+        {
+            var dzialyData = await _context.Dzialy
+                .Select(x => new
+                {
+                    x.Nazwa,
+                    x.Pracownicy.Count
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            ViewBag.ChartLabels2 = dzialyData.Select(x => x.Nazwa ?? string.Empty).ToList();
+            ViewBag.ChartValues2 = dzialyData.Select(x => x.Count).ToList();
+
+            ViewBag.DisableLayout = iframe;
+            return View();
+        }
+
 
         // GET: Dzialies/Create
         public IActionResult Create()

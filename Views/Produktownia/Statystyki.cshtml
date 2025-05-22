@@ -1,0 +1,70 @@
+﻿@model Projekt2.ViewModels.ProduktowniaStatystykiPageViewModel
+
+@{
+    ViewData["Title"] = "Statystyki produktowni";
+}
+
+
+<h1>Statystyki produktowni</h1>
+
+<canvas id="multiYearChart" width="900" height="450"></canvas>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+
+<script>
+    const monthLabels = @Html.Raw(Json.Serialize(Model.MonthLabels));
+    const rawDatasets = @Html.Raw(Json.Serialize(Model.Datasets));
+
+        const chartDatasets = rawDatasets.map((item, index) => {
+        const colorHue = index * 50;
+
+        return {
+            label: item.year.toString(),
+            data: item.data,
+            borderColor: `hsl(${colorHue}, 70%, 50%)`,
+            backgroundColor: `hsla(${colorHue}, 70%, 50%, 0.3)`,
+            borderWidth: 2,
+            tension: 0.2,
+            spanGaps: true
+        };
+    });
+
+
+    new Chart(document.getElementById('multiYearChart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: monthLabels,
+            datasets: chartDatasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Wydajność produkcji (%) w podziale na miesiące i lata',
+                    font: { size: 18 }
+                },
+                legend: {
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Procent zawartości cuktu w burakach (%)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Miesiące'
+                    }
+                }
+            }
+        }
+    });
+
+</script>
