@@ -17,11 +17,11 @@ namespace Projekt2.Models
         [Phone(ErrorMessage = "Wprowadź poprawny numer telefonu.")]
         public string Nr_tel { get; set; }
         [Display(Name = "Stanowisko")]
-        [ForeignKey("stanowiska")]
+        [ForeignKey(nameof(Stanowisko))]
         public int Id_stanowiska { get; set; }
         public virtual Stanowiska? Stanowisko { get; set; }
         [Display(Name = "Dział")]
-        [ForeignKey("dzialy")]
+        [ForeignKey(nameof(Dzial))]
         public int Id_dzialu { get; set; }
         [Display(Name = "Dział")]
         public virtual Dzialy? Dzial { get; set; }

@@ -19,13 +19,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 var app = builder.Build();
-/*
+
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     SeedHelper.UzupelnijReferencje(context);
 }
-*/
+
+
 
 
 // Configure the HTTP request pipeline.

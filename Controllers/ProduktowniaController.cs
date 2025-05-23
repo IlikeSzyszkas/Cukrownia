@@ -63,7 +63,6 @@ namespace Projekt2.Controllers
         // GET: Produktownia/Statystyki
         public async Task<IActionResult> Statystyki()
         {
-            var model = new ProduktowniaStatystykiViewModel { };
 
             var chartData = await _context.Produktownia
                 .GroupBy(d => new { d.Data_zmiany.Year, d.Data_zmiany.Month })
@@ -109,9 +108,6 @@ namespace Projekt2.Controllers
             };
 
             return View(viewModel);
-
-
-            return View(model);
         }
 
         // GET: Produktownia/Create

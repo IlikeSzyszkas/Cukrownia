@@ -9,14 +9,14 @@ namespace Projekt2.Models
         public int Id { get; set; }
 
         [Display(Name = "Id operacji magazynowej")]
-        [ForeignKey("magazyn")]
+        [ForeignKey(nameof(Operacja))]
         public int Id_operacji { get; set; }
 
         [Display(Name = "Operacja magazynowa")]
         public virtual Magazyn? Operacja { get; set; }
 
         [Display(Name = "Id transakcji sprzedaży")]
-        [ForeignKey("sprzedarz")]
+        [ForeignKey(nameof(Transakcja))]
         public int Id_transakcji { get; set; }
 
         [Display(Name = "Transakcja sprzedaży")]

@@ -2,10 +2,26 @@
 
 @{
     ViewData["Title"] = "Statystyki stanowisk";
-
+    Layout = ViewBag.DisableLayout == true ? null : "_Layout";
     var labels3 = ((List<string>)ViewBag.ChartLabels3) ?? new List<string>();
     var values3 = ((List<int>)ViewBag.ChartValues3) ?? new List<int>();
 }
+<header>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Projekt2.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fixes.css" asp-append-version="true" />
+    <style>
+        * {
+            background-color: transparent !important;
+        }
+
+        canvas {
+            background-color: #CEEEFF !important;
+            border-radius: 15px;
+        }
+    </style>
+</header>
 
 <h1>Statystyki stanowisk</h1>
 

@@ -9,13 +9,14 @@ namespace Projekt2.Models
         public int Id { get; set; }
 
         [Display(Name = "Id dostawy z placu buraczanego")]
-        [ForeignKey("plac_buraczany")]
+        [ForeignKey(nameof(Dostawa))]
         public int Id_dostawy { get; set; }
+        public virtual Dostawy? Dostawa { get; set; }
 
         [Display(Name = "Id partii w produktowni")]
-        [ForeignKey("produktownia")]
+        [ForeignKey(nameof(Partia))]
         public int Id_partii { get; set; }
-
+        public virtual Produktownia? Partia { get; set; }
         [Display(Name = "Ilość pobranych buraków [kg]")]
         [Range(1, int.MaxValue, ErrorMessage = "Wartość musi być większa lub równa 1.")]
         public int Ilosc_burakow_pobrana { get; set; }

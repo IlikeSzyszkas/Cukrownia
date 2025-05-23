@@ -55,7 +55,7 @@ namespace Projekt2.Controllers
         }
 
         // GET: Stanowiska/Statystyki
-        public async Task<IActionResult> Statystyki()
+        public async Task<IActionResult> Statystyki(bool iframe = false)
         {
             var stanowiskaData = await _context.Stanowiska
                 .Select(x => new
@@ -69,6 +69,7 @@ namespace Projekt2.Controllers
             ViewBag.ChartLabels3 = stanowiskaData.Select(x => x.Nazwa ?? string.Empty).ToList();
             ViewBag.ChartValues3 = stanowiskaData.Select(x => x.Count).ToList();
 
+            ViewBag.DisableLayout = iframe;
             return View();
         }
 

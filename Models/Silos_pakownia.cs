@@ -7,15 +7,14 @@ namespace Projekt2.Models
     {
         [Display(Name = "Id")]
         public int Id { get; set; }
-
         [Display(Name = "Id operacji w silosie")]
-        [ForeignKey("silos")]
+        [ForeignKey(nameof(Operacja))]
         public int Id_operacji { get; set; }
-
+        public virtual Silos? Operacja { get; set; }
         [Display(Name = "Id partii z pakowni")]
-        [ForeignKey("pakownia")]
+        [ForeignKey(nameof(Partia))]
         public int Id_partii { get; set; }
-
+        public virtual Pakownia? Partia { get; set; }
         [Display(Name = "Ilość pobranego cukru [kg]")]
         [Range(1, int.MaxValue, ErrorMessage = "Wartość musi być większa lub równa 1.")]
         public int Ilosc_cukru_pobrana { get; set; }

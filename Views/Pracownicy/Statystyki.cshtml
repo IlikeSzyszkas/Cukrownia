@@ -9,12 +9,31 @@
     var labels3 = ViewBag.ChartLabels3 as string[];
     var values3 = ViewBag.ChartValues3 as int[];
 }
+<header>
+    <style>
+        #iframe{
+            height:auto+15%;
+            aspect-ratio: auto 1004/1004;
+            overflow: visible !important;
+        }
+        iframe{
+            height: 110%;
+            width: inherit;
+            overflow: visible !important;
+        }
 
+
+    </style>
+</header>
 <h1>Statystyki pracowników</h1>
 
-<canvas id="chart1" width="800" height="400"></canvas>
-<iframe src="../Dzialy/Statystyki?iframe=true" width="1000" height="500" style="margin-top: 50px;"></iframe>
-<canvas id="chart3" width="400" height="200" style="margin-top: 50px;"></canvas>
+<canvas id="chart1" class="w-100 w-sm-80 w-md-60 w-lg-50 w-xl-40 w-xxl-30" width="800" height="400"></canvas>
+<div id="iframe" class="w-100 w-sm-80 w-md-60 w-lg-50 w-xl-40 w-xxl-30">
+    <iframe class="w-100 w-sm-80 w-md-60 w-lg-50 w-xl-40 w-xxl-30" src="../Dzialy/Statystyki?iframe=true" style="margin-top: 50px;"></iframe>
+</div>
+<div id="iframe" class="w-100 w-sm-80 w-md-60 w-lg-50 w-xl-40 w-xxl-30">
+    <iframe class="w-100 w-sm-80 w-md-60 w-lg-50 w-xl-40 w-xxl-30" src="../Stanowiska/Statystyki?iframe=true" style="margin-top: 50px;"></iframe>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
 <script>

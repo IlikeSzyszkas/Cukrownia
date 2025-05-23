@@ -1,8 +1,135 @@
-﻿@{
+﻿@using System.Text.Json
+@model Projekt2.ViewModels.HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
+    var currentYear = DateTime.Now.Year.ToString();
 }
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <!-- <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> -->
 </div>
+<dl>
+    <dd>
+        <h2><strong>Ilość opakowań aktualnie w magazynie</strong></h2>
+    </dd>
+    <dt>
+        <h3>@Html.DisplayFor(model => model.Ilosc_Magazyn)</h3>
+    </dt>
+    <hr />
 
+    <dd>
+        <h2><strong>Ilość kg cukru aktualnie w silosie</strong></h2>
+    </dd>
+    <dt>
+        <h3>@Html.DisplayFor(model => model.Ilosc_Silos)</h3>
+    </dt>
+    <hr />
+    <dd>
+        <h2><strong>Ilość buraków w tym roku</strong></h2>
+    </dd>
+    <dt>
+        @{
+            @if (Model.Ilosc_Plac.ContainsKey(currentYear))
+            {
+                <h3>
+                    @currentYear: @Model.Ilosc_Plac[currentYear]
+                </h3>
+            }
+            else
+            {
+                <h3>
+                    W tym roku nie było jeszcze żadnych dostaw.
+                </h3>
+            }
+        }
+    </dt>
+    <hr />
+    <dd>
+        <h2><strong>Ilość buraków w poprzednich latach</strong></h2>
+    </dd>
+    <dt>
+        <canvas id="chart1" width="800" height="400"></canvas>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rok</th>
+                    <th>Ilosc dostarczonych buraków [kg]</th>
+                    <th>Ilosc niewykorzystanych buraków [kg]</th>
+                    <th>Ilosc wykorzystanych buraków [kg]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Ilosc_Plac)
+                {
+                    var niewykorzysane = Model.Ilosc_niewykorzystane_Plac[item.Key];
+                    <tr>
+                        <td>@item.Key</td>
+                        <td>@item.Value</td>
+                        <td>@niewykorzysane</td>
+                        <td>@(item.Value-niewykorzysane)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </dt>
+</dl>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+<script>
+    const wykorzystane = new Array();
+    const niewykorzystane = @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_niewykorzystane_Plac));
+    const dostarczone = @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_Plac));
+
+    console.log(typeof(wykorzystane));
+    console.log(wykorzystane);
+    console.log(typeof(niewykorzystane));
+    console.log(niewykorzystane);
+    console.log(typeof(dostarczone));
+    console.log(dostarczone);
+
+    Object.entries(dostarczone).forEach(([year, value]) => {
+        //console.log(`Rok ${year}: ${value}`);
+        //console.log(niewykorzystane[year]);
+        let wykorzystan = value - niewykorzystane[year];
+        //console.log(year + " " + wykorzystan);
+        wykorzystane[year] = wykorzystan; 
+    });
+
+        const chart1 = new Chart(document.getElementById('chart1').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_Plac.Keys)),
+            datasets: [{
+                label: 'Ilość dostarczonych buraków',
+                data: @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_Plac.Values)),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }, 
+            {
+                label: 'Ilość niewykorzystanych buraków',
+                data: @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_niewykorzystane_Plac.Values)),
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }, 
+            {
+                label: 'Ilość wykorzystanych buraków',
+                data: Object.values(wykorzystane),
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+            x: {
+                stacked: true
+            },
+            y: { 
+                stacked: true,
+                beginAtZero: true 
+            } }
+        }
+    });
+</script>

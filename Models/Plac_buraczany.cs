@@ -7,8 +7,9 @@ namespace Projekt2.Models
     {
         public int Id { get; set; }
         [Display(Name = "Id dostawy")]
-        [ForeignKey("dostawy")]
+        [ForeignKey(nameof(Dostawa))]
         public int Id_dostawy { get; set; }
+        public virtual Dostawy? Dostawa { get; set; }
         [Display(Name = "Ilość buraków")]
         [Range(1, int.MaxValue, ErrorMessage = "Wartość musi być większa lub równa 1.")]
         public int Ilosc_burakow {  get; set; }

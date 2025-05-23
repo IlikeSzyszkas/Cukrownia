@@ -15,7 +15,7 @@ namespace Projekt2.Models
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         public DateTime Data_odbioru { get; set; }
         [Display(Name = "Kupiec")]
-        [ForeignKey("kupcy")]
+        [ForeignKey(nameof(Kupiec))]
         public int Id_kupca { get; set; }
         public virtual Kupcy? Kupiec { get; set; }
     }

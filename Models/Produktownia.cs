@@ -15,7 +15,7 @@ namespace Projekt2.Models
         [Range(1, int.MaxValue, ErrorMessage = "Wartość musi być większa lub równa 1.")]
         public int Ilosc_towaru_wyjscowego { get; set; }
         [Display(Name = "Kierownik zmiany")]
-        [ForeignKey("pracownicy")]
+        [ForeignKey(nameof(Kierownik_zmiany))]
         public int Id_kierownika_zmiany { get; set; }
         [Display(Name = "Kierownik zmiany")]
         public virtual Pracownicy? Kierownik_zmiany { get; set; }

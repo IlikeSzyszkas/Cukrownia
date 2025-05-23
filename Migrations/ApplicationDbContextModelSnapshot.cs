@@ -17,7 +17,10 @@ namespace Projekt2.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "9.0.5")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -68,9 +71,6 @@ namespace Projekt2.Migrations
                     b.Property<DateTime>("Data_dostawy")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DostawcaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id_dostawcy")
                         .HasColumnType("int");
 
@@ -79,7 +79,7 @@ namespace Projekt2.Migrations
 
                     b.HasKey("Id_dostawy");
 
-                    b.HasIndex("DostawcaId");
+                    b.HasIndex("Id_dostawcy");
 
                     b.ToTable("Dostawy");
                 });
@@ -155,6 +155,8 @@ namespace Projekt2.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id_operacji");
+
                     b.ToTable("Magazyn");
                 });
 
@@ -175,17 +177,11 @@ namespace Projekt2.Migrations
                     b.Property<int>("Ilosc_opakowan_sprzedanych")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OperacjaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TransakcjaId_transakcji")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OperacjaId");
+                    b.HasIndex("Id_operacji");
 
-                    b.HasIndex("TransakcjaId_transakcji");
+                    b.HasIndex("Id_transakcji");
 
                     b.ToTable("Magazyn_sprzedarz");
                 });
@@ -210,12 +206,9 @@ namespace Projekt2.Migrations
                     b.Property<int>("Ilosc_towaru_wyjscowego")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Kierownik_zmianyId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id_partii");
 
-                    b.HasIndex("Kierownik_zmianyId");
+                    b.HasIndex("Id_kierownika_zmiany");
 
                     b.ToTable("Pakownia");
                 });
@@ -238,6 +231,8 @@ namespace Projekt2.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id_dostawy");
 
                     b.ToTable("Plac_buraczany");
                 });
@@ -264,6 +259,10 @@ namespace Projekt2.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id_dostawy");
+
+                    b.HasIndex("Id_partii");
+
                     b.ToTable("Plac_produktownia");
                 });
 
@@ -278,9 +277,6 @@ namespace Projekt2.Migrations
                     b.Property<string>("Addres")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DzialId_dzialu")
-                        .HasColumnType("int");
 
                     b.Property<int>("Id_dzialu")
                         .HasColumnType("int");
@@ -302,18 +298,15 @@ namespace Projekt2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StanowiskoId_stanowiska")
-                        .HasColumnType("int");
-
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DzialId_dzialu");
+                    b.HasIndex("Id_dzialu");
 
-                    b.HasIndex("StanowiskoId_stanowiska");
+                    b.HasIndex("Id_stanowiska");
 
                     b.ToTable("Pracownicy");
                 });
@@ -338,12 +331,9 @@ namespace Projekt2.Migrations
                     b.Property<int>("Ilosc_towaru_wyjscowego")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Kierownik_zmianyId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id_partii");
 
-                    b.HasIndex("Kierownik_zmianyId");
+                    b.HasIndex("Id_kierownika_zmiany");
 
                     b.ToTable("Produktownia");
                 });
@@ -366,6 +356,8 @@ namespace Projekt2.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id_operacji");
 
                     b.ToTable("Silos");
                 });
@@ -392,6 +384,10 @@ namespace Projekt2.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id_operacji");
+
+                    b.HasIndex("Id_partii");
+
                     b.ToTable("Silos_pakownia");
                 });
 
@@ -412,12 +408,9 @@ namespace Projekt2.Migrations
                     b.Property<int>("Ilosc_opakowan")
                         .HasColumnType("int");
 
-                    b.Property<int?>("KupiecId_kupca")
-                        .HasColumnType("int");
-
                     b.HasKey("Id_transakcji");
 
-                    b.HasIndex("KupiecId_kupca");
+                    b.HasIndex("Id_kupca");
 
                     b.ToTable("Sprzedarz");
                 });
@@ -446,20 +439,37 @@ namespace Projekt2.Migrations
                 {
                     b.HasOne("Projekt2.Models.Dostawcy", "Dostawca")
                         .WithMany("Dostawy")
-                        .HasForeignKey("DostawcaId");
+                        .HasForeignKey("Id_dostawcy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Dostawca");
+                });
+
+            modelBuilder.Entity("Projekt2.Models.Magazyn", b =>
+                {
+                    b.HasOne("Projekt2.Models.Pakownia", "Pakownia")
+                        .WithMany()
+                        .HasForeignKey("Id_operacji")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pakownia");
                 });
 
             modelBuilder.Entity("Projekt2.Models.Magazyn_sprzedarz", b =>
                 {
                     b.HasOne("Projekt2.Models.Magazyn", "Operacja")
                         .WithMany()
-                        .HasForeignKey("OperacjaId");
+                        .HasForeignKey("Id_operacji")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Projekt2.Models.Sprzedarz", "Transakcja")
                         .WithMany()
-                        .HasForeignKey("TransakcjaId_transakcji");
+                        .HasForeignKey("Id_transakcji")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Operacja");
 
@@ -470,20 +480,56 @@ namespace Projekt2.Migrations
                 {
                     b.HasOne("Projekt2.Models.Pracownicy", "Kierownik_zmiany")
                         .WithMany("Zmiany_pak")
-                        .HasForeignKey("Kierownik_zmianyId");
+                        .HasForeignKey("Id_kierownika_zmiany")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Kierownik_zmiany");
+                });
+
+            modelBuilder.Entity("Projekt2.Models.Plac_buraczany", b =>
+                {
+                    b.HasOne("Projekt2.Models.Dostawy", "Dostawa")
+                        .WithMany()
+                        .HasForeignKey("Id_dostawy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dostawa");
+                });
+
+            modelBuilder.Entity("Projekt2.Models.Plac_produktownia", b =>
+                {
+                    b.HasOne("Projekt2.Models.Dostawy", "Dostawa")
+                        .WithMany()
+                        .HasForeignKey("Id_dostawy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Projekt2.Models.Produktownia", "Partia")
+                        .WithMany()
+                        .HasForeignKey("Id_partii")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dostawa");
+
+                    b.Navigation("Partia");
                 });
 
             modelBuilder.Entity("Projekt2.Models.Pracownicy", b =>
                 {
                     b.HasOne("Projekt2.Models.Dzialy", "Dzial")
                         .WithMany("Pracownicy")
-                        .HasForeignKey("DzialId_dzialu");
+                        .HasForeignKey("Id_dzialu")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Projekt2.Models.Stanowiska", "Stanowisko")
                         .WithMany("Pracownicy")
-                        .HasForeignKey("StanowiskoId_stanowiska");
+                        .HasForeignKey("Id_stanowiska")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Dzial");
 
@@ -494,16 +540,50 @@ namespace Projekt2.Migrations
                 {
                     b.HasOne("Projekt2.Models.Pracownicy", "Kierownik_zmiany")
                         .WithMany("Zmiany_prod")
-                        .HasForeignKey("Kierownik_zmianyId");
+                        .HasForeignKey("Id_kierownika_zmiany")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Kierownik_zmiany");
+                });
+
+            modelBuilder.Entity("Projekt2.Models.Silos", b =>
+                {
+                    b.HasOne("Projekt2.Models.Produktownia", "Produktownia")
+                        .WithMany()
+                        .HasForeignKey("Id_operacji")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Produktownia");
+                });
+
+            modelBuilder.Entity("Projekt2.Models.Silos_pakownia", b =>
+                {
+                    b.HasOne("Projekt2.Models.Silos", "Operacja")
+                        .WithMany()
+                        .HasForeignKey("Id_operacji")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Projekt2.Models.Pakownia", "Partia")
+                        .WithMany()
+                        .HasForeignKey("Id_partii")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Operacja");
+
+                    b.Navigation("Partia");
                 });
 
             modelBuilder.Entity("Projekt2.Models.Sprzedarz", b =>
                 {
                     b.HasOne("Projekt2.Models.Kupcy", "Kupiec")
                         .WithMany("Transakcje")
-                        .HasForeignKey("KupiecId_kupca");
+                        .HasForeignKey("Id_kupca")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Kupiec");
                 });

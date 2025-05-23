@@ -1,0 +1,65 @@
+﻿body, .nav-item, .navbar, .nav-link, .navbar-brand, .container, .form-group, .form-control, .dropdown-item, .dropdown, .dropdown-menu, table, tr, td, th, thead, tbody, .form-control, option {
+    color: #76ABAE;
+    font-weight: 700;
+}
+
+button {
+    margin: 5px;
+}
+
+.table > :not(caption) > * > *, .form-control:focus, .link-info {
+    color: #76ABAE !important;
+    text-decoration-color: #76ABAE !important;
+}
+
+.nav-link, .navbar-brand, a {
+    transition: color 0.5s;
+}
+
+    .nav-link:hover, .navbar-brand:hover, a:hover, .cur_page {
+        color: #6FA !important;
+    }
+
+.form-group {
+    padding: 5px;
+}
+
+option {
+    color: black;
+}
+
+canvas {
+    background-color: #CEEEFF;
+    border-radius: 15px;
+    padding: 2%;
+}
+/* Custom CSS */
+@media (min-width: 576px) {
+    .h-sm-80 {
+        height: 80% !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .h-md-60 {
+        height: 60% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .h-lg-50 {
+        height: 50% !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .h-xl-40 {
+        height: 40% !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .h-xxl-30 {
+        height: 30% !important;
+    }
+}

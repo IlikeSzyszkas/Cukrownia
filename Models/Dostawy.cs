@@ -15,7 +15,7 @@ namespace Projekt2.Models
         [Display(Name = "Data dostawy")]
         public DateTime Data_dostawy { get; set; }
         [Display(Name = "Dostawca")]
-        [ForeignKey("dostawcy")]
+        [ForeignKey(nameof(Dostawca))]
         public int Id_dostawcy { get; set; }
         [Display(Name = "Dostawca")]
         public virtual Dostawcy? Dostawca { get; set; }

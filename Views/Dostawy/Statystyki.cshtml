@@ -80,14 +80,14 @@
             <p><strong>Dostawca:</strong> @Model.NajmniejszaDostawa.Dostawca.Name @Model.NajmniejszaDostawa.Dostawca.Surname</p>
         </dd>
         <hr />
-        <dt class="col-sm-2"><h3>Pierwsza dostawa:</h3></dt>
+        <dt class="col-sm-2"><h3>Ostatnia dostawa:</h3></dt>
         <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.PierwszaDostawa.Id_dostawy })'" style="cursor:pointer;">
             <p><strong>Ilość towaru:</strong> @Model.PierwszaDostawa.Ilosc_towaru</p>
             <p><strong>Data:</strong> @Model.PierwszaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
             <p><strong>Dostawca:</strong> @Model.PierwszaDostawa.Dostawca.Name @Model.PierwszaDostawa.Dostawca.Surname</p>
         </dd>
         <hr/>
-        <dt class="col-sm-2"><h3>Ostatnia dostawa:</h3></dt>
+        <dt class="col-sm-2"><h3>Pierwsza dostawa:</h3></dt>
         <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.OstatniaDostawa.Id_dostawy })'" style="cursor:pointer;">
             <p><strong>Ilość towaru:</strong> @Model.OstatniaDostawa.Ilosc_towaru</p>
             <p><strong>Data:</strong> @Model.OstatniaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>

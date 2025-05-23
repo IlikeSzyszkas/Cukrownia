@@ -4,10 +4,24 @@
     var labels2 = ((List<string>)ViewBag.ChartLabels2) ?? new List<string>();
     var values2 = ((List<int>)ViewBag.ChartValues2) ?? new List<int>();
 }
-
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Projekt2.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fixes.css" asp-append-version="true" />
+    <style>
+        *{
+            background-color: transparent !important;
+        }
+        canvas{
+            background-color: #CEEEFF !important;
+            border-radius: 15px;
+        }
+    </style>
+</head>
 <h1>Statystyki działów</h1>
 
-<canvas id="chart2" width="400" height="200"></canvas>
+<canvas id="chart2" class="w-100 w-sm-80 w-md-60 w-lg-50 w-xl-40 w-xxl-30"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
 <script>
 
