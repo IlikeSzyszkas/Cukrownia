@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
@@ -100,7 +96,7 @@ namespace Projekt2.Controllers
                 })
                 .OrderBy(x => x.Year).ThenBy(x => x.Month)
                 .AsNoTracking()
-                .ToListAsync(); 
+                .ToListAsync();
 
             var formattedChartData1 = chartData1
                 .Select(x => new

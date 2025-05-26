@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
-using Projekt2.ViewModels;
 
 namespace Projekt2.Controllers
 {
@@ -80,7 +75,8 @@ namespace Projekt2.Controllers
             var chartData1 = pracownicy_adres
                 .Where(d => d.Addres.Contains(","))
                 .GroupBy(d => d.Addres.Split(", ")[1])
-                .Select(g => new {
+                .Select(g => new
+                {
                     City = g.Key,
                     Count = g.Count()
                 })
@@ -110,7 +106,7 @@ namespace Projekt2.Controllers
             {
                 var stanowisko = await _context.Stanowiska.FindAsync(pracownicy.Id_stanowiska);
                 var dzial = await _context.Dzialy.FindAsync(pracownicy.Id_dzialu);
-                if(stanowisko.Nazwa == "Kierownik")
+                if (stanowisko.Nazwa == "Kierownik")
                 {
                     dzial.Kierownicy.Add(pracownicy);
                 }

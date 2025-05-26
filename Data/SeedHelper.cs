@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Projekt2.Models;
-using System;
-using System.Linq;
-using Projekt2.Data;
+﻿using Projekt2.Data;
 
 public static class SeedHelper
 {

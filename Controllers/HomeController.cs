@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
@@ -20,15 +19,27 @@ namespace Projekt2.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var stan_w_magazynie = await _context.Magazyn_sprzedarz
-                .Include(m => m.Operacja)
+            var stan_w_magazynie = await _context.Pakownia
                 .AsNoTracking()
                 .ToListAsync();
+            int ilosc_sprzedanych = await _context.Sprzedarz.SumAsync(m => m.Ilosc_opakowan);
 
-            var stan_w_silosie = await _context.Silos_pakownia
-                .Include(m => m.Operacja)
+            var stan_w_silosie = await _context.Silos
                 .AsNoTracking()
                 .ToListAsync();
+            int ilosc_spakowanych = await _context.Silos_pakownia.SumAsync(m => m.Ilosc_cukru_pobrana);
+
+            int buraki_na_placu = await _context.Plac_buraczany
+                .GroupBy(m => m.Data_operacji.Year)
+                .Select(g => new
+                {
+   
+                    Total = g.Sum(m => m.Ilosc_burakow)
+                })
+                .Where(g => g.Key == DateTime.Now.Year)
+                .FirstOrDefaultAsync();
+            int ilosc_przerobionych = await _context.Plac_produktownia.SumAsync(m => m.Ilosc_burakow_pobrana);
+
 
             var stan_w_plac = await _context.Plac_buraczany
                 .GroupBy(d => d.Data_operacji.Year)
@@ -55,26 +66,29 @@ namespace Projekt2.Controllers
                 .ToListAsync();
 
 
+
             var model = new HomeViewModel
             {
                 Ilosc_Magazyn = stan_w_magazynie
-                    .Where(m => m.Operacja != null)
-                    .Sum(m => m.Operacja.Ilosc_opakowan)
-                    - stan_w_magazynie.Sum(m => m.Ilosc_opakowan_sprzedanych),
+                    .Sum(m => m.Ilosc_towaru_wyjscowego) - ilosc_sprzedanych,
                 Ilosc_Silos = stan_w_silosie
-                    .Where(m => m.Operacja != null)
-                    .Sum(m => m.Operacja.Ilosc_cukru)
-                    - stan_w_silosie.Sum(m => m.Ilosc_cukru_pobrana),
-                Ilosc_Plac = stan_w_plac.ToDictionary(
-                    x => x.Year.ToString(),
-                    x => x.Stat
-                ),
+                    .Sum(m => m.Ilosc_cukru) - ilosc_spakowanych,
+                Ilosc_Plac = stan_w_plac
+                    .ToDictionary(
+                        x => x.Year.ToString(),
+                        x => x.Stat
+                    ),
+                Ilosc_Plac_Now = buraki_na_placu,
                 Ilosc_niewykorzystane_Plac = stan_niewyw_plac
                     .Where(x => x != null)
-                    .ToDictionary(x => x.Year.ToString(), x => x.Stat)
+                    .ToDictionary(x => x.Year.ToString(), x => x.Stat),
+                Ilosc_wykorzystane_Plac = stan_w_plac
+                    .Where(x => x != null && stan_niewyw_plac.Any(n => n.Year == x.Year))
+                    .ToDictionary(
+                        x => x.Year.ToString(),
+                        x => x.Stat - stan_niewyw_plac.FirstOrDefault(n => n.Year == x.Year)?.Stat ?? 0
+                    )
             };
-
-
 
             return View(model);
         }

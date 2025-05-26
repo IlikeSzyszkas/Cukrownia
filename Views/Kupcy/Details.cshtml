@@ -52,7 +52,7 @@
                         {
                             <tr onclick="location.href='@Url.Action("Details", "Sprzedarz", new { id = zamowienie.Id_transakcji })'" style="cursor:pointer;">
                                 <td>@zamowienie.Id_transakcji</td>
-                                <td>@zamowienie.Data_odbioru</td>
+                                <td>@zamowienie.Data_odbioru.ToShortDateString()</td>
                                 <td>@zamowienie.Ilosc_opakowan</td>
                             </tr>
                         }

@@ -29,10 +29,10 @@
     </dd>
     <dt>
         @{
-            @if (Model.Ilosc_Plac.ContainsKey(currentYear))
+            @if (Model.Ilosc_Plac_Now != 0)
             {
                 <h3>
-                    @currentYear: @Model.Ilosc_Plac[currentYear]
+                    @currentYear: @Model.Ilosc_Plac_Now
                 </h3>
             }
             else
@@ -62,13 +62,16 @@
             <tbody>
                 @foreach (var item in Model.Ilosc_Plac)
                 {
-                    var niewykorzysane = Model.Ilosc_niewykorzystane_Plac[item.Key];
-                    <tr>
-                        <td>@item.Key</td>
-                        <td>@item.Value</td>
-                        <td>@niewykorzysane</td>
-                        <td>@(item.Value-niewykorzysane)</td>
-                    </tr>
+                    if (Model.Ilosc_niewykorzystane_Plac.ContainsKey(item.Key))
+                    {
+                        var niewykorzysane = Model.Ilosc_niewykorzystane_Plac[item.Key];
+                        <tr>
+                            <td>@item.Key</td>
+                            <td>@item.Value</td>
+                            <td>@niewykorzysane</td>
+                            <td>@(item.Value - niewykorzysane)</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
@@ -76,60 +79,65 @@
 </dl>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
 <script>
-    const wykorzystane = new Array();
-    const niewykorzystane = @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_niewykorzystane_Plac));
     const dostarczone = @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_Plac));
+    const niewykorzystane = @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_niewykorzystane_Plac));
 
-    console.log(typeof(wykorzystane));
-    console.log(wykorzystane);
-    console.log(typeof(niewykorzystane));
-    console.log(niewykorzystane);
-    console.log(typeof(dostarczone));
-    console.log(dostarczone);
-
-    Object.entries(dostarczone).forEach(([year, value]) => {
-        //console.log(`Rok ${year}: ${value}`);
-        //console.log(niewykorzystane[year]);
-        let wykorzystan = value - niewykorzystane[year];
-        //console.log(year + " " + wykorzystan);
-        wykorzystane[year] = wykorzystan; 
+    const labels = Object.keys(dostarczone);
+    const wykorzystane = labels.map(year => {
+        const dost = dostarczone[year] || 0;
+        const niewyk = niewykorzystane[year] || 0;
+        return dost - niewyk;
     });
 
-        const chart1 = new Chart(document.getElementById('chart1').getContext('2d'), {
-        type: 'bar',
-        data: {
-            labels: @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_Plac.Keys)),
-            datasets: [{
-                label: 'Ilość dostarczonych buraków',
-                data: @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_Plac.Values)),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }, 
-            {
-                label: 'Ilość niewykorzystanych buraków',
-                data: @Html.Raw(JsonSerializer.Serialize(Model.Ilosc_niewykorzystane_Plac.Values)),
-                backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }, 
-            {
-                label: 'Ilość wykorzystanych buraków',
-                data: Object.values(wykorzystane),
-                backgroundColor: 'rgba(153, 102, 255, 0.6)',
-                borderColor: 'rgba(153, 102, 255, 1)',
-                borderWidth: 1
-            }]
+    const chart1 = new Chart(document.getElementById('chart1').getContext('2d'), {
+        data: 
+        {
+            labels: labels,
+            datasets: 
+            [
+                {
+                    type: 'bar',
+                    label: 'Ilość dostarczonych buraków',
+                    data: labels.map(year => dostarczone[year]),
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    stack: 'stack1'
+                }, 
+                {
+                    type: 'bar',
+                    label: 'Ilość niewykorzystanych buraków',
+                    data: labels.map(year => niewykorzystane[year]),
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    stack: 'stack2'
+                }, 
+                {
+                    type: 'bar',
+                    label: 'Ilość wykorzystanych buraków',
+                    data: wykorzystane,
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
+                    stack: 'stack2'
+                }
+            ]
         },
-        options: {
-            scales: {
-            x: {
-                stacked: true
-            },
-            y: { 
-                stacked: true,
-                beginAtZero: true 
-            } }
+        options: 
+        {
+            scales: 
+            {
+                x: 
+                {
+                    stacked: true
+                },
+                y: 
+                {
+                    stacked: true,
+                    beginAtZero: true
+                }
+            }
         }
     });
 </script>

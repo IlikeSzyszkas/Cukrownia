@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
@@ -25,7 +20,7 @@ namespace Projekt2.Controllers
             int pageSize = 50;
 
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = Math.Ceiling((double)_context.Pakownia.Count() / pageSize);
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Silos_pakownia.Count() / pageSize);
 
             return View(await _context.Silos_pakownia
                 .Skip((page - 1) * pageSize)

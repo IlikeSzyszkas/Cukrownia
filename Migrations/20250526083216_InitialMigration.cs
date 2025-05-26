@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -92,7 +91,7 @@ namespace Projekt2.Migrations
                         column: x => x.Id_dostawcy,
                         principalTable: "Dostawcy",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,7 +112,7 @@ namespace Projekt2.Migrations
                         column: x => x.Id_kupca,
                         principalTable: "Kupcy",
                         principalColumn: "Id_kupca",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,13 +138,13 @@ namespace Projekt2.Migrations
                         column: x => x.Id_dzialu,
                         principalTable: "Dzialy",
                         principalColumn: "Id_dzialu",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Pracownicy_Stanowiska_Id_stanowiska",
                         column: x => x.Id_stanowiska,
                         principalTable: "Stanowiska",
                         principalColumn: "Id_stanowiska",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,7 +165,7 @@ namespace Projekt2.Migrations
                         column: x => x.Id_dostawy,
                         principalTable: "Dostawy",
                         principalColumn: "Id_dostawy",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,7 +187,7 @@ namespace Projekt2.Migrations
                         column: x => x.Id_kierownika_zmiany,
                         principalTable: "Pracownicy",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -210,7 +209,7 @@ namespace Projekt2.Migrations
                         column: x => x.Id_kierownika_zmiany,
                         principalTable: "Pracownicy",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,7 +230,7 @@ namespace Projekt2.Migrations
                         column: x => x.Id_operacji,
                         principalTable: "Pakownia",
                         principalColumn: "Id_partii",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,13 +252,13 @@ namespace Projekt2.Migrations
                         column: x => x.Id_dostawy,
                         principalTable: "Dostawy",
                         principalColumn: "Id_dostawy",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Plac_produktownia_Produktownia_Id_partii",
                         column: x => x.Id_partii,
                         principalTable: "Produktownia",
                         principalColumn: "Id_partii",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -280,7 +279,7 @@ namespace Projekt2.Migrations
                         column: x => x.Id_operacji,
                         principalTable: "Produktownia",
                         principalColumn: "Id_partii",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -301,13 +300,13 @@ namespace Projekt2.Migrations
                         column: x => x.Id_operacji,
                         principalTable: "Magazyn",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Magazyn_sprzedarz_Sprzedarz_Id_transakcji",
                         column: x => x.Id_transakcji,
                         principalTable: "Sprzedarz",
                         principalColumn: "Id_transakcji",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -329,7 +328,7 @@ namespace Projekt2.Migrations
                         column: x => x.Id_partii,
                         principalTable: "Pakownia",
                         principalColumn: "Id_partii",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Silos_pakownia_Silos_Id_operacji",
                         column: x => x.Id_operacji,

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
-using Projekt2.ViewModels;
 
 namespace Projekt2.Controllers
 {
@@ -43,7 +37,7 @@ namespace Projekt2.Controllers
                 return NotFound();
             }
 
-            var customOrder = new List<string> { "Kierownik", "Operator", "Technik", "Automatyk"};
+            var customOrder = new List<string> { "Kierownik", "Operator", "Technik", "Automatyk" };
 
             var dzialy = await _context.Dzialy
                 .Include(d => d.Pracownicy)

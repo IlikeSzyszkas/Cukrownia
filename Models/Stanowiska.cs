@@ -7,9 +7,9 @@ namespace Projekt2.Models
         [Display(Name = "Id")]
         [Key]
         public int Id_stanowiska { get; set; }
-        public string Nazwa {  get; set; }
+        public string Nazwa { get; set; }
         public virtual List<Pracownicy>? Pracownicy { get; set; } = new List<Pracownicy>();
         [Display(Name = "Liczba pracowników")]
-        public int? LiczbaPracownikow {  get; set; }
+        public int? LiczbaPracownikow { get; set; }
     }
 }

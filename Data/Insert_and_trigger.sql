@@ -1,4 +1,5 @@
-﻿IF OBJECT_ID('dbo.update_plac_buraczany', 'P') IS NOT NULL
+﻿
+IF OBJECT_ID('dbo.update_plac_buraczany', 'P') IS NOT NULL
     DROP PROCEDURE dbo.update_plac_buraczany;
 GO
 
@@ -17177,4 +17178,3 @@ VALUES
 (148, '2024-12-26', 19),
 (415, '2024-12-27', 14),
 (369, '2024-12-28', 14);
-

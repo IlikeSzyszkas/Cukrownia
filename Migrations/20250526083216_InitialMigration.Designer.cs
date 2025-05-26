@@ -12,7 +12,7 @@ using Projekt2.Data;
 namespace Projekt2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250523125202_InitialMigration")]
+    [Migration("20250526083216_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />

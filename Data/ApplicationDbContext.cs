@@ -7,7 +7,7 @@ namespace Projekt2.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
         public DbSet<Dostawy> Dostawy { get; set; }
         public DbSet<Dzialy> Dzialy { get; set; }

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Projekt2.Controllers
 {
@@ -26,7 +20,7 @@ namespace Projekt2.Controllers
             int pageSize = 50;
 
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = Math.Ceiling((double)_context.Pakownia.Count() / pageSize);
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Silos.Count() / pageSize);
 
             return View(await _context.Silos
                 .OrderBy(m => m.Data_skladowania)
@@ -73,12 +67,12 @@ namespace Projekt2.Controllers
             {
                 _context.Add(silos);
                 await _context.SaveChangesAsync();
-                
+
                 return RedirectToAction(nameof(Index));
             }
             return View(silos);
         }
-       
+
 
         // GET: Silos/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -131,7 +125,7 @@ namespace Projekt2.Controllers
             }
             return View(silos);
         }
-        private async Task UpdateSilosAsync(int id_operacji, int ilosc, DateTime data) 
+        private async Task UpdateSilosAsync(int id_operacji, int ilosc, DateTime data)
         {
             var silos = await _context.Silos
                 .FirstOrDefaultAsync(p => p.Id_operacji == id_operacji);

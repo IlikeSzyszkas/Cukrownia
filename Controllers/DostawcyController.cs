@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
@@ -61,7 +56,7 @@ namespace Projekt2.Controllers
                 .OrderByDescending(d => d.Dostawy.Sum(d => d.Ilosc_towaru))
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
-            
+
             var worstDostawca = await _context.Dostawcy
                 .Include(d => d.Dostawy)
                 .OrderBy(d => d.Dostawy.Sum(d => d.Ilosc_towaru))

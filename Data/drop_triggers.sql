@@ -8,8 +8,12 @@ IF OBJECT_ID('dbo.fill_plac_buraczany', 'TR') IS NOT NULL
     DROP TRIGGER dbo.fill_plac_buraczany;
 GO
 
-IF OBJECT_ID('dbo.fill_plac_produktownia', 'TR') IS NOT NULL
-    DROP TRIGGER dbo.fill_plac_produktownia;
+IF OBJECT_ID('dbo.fill_plac_buraczany', 'TR') IS NOT NULL
+    DROP TRIGGER dbo.fill_plac_buraczany;
+GO
+
+IF OBJECT_ID('dbo.fill_magazyn_sprzedarz', 'TR') IS NOT NULL
+    DROP TRIGGER dbo.fill_magazyn_sprzedarz;
 GO
 
 IF OBJECT_ID('dbo.fill_silos', 'TR') IS NOT NULL

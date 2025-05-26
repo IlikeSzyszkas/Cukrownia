@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
 using Projekt2.ViewModels;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Projekt2.Controllers
 {
@@ -29,7 +23,7 @@ namespace Projekt2.Controllers
             int pageSize = 50;
 
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = Math.Ceiling((double)_context.Pakownia.Count() / pageSize);
+            ViewBag.TotalPages = Math.Ceiling((double)_context.Produktownia.Count() / pageSize);
 
             return View(await _context.Produktownia
                 .Include(m => m.Kierownik_zmiany)
@@ -83,7 +77,7 @@ namespace Projekt2.Controllers
             var monthLabels = Enumerable.Range(9, 4)
                 .Select(m => new DateTime(2000, m, 1).ToString("MMMM", culture))
                 .ToArray();
-            
+
 
             // Prepare datasets grouped by year
             var datasets = chartData
@@ -141,7 +135,7 @@ namespace Projekt2.Controllers
                 produktownia.Kierownik_zmiany = kierownik;
                 _context.Add(produktownia);
                 await _context.SaveChangesAsync();
-                await AddPlacProduktowniaAsync(produktownia.Id_partii,produktownia.Ilosc_towaru_wejscowego, produktownia.Data_zmiany);
+                await AddPlacProduktowniaAsync(produktownia.Id_partii, produktownia.Ilosc_towaru_wejscowego, produktownia.Data_zmiany);
                 await AddSilosAsync(produktownia.Id_partii, produktownia.Ilosc_towaru_wyjscowego, produktownia.Data_zmiany);
                 return RedirectToAction(nameof(Index));
             }
@@ -230,7 +224,7 @@ namespace Projekt2.Controllers
                     produktownia.Kierownik_zmiany = kierownik;
                     _context.Update(produktownia);
                     await _context.SaveChangesAsync();
-                    await  UpdateSilosAsync(produktownia.Id_partii, produktownia.Ilosc_towaru_wyjscowego, produktownia.Data_zmiany);
+                    await UpdateSilosAsync(produktownia.Id_partii, produktownia.Ilosc_towaru_wyjscowego, produktownia.Data_zmiany);
                     await UpdatePlacProduktowniaAsync(produktownia.Id_partii, produktownia.Id_partii, produktownia.Ilosc_towaru_wejscowego, produktownia.Data_zmiany);
                 }
                 catch (DbUpdateConcurrencyException)
