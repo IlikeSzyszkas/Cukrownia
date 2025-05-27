@@ -56,58 +56,51 @@ namespace Projekt2.Controllers
         // GET: Dostawy/Statystyki
         public async Task<IActionResult> Statystyki()
         {
-            var wszystkieDostawy = await _context.Dostawy
-                .Include(d => d.Dostawca)
-                .ToListAsync();
 
-            if (!wszystkieDostawy.Any())
+            if (!await _context.Dostawy.AnyAsync())
             {
                 return View(new DostawyStatystykiViewModel());
             }
 
+            var dostawy = await _context.Dostawy.AsNoTracking().ToListAsync();
+
+
             var model = new DostawyStatystykiViewModel
             {
-                LiczbaDostaw = wszystkieDostawy.Count,
-                SumaTowaru = wszystkieDostawy.Sum(d => d.Ilosc_towaru),
-                SredniaIloscTowaru = wszystkieDostawy.Average(d => d.Ilosc_towaru),
-                NajwiekszaDostawa = _context.Dostawy.OrderByDescending(d => d.Ilosc_towaru).Take(1).FirstOrDefault(),
-                NajmniejszaDostawa = _context.Dostawy.OrderBy(d => d.Ilosc_towaru).Take(1).FirstOrDefault(),
-                PierwszaDostawa = _context.Dostawy.OrderByDescending(d => d.Data_dostawy).Take(1).FirstOrDefault(),
-                OstatniaDostawa = _context.Dostawy.OrderBy(d => d.Data_dostawy).Take(1).FirstOrDefault(),
-                TopDostawcy = wszystkieDostawy
-                    .GroupBy(d => d.Dostawca)
+                LiczbaDostaw = await _context.Dostawy.CountAsync(),
+                SumaTowaru = await _context.Dostawy.SumAsync(d => d.Ilosc_towaru),
+                SredniaIloscTowaru = await _context.Dostawy.AverageAsync(d => d.Ilosc_towaru),
+                NajwiekszaDostawa = dostawy.OrderByDescending(d => d.Ilosc_towaru).Take(1).FirstOrDefault(),
+                NajmniejszaDostawa = dostawy.OrderBy(d => d.Ilosc_towaru).Take(1).FirstOrDefault(),
+                PierwszaDostawa = dostawy.OrderByDescending(d => d.Data_dostawy).Take(1).FirstOrDefault(),
+                OstatniaDostawa = dostawy.OrderBy(d => d.Data_dostawy).Take(1).FirstOrDefault(),
+                TopDostawcy = await _context.Dostawy
+                    .GroupBy(d => new { d.Id_dostawcy, d.Dostawca.Name, d.Dostawca.Surname })
                     .Select(g => new DostawcaSumaTowaru
                     {
-                        Dostawca = g.Key!,
+                        Dostawca = new Dostawcy { Id = g.Key.Id_dostawcy, Name = g.Key.Name, Surname = g.Key.Surname },
                         SumaTowaru = g.Sum(x => x.Ilosc_towaru)
                     })
                     .OrderByDescending(x => x.SumaTowaru)
                     .Take(5)
-                    .ToList()
+                    .AsNoTracking()
+                    .ToListAsync()
             };
 
             var chartData1 = await _context.Dostawy
                 .GroupBy(d => new { d.Data_dostawy.Year, d.Data_dostawy.Month })
                 .Select(g => new
                 {
-                    Year = g.Key.Year,
-                    Month = g.Key.Month,
+                    Label = $"{g.Key.Year}-{g.Key.Month:D2}",
                     Total = g.Sum(x => x.Ilosc_towaru)
                 })
-                .OrderBy(x => x.Year).ThenBy(x => x.Month)
+                .OrderBy(x => x.Label)
                 .AsNoTracking()
                 .ToListAsync();
 
-            var formattedChartData1 = chartData1
-                .Select(x => new
-                {
-                    Label = $"{x.Year}-{x.Month:D2}",
-                    x.Total
-                })
-                .ToList();
 
-            ViewBag.ChartLabels1 = formattedChartData1.Select(x => x.Label).ToArray();
-            ViewBag.ChartValues1 = formattedChartData1.Select(x => x.Total).ToArray();
+            ViewBag.ChartLabels1 = chartData1.Select(x => x.Label).ToArray();
+            ViewBag.ChartValues1 = chartData1.Select(x => x.Total).ToArray();
 
 
 
@@ -130,17 +123,19 @@ namespace Projekt2.Controllers
             return View(model);
         }
 
+        private async Task<SelectList> GetDostawcySelectListAsync()
+        {
+            var dostawcy = await _context.Dostawcy
+                .Select(d => new { d.Id, FullName = d.Name + " " + d.Surname })
+                .ToListAsync();
+            return new SelectList(dostawcy, "Id", "FullName");
+        }
+
 
         // GET: Dostawy/Create
         public async Task<IActionResult> Create()
         {
-            var dostawcy = await _context.Dostawcy.ToListAsync();
-            var selectList = dostawcy.Select(k => new
-            {
-                Id = k.Id,
-                FullName = k.Name + " " + k.Surname
-            });
-            ViewBag.Id_dostawcy = new SelectList(selectList, "Id", "FullName");
+            ViewBag.Id_dostawcy = GetDostawcySelectListAsync();
             return View();
         }
 
@@ -157,7 +152,7 @@ namespace Projekt2.Controllers
                 dostawy.Dostawca = dostawca;
                 _context.Add(dostawy);
                 await _context.SaveChangesAsync();
-                AddPlacBuraczanyAsync(dostawy.Id_dostawy, dostawy.Ilosc_towaru, dostawy.Data_dostawy);
+                await AddPlacBuraczanyAsync(dostawy.Id_dostawy, dostawy.Ilosc_towaru, dostawy.Data_dostawy);
                 return RedirectToAction(nameof(Index));
             }
             return View(dostawy);
@@ -188,13 +183,8 @@ namespace Projekt2.Controllers
             {
                 return NotFound();
             }
-            var dostawcy = await _context.Dostawcy.ToListAsync();
-            var selectList = dostawcy.Select(k => new
-            {
-                Id = k.Id,
-                FullName = k.Name + " " + k.Surname
-            });
-            ViewBag.Id_dostawcy = new SelectList(selectList, "Id", "FullName");
+
+            ViewBag.Id_dostawcy = GetDostawcySelectListAsync();
             return View(dostawy);
         }
 

@@ -20,7 +20,8 @@ namespace Projekt2.Controllers
             int pageSize = 50;
 
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = Math.Ceiling((double)_context.Dostawcy.Count() / pageSize);
+            int totalCount = await _context.Dostawcy.CountAsync();
+            ViewBag.TotalPages = Math.Ceiling((double)totalCount / pageSize);
 
             return View(await _context.Dostawcy
                 .Skip((page - 1) * pageSize)
@@ -51,44 +52,39 @@ namespace Projekt2.Controllers
         // GET: Dostawcy/Statystyki
         public async Task<IActionResult> Statystyki()
         {
-            var bestDostawca = await _context.Dostawcy
-                .Include(d => d.Dostawy)
-                .OrderByDescending(d => d.Dostawy.Sum(d => d.Ilosc_towaru))
-                .AsNoTracking()
+            var bestDostawca = await _context.Dostawy
+                .GroupBy(d => d.Id_dostawcy)
+                .OrderByDescending(g => g.Sum(x => x.Ilosc_towaru))
+                .Select(g => g.Key)
                 .FirstOrDefaultAsync();
 
-            var worstDostawca = await _context.Dostawcy
-                .Include(d => d.Dostawy)
-                .OrderBy(d => d.Dostawy.Sum(d => d.Ilosc_towaru))
-                .AsNoTracking()
+            var worstDostawca = await _context.Dostawy
+                .GroupBy(d => d.Id_dostawcy)
+                .OrderBy(g => g.Sum(x => x.Ilosc_towaru))
+                .Select(g => g.Key)
                 .FirstOrDefaultAsync();
 
             var bestPole = await _context.Dostawcy
-                .Include(d => d.Dostawy)
                 .Where(d => d.Ilosc_ha_pola > 0 && d.Dostawy.Any())
-                .Select(d => new
-                {
-                    Dostawca = d,
-                    Wydajnosc = d.Dostawy.Sum(x => x.Ilosc_towaru) / d.Ilosc_ha_pola
+                .Select(d => new {
+                    d,
+                    Efficiency = d.Dostawy.Sum(x => x.Ilosc_towaru) / d.Ilosc_ha_pola
                 })
-                .OrderByDescending(x => x.Wydajnosc)
-                .Select(x => x.Dostawca)
-                .AsNoTracking()
+                .OrderByDescending(x => x.Efficiency)
+                .Select(x => x.d)
                 .FirstOrDefaultAsync();
 
             var model = new DostawcyStatystykiViewModel
             {
-                BestDostawca = bestDostawca,
-                WorstDostawca = worstDostawca,
+                BestDostawca = await _context.Dostawcy.FindAsync(bestDostawca),
+                WorstDostawca = await _context.Dostawcy.FindAsync(worstDostawca),
                 BestPole = bestPole
             };
 
             var chartData1 = await _context.Dostawcy
-                .Include(d => d.Dostawy)
-                .Select(d => new
-                {
+                .Select(d => new {
                     Name = d.Name + " " + d.Surname,
-                    Total = d.Dostawy.Sum(x => x.Ilosc_towaru)
+                    Total = _context.Dostawy.Where(x => x.Id_dostawcy == d.Id).Sum(x => (int?)x.Ilosc_towaru) ?? 0
                 })
                 .AsNoTracking()
                 .ToListAsync();

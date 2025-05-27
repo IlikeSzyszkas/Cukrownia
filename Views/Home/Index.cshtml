@@ -13,7 +13,7 @@
         <h2><strong>Ilość opakowań aktualnie w magazynie</strong></h2>
     </dd>
     <dt>
-        <h3>@Html.DisplayFor(model => model.Ilosc_Magazyn)</h3>
+        <h3>@Model.Ilosc_Magazyn?.ToString("N0")</h3>
     </dt>
     <hr />
 
@@ -21,18 +21,18 @@
         <h2><strong>Ilość kg cukru aktualnie w silosie</strong></h2>
     </dd>
     <dt>
-        <h3>@Html.DisplayFor(model => model.Ilosc_Silos)</h3>
+        <h3>@Model.Ilosc_Silos?.ToString("N0")</h3>
     </dt>
     <hr />
     <dd>
-        <h2><strong>Ilość buraków w tym roku</strong></h2>
+        <h2><strong>Ilość kg buraków aktualnie na placu</strong></h2>
     </dd>
     <dt>
         @{
             @if (Model.Ilosc_Plac_Now != 0)
             {
                 <h3>
-                    @currentYear: @Model.Ilosc_Plac_Now
+                    @(Model.Ilosc_Plac_Now?.ToString("N0"))
                 </h3>
             }
             else
@@ -67,9 +67,9 @@
                         var niewykorzysane = Model.Ilosc_niewykorzystane_Plac[item.Key];
                         <tr>
                             <td>@item.Key</td>
-                            <td>@item.Value</td>
-                            <td>@niewykorzysane</td>
-                            <td>@(item.Value - niewykorzysane)</td>
+                            <td>@item.Value.ToString("N0")</td>
+                            <td>@niewykorzysane.ToString("N0")</td>
+                            <td>@((item.Value - niewykorzysane).ToString("N0"))</td>
                         </tr>
                     }
                 }
@@ -124,20 +124,31 @@
                 }
             ]
         },
-        options: 
-        {
-            scales: 
-            {
-                x: 
-                {
-                    stacked: true
-                },
-                y: 
-                {
-                    stacked: true,
-                    beginAtZero: true
+            options: {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const value = context.parsed.y;
+                        return context.dataset.label + ': ' + value.toLocaleString('pl-PL');
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                stacked: true
+            },
+            y: {
+                stacked: true,
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return value.toLocaleString('pl-PL');
+                    }
                 }
             }
         }
+    }
     });
 </script>

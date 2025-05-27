@@ -61,35 +61,35 @@
     <dl class="row">
         <dt class="col-sm-2"><h3>Podsumowanie dostaw:</h3></dt>
         <dd class="col-sm-10">
-            <p><strong>Liczba dostaw:</strong> @Model.LiczbaDostaw</p>
-            <p><strong>Suma towaru (kg):</strong> @Model.SumaTowaru</p>
-            <p><strong>Średnia ilość towaru:</strong> @Model.SredniaIloscTowaru.ToString("F2")</p>
+            <p><strong>Liczba dostaw:</strong> @Model.LiczbaDostaw.ToString("N0")</p>
+            <p><strong>Suma towaru (kg):</strong> @Model.SumaTowaru.ToString("N0")</p>
+            <p><strong>Średnia ilość towaru:</strong> @Model.SredniaIloscTowaru.ToString("N2")</p>
         </dd>
         <hr />
         <dt class="col-sm-2"><h3>Największa dostawa:</h3></dt>
         <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.NajwiekszaDostawa.Id_dostawy })'" style="cursor:pointer;">
-            <p><strong>Ilość towaru:</strong> @Model.NajwiekszaDostawa.Ilosc_towaru</p>
+            <p><strong>Ilość towaru:</strong> @Model.NajwiekszaDostawa.Ilosc_towaru.ToString("N0")</p>
             <p><strong>Data:</strong> @Model.NajwiekszaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
             <p><strong>Dostawca:</strong> @Model.NajwiekszaDostawa.Dostawca.Name @Model.NajwiekszaDostawa.Dostawca.Surname</p>
         </dd>
         <hr />
         <dt class="col-sm-2"><h3>Najmniejsza dostawa:</h3></dt>
         <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.NajmniejszaDostawa.Id_dostawy })'" style="cursor:pointer;">
-            <p><strong>Ilość towaru:</strong> @Model.NajmniejszaDostawa.Ilosc_towaru</p>
+            <p><strong>Ilość towaru:</strong> @Model.NajmniejszaDostawa.Ilosc_towaru.ToString("N0")</p>
             <p><strong>Data:</strong> @Model.NajmniejszaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
             <p><strong>Dostawca:</strong> @Model.NajmniejszaDostawa.Dostawca.Name @Model.NajmniejszaDostawa.Dostawca.Surname</p>
         </dd>
         <hr />
         <dt class="col-sm-2"><h3>Ostatnia dostawa:</h3></dt>
         <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.PierwszaDostawa.Id_dostawy })'" style="cursor:pointer;">
-            <p><strong>Ilość towaru:</strong> @Model.PierwszaDostawa.Ilosc_towaru</p>
+            <p><strong>Ilość towaru:</strong> @Model.PierwszaDostawa.Ilosc_towaru.ToString("N0")</p>
             <p><strong>Data:</strong> @Model.PierwszaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
             <p><strong>Dostawca:</strong> @Model.PierwszaDostawa.Dostawca.Name @Model.PierwszaDostawa.Dostawca.Surname</p>
         </dd>
         <hr/>
         <dt class="col-sm-2"><h3>Pierwsza dostawa:</h3></dt>
         <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Dostawy", new { id = Model.OstatniaDostawa.Id_dostawy })'" style="cursor:pointer;">
-            <p><strong>Ilość towaru:</strong> @Model.OstatniaDostawa.Ilosc_towaru</p>
+            <p><strong>Ilość towaru:</strong> @Model.OstatniaDostawa.Ilosc_towaru.ToString("N0")</p>
             <p><strong>Data:</strong> @Model.OstatniaDostawa.Data_dostawy.ToString("dd.MM.yyyy")</p>
             <p><strong>Dostawca:</strong> @Model.OstatniaDostawa.Dostawca.Name @Model.OstatniaDostawa.Dostawca.Surname</p>
         </dd>
@@ -112,7 +112,7 @@
                     {
                         <tr onclick="location.href='@Url.Action("Details", "Dostawcy", new { id = d.Dostawca.Id })'" style="cursor:pointer;">
                             <td>@d.Dostawca.Name @d.Dostawca.Surname</td>
-                            <td>@d.SumaTowaru</td>
+                            <td>@d.SumaTowaru.ToString("N0")</td>
                         </tr>
                     }
                 </tbody>

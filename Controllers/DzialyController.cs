@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
+using Projekt2.ViewModels;
 
 namespace Projekt2.Controllers
 {
@@ -18,14 +19,15 @@ namespace Projekt2.Controllers
         public async Task<IActionResult> Index()
         {
             var dzial = await _context.Dzialy
-                .Include(d => d.Pracownicy)
+                .Select(d => new Dzialy
+                {
+                    Id_dzialu = d.Id_dzialu,
+                    Nazwa = d.Nazwa,
+                    LiczbaPracownikow = d.Pracownicy.Count()
+                })
                 .AsNoTracking()
                 .ToListAsync();
 
-            foreach (var p in dzial)
-            {
-                p.LiczbaPracownikow = p.Pracownicy?.Count ?? 0;
-            }
             return View(dzial);
         }
 
@@ -45,17 +47,13 @@ namespace Projekt2.Controllers
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id_dzialu == id);
 
-            if (dzialy == null)
-            {
+            if (dzialy == null || dzialy.Pracownicy == null)
                 return NotFound();
-            }
 
-            if (dzialy != null && dzialy.Pracownicy != null)
-            {
-                dzialy.Pracownicy = dzialy.Pracownicy
-                    .OrderBy(p => customOrder.IndexOf(p.Stanowisko.Nazwa))
-                    .ToList();
-            }
+            dzialy.Pracownicy = dzialy.Pracownicy
+                .OrderBy(p => customOrder.IndexOf(p.Stanowisko.Nazwa))
+                .ToList();
+
 
             foreach (var d in dzialy.Pracownicy)
             {
@@ -77,13 +75,15 @@ namespace Projekt2.Controllers
                 .AsNoTracking()
                 .ToListAsync();
 
-            ViewBag.ChartLabels2 = dzialyData.Select(x => x.Nazwa ?? string.Empty).ToList();
-            ViewBag.ChartValues2 = dzialyData.Select(x => x.Count).ToList();
+            var wykres1 = new DzialyStatystykiViewModel()
+            {
+                Labels = dzialyData.Select(x => x.Nazwa ?? string.Empty).ToList(),
+                Values = dzialyData.Select(x => x.Count).ToList()
+            };
 
             ViewBag.DisableLayout = iframe;
-            return View();
+            return View(wykres1);
         }
-
 
         // GET: Dzialies/Create
         public IActionResult Create()

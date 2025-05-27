@@ -35,7 +35,7 @@ namespace Projekt2.Controllers
             }
 
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = Math.Ceiling((double)_context.Pracownicy.Count() / pageSize);
+            ViewBag.TotalPages = Math.Ceiling((double) await _context.Pracownicy.CountAsync() / pageSize);
 
 
             return View(pracownicy);

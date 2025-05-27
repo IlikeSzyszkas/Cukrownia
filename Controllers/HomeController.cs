@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
@@ -30,14 +31,13 @@ namespace Projekt2.Controllers
             int ilosc_spakowanych = await _context.Silos_pakownia.SumAsync(m => m.Ilosc_cukru_pobrana);
 
             int buraki_na_placu = await _context.Plac_buraczany
-                .GroupBy(m => m.Data_operacji.Year)
-                .Select(g => new
-                {
-   
-                    Total = g.Sum(m => m.Ilosc_burakow)
-                })
-                .Where(g => g.Key == DateTime.Now.Year)
-                .FirstOrDefaultAsync();
+                .Where(pb => pb.Data_operacji.Year == DateTime.Now.Year)
+                .Join(_context.Plac_produktownia,
+                      pb => pb.Id_dostawy,
+                      pp => pp.Id_dostawy,
+                      (pb, pp) => pb.Ilosc_burakow - pp.Ilosc_burakow_pobrana)
+                .SumAsync();
+
             int ilosc_przerobionych = await _context.Plac_produktownia.SumAsync(m => m.Ilosc_burakow_pobrana);
 
 

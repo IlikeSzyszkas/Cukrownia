@@ -18,16 +18,21 @@ namespace Projekt2.Controllers
         public async Task<IActionResult> Index(int page = 1)
         {
             int pageSize = 50;
+            int totalCount = await _context.Magazyn_sprzedarz.CountAsync();
 
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = Math.Ceiling((double)_context.Magazyn_sprzedarz.Count() / pageSize);
+            ViewBag.TotalPages = Math.Ceiling((double)totalCount / pageSize);
 
-            return View(await _context.Magazyn_sprzedarz
-                .OrderBy(m => m.Id_operacji)
+            var records = await _context.Magazyn_sprzedarz
+                .Include(m => m.Operacja)
+                .Include(m => m.Transakcja)
+                .OrderBy(m => m.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .AsNoTracking()
-                .ToListAsync());
+                .ToListAsync();
+
+            return View(records);
         }
 
         // GET: Magazyn_sprzedarz/Details/5

@@ -1,8 +1,9 @@
-﻿@{
+﻿@model Projekt2.ViewModels.DzialyStatystykiViewModel
+@{
     ViewData["Title"] = "Statystyki działów";
     Layout = ViewBag.DisableLayout == true ? null : "_Layout";
-    var labels2 = ((List<string>)ViewBag.ChartLabels2) ?? new List<string>();
-    var values2 = ((List<int>)ViewBag.ChartValues2) ?? new List<int>();
+    var labels2 = Model.Labels;
+    var values2 = Model.Values;
 }
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />

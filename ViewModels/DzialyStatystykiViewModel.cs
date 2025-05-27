@@ -1,9 +1,8 @@
 ﻿namespace Projekt2.ViewModels
 {
-    internal class DzialyStatystykiViewModel
+    public class DzialyStatystykiViewModel
     {
-        public DzialyStatystykiViewModel()
-        {
-        }
+        public List<string> Labels { get; set; }
+        public List<int> Values { get; set; }
     }
 }

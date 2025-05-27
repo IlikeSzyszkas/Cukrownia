@@ -18,14 +18,21 @@ namespace Projekt2.Controllers
         public async Task<IActionResult> Index()
         {
             var kupcy = await _context.Kupcy
-                .Include(d => d.Transakcje)
+                .Select(k => new Kupcy
+                {
+                    Id_kupca = k.Id_kupca,
+                    Nazwa = k.Nazwa,
+                    Nip = k.Nip,
+                    Adres = k.Adres,
+                    Nr_tel = k.Nr_tel,
+                    LiczbaTransakcji = k.Transakcje.Count()
+                })
+                .AsNoTracking()
                 .ToListAsync();
-            foreach (var k in kupcy)
-            {
-                k.LiczbaTransakcji = k.Transakcje.Count();
-            }
+
             return View(kupcy);
         }
+
 
         // GET: Kupcy/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -37,6 +44,7 @@ namespace Projekt2.Controllers
 
             var kupcy = await _context.Kupcy
                 .Include(s => s.Transakcje)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id_kupca == id);
             if (kupcy == null)
             {

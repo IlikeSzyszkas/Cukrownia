@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Logowanie";
+    Layout = null;
+}
+<script type="importmap"></script>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/Projekt2.styles.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/fixes.css" asp-append-version="true" />
+<style>
+    body, .nav-item, .navbar, .nav-link, .navbar-brand, .container, .form-group, .form-control, .dropdown-item, .dropdown, .dropdown-menu, table, tr, td, th, thead, tbody, .form-control, option {
+        color: #76ABAE;
+        font-weight: 700;
+        background-image: url('/css/imgs/background.webp');
+        background-repeat: repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+    body{
+        text-align: center;
+        margin-top: 10%;
+    }
+</style>
+<h2>Logowanie</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div style="color:red">@ViewBag.Error</div>
+}
+@if (TempData["Message"] != null)
+{
+    <div style="color:green">@TempData["Message"]</div>
+}
+
+<form asp-controller="User" asp-action="Login" method="post">
+    <div>
+        <label>Login:</label>
+        <input type="text" name="username" />
+    </div>
+    <div>
+        <label>Hasło:</label>
+        <input type="password" name="password" />
+    </div>
+    <div>
+        <button class="btn btn-info" type="submit">Zaloguj</button>
+    </div>
+</form>
+
+<p>Nie masz jeszcze konta?<br/>
+    <a class="btn btn-secondary" asp-action="AddUser">Zarejestruj się</a>
+</p>
+

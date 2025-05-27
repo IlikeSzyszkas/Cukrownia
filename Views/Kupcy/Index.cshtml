@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<Projekt2.Models.Kupcy>
+@using Projekt2.Helpers
+
 
 @{
     ViewData["Title"] = "Kupcy";
@@ -43,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.Nazwa)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Nip)
+                @FormatHelper.FormatNip(item.Nip)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Adres)

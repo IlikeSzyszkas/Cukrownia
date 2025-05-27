@@ -84,7 +84,7 @@
                 @Html.DisplayFor(modelItem => item.Id_partii)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ilosc_towaru_wejscowego)
+                    @item.Ilosc_towaru_wejscowego.ToString("N0")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ilosc_towaru_wyjscowego)
