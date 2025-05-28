@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projekt2.Data;
 
@@ -11,9 +12,11 @@ using Projekt2.Data;
 namespace Projekt2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250528055731_AddedUsers2")]
+    partial class AddedUsers2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -452,7 +455,7 @@ namespace Projekt2.Migrations
                     b.ToTable("Stanowiska");
                 });
 
-            modelBuilder.Entity("Projekt2.Models.Users", b =>
+            modelBuilder.Entity("Projekt2.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -464,9 +467,6 @@ namespace Projekt2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PracownikId")
-                        .HasColumnType("int");
-
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -475,8 +475,6 @@ namespace Projekt2.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PracownikId");
 
                     b.HasIndex("RoleId");
 
@@ -636,21 +634,13 @@ namespace Projekt2.Migrations
                     b.Navigation("Kupiec");
                 });
 
-            modelBuilder.Entity("Projekt2.Models.Users", b =>
+            modelBuilder.Entity("Projekt2.Models.User", b =>
                 {
-                    b.HasOne("Projekt2.Models.Pracownicy", "Pracownik")
-                        .WithMany()
-                        .HasForeignKey("PracownikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Projekt2.Models.Roles", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Pracownik");
 
                     b.Navigation("Role");
                 });

@@ -76,7 +76,17 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @{
+            var model = Model;
+            if (User.IsInRole("dostawca"))
+            {
+                var name = User.FindFirst("Name")?.Value;
+                var surname = User.FindFirst("Surname")?.Value;
+
+                model = model.Where(m => m.Dostawca.Name == name && m.Dostawca.Surname == surname);
+            }
+        
+        foreach (var item in model) {
         <tr onclick="location.href='@Url.Action("Details", "Dostawy", new { id = item.Id_dostawy })'" style="cursor:pointer;">
             <td>
                 @Html.DisplayFor(modelItem => item.Id_dostawy)
@@ -95,6 +105,7 @@
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id_dostawy">Usuń</a>
             </td>
         </tr>
+}
 }
     </tbody>
 </table>

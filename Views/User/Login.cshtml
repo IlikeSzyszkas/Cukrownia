@@ -21,7 +21,7 @@
         margin-top: 10%;
     }
 </style>
-<h2>Logowanie</h2>
+<h1>Logowanie</h1>
 
 @if (ViewBag.Error != null)
 {
@@ -34,11 +34,12 @@
 
 <form asp-controller="User" asp-action="Login" method="post">
     <div>
-        <label>Login:</label>
+        <label><h3>Login:</h3></label><br />
         <input type="text" name="username" />
     </div>
+    <br />
     <div>
-        <label>Hasło:</label>
+        <label><h3>Hasło:</h3></label><br />
         <input type="password" name="password" />
     </div>
     <div>

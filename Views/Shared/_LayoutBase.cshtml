@@ -1,0 +1,92 @@
+﻿@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Projekt2</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Projekt2.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fixes.css" asp-append-version="true" />
+    <style>
+        body, .nav-item, .navbar, .nav-link, .navbar-brand, .container, .form-group, .form-control, .dropdown-item, .dropdown, .dropdown-menu, table, tr, td, th, thead, tbody, .form-control, option {
+        color: #76ABAE;
+        font-weight: 700;
+        background-image: url('/css/imgs/background.webp');
+        background-repeat: repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/4fa9eeea1f.js" crossorigin="anonymous"></script>
+</head>
+<body class="body">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Projekt2</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @{
+
+                            @if (User.IsInRole("admin"))
+                            {
+                                @await Html.PartialAsync("_LayoutAdmin");
+                            }
+                            else if (User.IsInRole("kierownik"))
+                            {
+                                @await Html.PartialAsync("_LayoutKierownik");
+                            }
+                            else if (User.IsInRole("pracownik"))
+                            {
+                                @await Html.PartialAsync("_LayoutPracownik");
+                            }
+                            else if (User.IsInRole("spedytor") || User.IsInRole("magazynier"))
+                            {
+                                @await Html.PartialAsync("_LayoutSpedytor");
+                            }
+                            else
+	                        {
+                                @await Html.PartialAsync("_LayoutBasic");
+	                        }
+                        }
+                        <div class="nav-item ms-auto d-flex " style="padding-top: 0.5%">
+                        <li class=" nav-link" >
+                            Zalogowano jako @User.FindFirst("name")?.Value (@User.FindFirst(ClaimTypes.Role)?.Value)
+                            </li>
+                            
+                            <li class="btn nav-item ">
+                            <a class="nav-link" style="padding:0px" asp-controller="User" asp-action="Details" asp-route-id="@User.FindFirst("Id")?.Value"><i class="fa-regular fa-xl fa-user"></i></a>
+                            </li>
+                        </div>
+                        
+                    </ul>
+                </div>
+            </div>
+
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - Projekt2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

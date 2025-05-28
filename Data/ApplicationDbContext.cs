@@ -24,6 +24,8 @@ namespace Projekt2.Data
         public DbSet<Silos_pakownia> Silos_pakownia { get; set; }
         public DbSet<Sprzedarz> Sprzedarz { get; set; }
         public DbSet<Stanowiska> Stanowiska { get; set; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Roles> Roles { get; set; }
 
     }
 }

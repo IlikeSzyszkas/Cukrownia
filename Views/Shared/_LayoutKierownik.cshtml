@@ -1,0 +1,51 @@
+﻿<li class="btn nav-item">
+    <a class="nav-link  " asp-area="" asp-controller="Pracownicy" asp-action="Index">Pracownicy</a>
+</li>
+<li class="nav-item dropdown">
+    <button class="btn dropdown-toggle nav-item nav-link" type="button" data-bs-toggle="dropdown">
+        Produkcja
+    </button>
+
+    <ul class="dropdown-menu">
+        <li class=" dropdown-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="Pakownia" asp-action="Index">Pakownia</a>
+        </li>
+        <li class=" dropdown-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="Produktownia" asp-action="Index">Produktownia</a>
+        </li>
+    </ul>
+</li>
+
+<li class="nav-item dropdown">
+    <button class="btn dropdown-toggle nav-item nav-link" type="button" data-bs-toggle="dropdown">
+        Magazynowanie
+    </button>
+
+    <ul class="dropdown-menu">
+        <li class=" dropdown-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="Plac_buraczany" asp-action="Index">Plac buraczany</a>
+        </li>
+        <li class=" dropdown-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="Magazyn" asp-action="Index">Magazyn</a>
+        </li>
+        <li class=" dropdown-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="Silos" asp-action="Index">Silos</a>
+        </li>
+    </ul>
+</li>
+
+<li class="nav-item dropdown ">
+    <button class="btn dropdown-toggle nav-item nav-link" type="button" data-bs-toggle="dropdown">
+        Inne
+    </button>
+
+    <ul class="dropdown-menu">
+        <li class=" dropdown-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="Plac_produktownia" asp-action="Index">Plac -&gt Produktownia</a>
+        </li>
+        <li class=" dropdown-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="Silos_pakownia" asp-action="Index">Silos -&gt Pakownia</a>
+        </li>
+    </ul>
+</li>
+

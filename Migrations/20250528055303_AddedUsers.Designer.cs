@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projekt2.Data;
 
@@ -11,9 +12,11 @@ using Projekt2.Data;
 namespace Projekt2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250528055303_AddedUsers")]
+    partial class AddedUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -338,23 +341,6 @@ namespace Projekt2.Migrations
                     b.ToTable("Produktownia");
                 });
 
-            modelBuilder.Entity("Projekt2.Models.Roles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("Projekt2.Models.Silos", b =>
                 {
                     b.Property<int>("Id")
@@ -450,37 +436,6 @@ namespace Projekt2.Migrations
                     b.HasKey("Id_stanowiska");
 
                     b.ToTable("Stanowiska");
-                });
-
-            modelBuilder.Entity("Projekt2.Models.Users", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PracownikId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PracownikId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Projekt2.Models.Dostawy", b =>
@@ -636,25 +591,6 @@ namespace Projekt2.Migrations
                     b.Navigation("Kupiec");
                 });
 
-            modelBuilder.Entity("Projekt2.Models.Users", b =>
-                {
-                    b.HasOne("Projekt2.Models.Pracownicy", "Pracownik")
-                        .WithMany()
-                        .HasForeignKey("PracownikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Projekt2.Models.Roles", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pracownik");
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("Projekt2.Models.Dostawcy", b =>
                 {
                     b.Navigation("Dostawy");
@@ -675,11 +611,6 @@ namespace Projekt2.Migrations
                     b.Navigation("Zmiany_pak");
 
                     b.Navigation("Zmiany_prod");
-                });
-
-            modelBuilder.Entity("Projekt2.Models.Roles", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Projekt2.Models.Stanowiska", b =>
