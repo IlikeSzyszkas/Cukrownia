@@ -58,19 +58,31 @@
 	                        }
                         }
                         <div class="nav-item ms-auto d-flex " style="padding-top: 0.5%">
-                        <li class=" nav-link" >
-                            Zalogowano jako @User.FindFirst("name")?.Value (@User.FindFirst(ClaimTypes.Role)?.Value)
+                            <li class=" nav-link">
+                                Zalogowano jako @User.FindFirst("name")?.Value (@User.FindFirst(ClaimTypes.Role)?.Value)
                             </li>
-                            
-                            <li class="btn nav-item ">
-                            <a class="nav-link" style="padding:0px" asp-controller="User" asp-action="Details" asp-route-id="@User.FindFirst("Id")?.Value"><i class="fa-regular fa-xl fa-user"></i></a>
+
+                            <li class="nav-item dropdown">
+                                <button class="btn dropdown-toggle nav-item nav-link" type="button" data-bs-toggle="dropdown">
+                                    <i class="fa-regular fa-xl fa-user"></i>
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li class="dropdown-item">
+                                        <a class="nav-link" asp-controller="User" asp-action="Details" asp-route-id="@User.FindFirst("Id")?.Value">Ustawienia konta</a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link" asp-controller="User" asp-action="ChangePassword" asp-route-id="@User.FindFirst("Id")?.Value">Zmień hasło</a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="Logout" asp-route-id="@User.FindFirst("Id")?.Value">Wyloguj</a>
+                                    </li>
+                                </ul>
                             </li>
                         </div>
-                        
                     </ul>
                 </div>
             </div>
-
         </nav>
     </header>
     <div class="container">

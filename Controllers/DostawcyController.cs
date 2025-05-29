@@ -66,7 +66,8 @@ namespace Projekt2.Controllers
 
             var bestPole = await _context.Dostawcy
                 .Where(d => d.Ilosc_ha_pola > 0 && d.Dostawy.Any())
-                .Select(d => new {
+                .Select(d => new
+                {
                     d,
                     Efficiency = d.Dostawy.Sum(x => x.Ilosc_towaru) / d.Ilosc_ha_pola
                 })
@@ -82,7 +83,8 @@ namespace Projekt2.Controllers
             };
 
             var chartData1 = await _context.Dostawcy
-                .Select(d => new {
+                .Select(d => new
+                {
                     Name = d.Name + " " + d.Surname,
                     Total = _context.Dostawy.Where(x => x.Id_dostawcy == d.Id).Sum(x => (int?)x.Ilosc_towaru) ?? 0
                 })

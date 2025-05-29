@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Projekt2.Models.Users>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Użytkownicy";
 }
 
-<h1>Index</h1>
+<h1>Użytkownicy</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Dodaj nowego użytkownika</a>
 </p>
 <table class="table">
     <thead>
@@ -16,36 +16,29 @@
                 @Html.DisplayNameFor(model => model.Username)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PasswordHash)
+                @Html.DisplayNameFor(model => model.RoleId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Role)
+                @Html.DisplayNameFor(model => model.Pracownik)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr onclick="location.href='@Url.Action("Details", "User", new { id = item.Id })'" style="cursor:pointer;">
             <td>
                 @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PasswordHash)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pracownik.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pracownik.Surname)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Role.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Pracownik.Name) @Html.DisplayFor(modelItem => item.Pracownik.Surname)
+            </td>
+            <td>
+                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
             </td>
         </tr>
 }

@@ -53,7 +53,7 @@
         </dd>
         @{
 
-            if(Model.Stanowisko.Nazwa == "Kierownik")
+            if(Model.Stanowisko.Nazwa == "Kierownik" && Model.Dzial.Nazwa != "IT")
             {
                 <dt class="col-sm-2">
                     Zmiany

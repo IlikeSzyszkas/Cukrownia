@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt2.Data;
 using Projekt2.Models;
-using System.Security.Cryptography;
 
 namespace Projekt2.Controllers
 {
@@ -79,6 +75,12 @@ namespace Projekt2.Controllers
             }
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
+        }
+
         // GET: User
         public async Task<IActionResult> Index()
         {
@@ -117,9 +119,10 @@ namespace Projekt2.Controllers
 
             var selectList = kierownicy.Select(k => new
             {
-                Id = k.Id,
+                k.Id,
                 FullName = k.Name + " " + k.Surname
             });
+
 
             ViewData["PracownikId"] = new SelectList(selectList, "Id", "FullName");
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name");
@@ -158,8 +161,19 @@ namespace Projekt2.Controllers
             {
                 return NotFound();
             }
-            ViewData["PracownikId"] = new SelectList(_context.Pracownicy, "Id", "Id", users.PracownikId);
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", users.RoleId);
+            var kierownicy = await _context.Pracownicy
+               .Include(p => p.Stanowisko)
+               .Where(p => p.Stanowisko.Nazwa == "Kierownik")
+               .ToListAsync();
+
+            var selectList = kierownicy.Select(k => new
+            {
+                k.Id,
+                FullName = k.Name + " " + k.Surname
+            });
+
+            ViewData["PracownikId"] = new SelectList(selectList, "Id", "FullName");
+            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name");
             return View(users);
         }
 
@@ -195,9 +209,59 @@ namespace Projekt2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PracownikId"] = new SelectList(_context.Pracownicy, "Id", "Id", users.PracownikId);
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", users.RoleId);
+            var kierownicy = await _context.Pracownicy
+                           .Include(p => p.Stanowisko)
+                           .Where(p => p.Stanowisko.Nazwa == "Kierownik")
+                           .ToListAsync();
+
+            var selectList = kierownicy.Select(k => new
+            {
+                Id = k.Id,
+                FullName = k.Name + " " + k.Surname
+            });
+
+            ViewData["PracownikId"] = new SelectList(selectList, "Id", "FullName");
+            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name");
             return View(users);
+        }
+
+        //Get: User/ChangePassword/5
+        public async Task<IActionResult> ChangePassword(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+        //Post: User/ChangePassword/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(int id, string newPassword, string repeatedPassword)
+        {
+            if (id != int.Parse(User.FindFirst("Id").Value))
+            {
+                return NotFound();
+            }
+            if (newPassword != repeatedPassword)
+            {
+                ModelState.AddModelError("", "Hasła nie są zgodne.");
+                return View();
+            }
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.PasswordHash = HashPassword(newPassword);
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: User/Delete/5

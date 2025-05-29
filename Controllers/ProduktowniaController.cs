@@ -115,7 +115,7 @@ namespace Projekt2.Controllers
 
             var selectList = kierownicy.Select(k => new
             {
-                Id = k.Id,
+                k.Id,
                 FullName = k.Name + " " + k.Surname
             });
             ViewBag.Id_kierownika_zmiany = new SelectList(selectList, "Id", "FullName");

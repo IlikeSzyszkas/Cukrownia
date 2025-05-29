@@ -6,34 +6,34 @@
 
 <h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>czy na pewno chcesz usunąć to konto?</h3>
 <div>
-    <h4>Users</h4>
+    <h4 class="text-danger">Tej akcji nie da się cofnąć</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Username)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Username)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PasswordHash)
+        <dt class="col-sm-2">
+            Imię i nazwisko
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PasswordHash)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Pracownik.Name) @Html.DisplayFor(model => model.Pracownik.Surname)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Role)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RoleId)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Role.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Role.Name)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
     </form>
 </div>

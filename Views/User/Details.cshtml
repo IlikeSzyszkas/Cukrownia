@@ -1,13 +1,13 @@
 ﻿@model Projekt2.Models.Users
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Informacje o użytkowniku";
 }
 
-<h1>Details</h1>
+<h1>Informacje o użytkowniku</h1>
 
 <div>
-    <h4>Users</h4>
+    <h4>@Html.DisplayFor(model => model.Username)</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -17,20 +17,21 @@
             @Html.DisplayFor(model => model.Username)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PasswordHash)
+            @Html.DisplayNameFor(model => model.Pracownik)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PasswordHash)
+        <dd class="col-sm-10" onclick="location.href='@Url.Action("Details", "Pracownicy", new { id = Model.PracownikId })'" style="cursor:pointer;">
+            @Html.DisplayFor(model => model.Pracownik.Name) @Html.DisplayFor(model => model.Pracownik.Surname)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Role)
+            @Html.DisplayNameFor(model => model.RoleId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Role.Id)
+            @Html.DisplayFor(model => model.Role.Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@User.FindFirst("Id")?.Value">Edytuj </a> |
+    <a asp-action="Delete" asp-route-id="@User.FindFirst("Id")?.Value">Usuń Konto</a> |
+    <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
 </div>

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Projekt2.Models
+﻿namespace Projekt2.Models
 {
     public class Roles
     {
