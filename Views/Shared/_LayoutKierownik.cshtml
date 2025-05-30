@@ -1,21 +1,26 @@
 ﻿<li class="btn nav-item">
-    <a class="nav-link  " asp-area="" asp-controller="Pracownicy" asp-action="Index">Pracownicy</a>
+    <a class="nav-link  " asp-area="" asp-controller="Pracownicy" asp-action="Index" asp-route-dzial="@User.FindFirst("Dzial").Value">Pracownicy</a>
 </li>
-<li class="nav-item dropdown">
-    <button class="btn dropdown-toggle nav-item nav-link" type="button" data-bs-toggle="dropdown">
-        Produkcja
-    </button>
-
-    <ul class="dropdown-menu">
-        <li class=" dropdown-item  ">
-            <a class="nav-link  " asp-area="" asp-controller="Pakownia" asp-action="Index">Pakownia</a>
-        </li>
-        <li class=" dropdown-item  ">
+@{
+    if (User.FindFirst("Dzial").Value == "Produktownia")
+    {
+        <li class=" btn nav-item ">
             <a class="nav-link  " asp-area="" asp-controller="Produktownia" asp-action="Index">Produktownia</a>
         </li>
-    </ul>
-</li>
-
+    }
+    else if (User.FindFirst("Dzial").Value == "Pakownia")
+    {
+        <li class=" btn nav-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="Pakownia" asp-action="Index">Pakownia</a>
+        </li>
+    }
+    else
+    {
+        <li class=" btn nav-item  ">
+            <a class="nav-link  " asp-area="" asp-controller="" asp-action="">Błąd</a>
+        </li>
+    }
+    }
 <li class="nav-item dropdown">
     <button class="btn dropdown-toggle nav-item nav-link" type="button" data-bs-toggle="dropdown">
         Magazynowanie

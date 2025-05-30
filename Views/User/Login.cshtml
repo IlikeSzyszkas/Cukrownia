@@ -40,14 +40,20 @@
     <br />
     <div>
         <label><h3>Hasło:</h3></label><br />
-        <input type="password" name="password" />
+        <input type="password" name="password" id="password" />
     </div>
+    <input type="checkbox" name="ShowPassword" value="true" id="ShowPassword" /> Pokaż hasło<br />
     <div>
         <button class="btn btn-info" type="submit">Zaloguj</button>
     </div>
 </form>
 
-<p>Nie masz jeszcze konta?<br/>
-    <a class="btn btn-secondary" asp-action="AddUser">Zarejestruj się</a>
-</p>
-
+<script>
+    ShowPassword.addEventListener("change", ()=>{
+        if(ShowPassword.checked){
+            password.setAttribute("type", "text");
+        }else if(!ShowPassword.checked){
+            password.setAttribute("type", "password");
+        }
+    })
+</script>

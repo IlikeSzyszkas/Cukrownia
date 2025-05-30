@@ -16,16 +16,26 @@ namespace Projekt2.Controllers
         }
 
         // GET: Pracownicy
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(string? dzial = null, int page = 1) 
         {
             int pageSize = 50;
 
-            var pracownicy = await _context.Pracownicy
+            var query = _context.Pracownicy
                 .Include(p => p.Dzial)
                 .Include(g => g.Stanowisko)
+                .AsNoTracking();
+
+            // Filtrowanie po dziale
+            if (dzial == "Pakownia" || dzial == "Produktownia")
+            {
+                query = query.Where(p => p.Dzial.Nazwa == dzial);
+            }
+
+            var totalItems = await query.CountAsync();
+
+            var pracownicy = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .AsNoTracking()
                 .ToListAsync();
 
             foreach (var d in pracownicy)
@@ -35,8 +45,7 @@ namespace Projekt2.Controllers
             }
 
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = Math.Ceiling((double)await _context.Pracownicy.CountAsync() / pageSize);
-
+            ViewBag.TotalPages = Math.Ceiling((double)query.Count() / pageSize);
 
             return View(pracownicy);
         }

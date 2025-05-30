@@ -28,32 +28,32 @@
 <nav class="text-end flex-column">
     @if (startPage > 1)
     {
-        <a class="link-info " href="@Url.Action("Index",  new { page = 1 })">1</a>
+        <a class="link-info " href="@Url.Action("Index",  new { page = 1,dzial = User.FindFirst("Dzial").Value })">1</a>
     }
     @if (currentPage > 1)
     {
-        <a class="link-info text-decoration-none" href="@Url.Action("Index", new { page = currentPage - 1 })">&lt;</a>
+        <a class="link-info text-decoration-none" href="@Url.Action("Index", new { page = currentPage - 1, dzial = User.FindFirst("Dzial").Value })">&lt;</a>
     }
 
     @for (int i = startPage; i <= endPage; i++)
     {
         if (i == currentPage)
         {
-            <a class="link-info cur_page" href="@Url.Action("Index", new { page = i })">@i</a>
+            <a class="link-info cur_page" href="@Url.Action("Index", new { page = i,dzial = User.FindFirst("Dzial").Value })">@i</a>
         }
         else
         {
-            <a class="link-info" href="@Url.Action("Index", new { page = i })">@i</a>
+            <a class="link-info" href="@Url.Action("Index", new { page = i,dzial = User.FindFirst("Dzial").Value })">@i</a>
         }
     }
 
     @if (currentPage < totalPages)
     {
-        <a class="link-info text-decoration-none" href="@Url.Action("Index", new { page = currentPage + 1 })">&gt;</a>
+        <a class="link-info text-decoration-none" href="@Url.Action("Index", new { page = currentPage + 1,dzial = User.FindFirst("Dzial").Value })">&gt;</a>
     }
     @if (endPage <= totalPages - 1)
     {
-        <a class="link-info" href="@Url.Action("Index", new { page = totalPages })">@totalPages</a>
+        <a class="link-info" href="@Url.Action("Index", new { page = totalPages,dzial = User.FindFirst("Dzial").Value })">@totalPages</a>
     }
 </nav>
 <table class="table">

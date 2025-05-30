@@ -31,6 +31,7 @@
     </dl>
 </div>
 <div>
+    <a asp-action="ChangePassword" asp-route-id="@User.FindFirst("Id")?.Value">Zmień hasło</a> |
     <a asp-action="Edit" asp-route-id="@User.FindFirst("Id")?.Value">Edytuj </a> |
     <a asp-action="Delete" asp-route-id="@User.FindFirst("Id")?.Value">Usuń Konto</a> |
     <a href="#" onclick="history.back()">Cofnij do poprzedniej strony</a>
