@@ -22,3 +22,4 @@ namespace Projekt2.ViewModels
         public string ConfirmPassword { get; set; }
     }
 }
+
