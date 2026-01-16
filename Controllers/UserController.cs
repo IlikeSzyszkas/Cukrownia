@@ -122,6 +122,7 @@ namespace Projekt2.Controllers
                 FullName = k.Name + " " + k.Surname + " - " + k.Stanowisko.Nazwa + ", " + k.Dzial.Nazwa
             });
             /*
+            
             ViewBag.PracownikId = new SelectList(
                 _context.Pracownicy
                     .Include(p => p.Stanowisko)
